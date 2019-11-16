@@ -1,0 +1,78 @@
+{
+  "definitions": {
+    "io.k8s.api.core.v1.Definition1": {
+      "properties": {
+        "prop1": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      }
+    },
+
+    "io.k8s.api.core.v1.Definition1Spec": {
+      "properties": {
+        "aspecprop1": {
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.Definition1Sub"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        },
+        "aspecprop2": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "aspecprop3": {
+          "type": "string"
+        }
+      }
+    },
+    "io.k8s.api.core.v1.Definition1Sub": {
+      "properties": {
+        "subprop1": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "subprop2": {
+          "type": "string"
+        }
+      }
+    },
+    "io.k8s.api.core.v1.OtherDefinition": {
+      "properties": {
+        "subprop": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      }
+    }
+  },
+  "info": {
+    "title": "Kubernetes",
+    "version": "v1.16.0"
+  },
+  "security": [
+    {
+      "BearerToken": []
+    }
+  ],
+  "securityDefinitions": {
+    "BearerToken": {
+      "description": "Bearer Token authentication",
+      "in": "header",
+      "name": "authorization",
+      "type": "apiKey"
+    }
+  },
+  "swagger": "2.0"
+}
