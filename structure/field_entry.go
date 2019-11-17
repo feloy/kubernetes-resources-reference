@@ -3,7 +3,6 @@ package structure
 import (
 	"fmt"
 	"io"
-	"os"
 	"strings"
 )
 
@@ -81,7 +80,6 @@ func (o *FieldEntry) AsDocbook(w io.Writer, prefixes ...string) {
 	}
 
 	if !isIndexable(o.Name) {
-		fmt.Fprintf(os.Stderr, "already indexed: %s in %s\n", o.Name, o.SectionName)
 		fmt.Fprintf(w, "<term><varname>%s</varname>%s</term>\n", strings.Join(append(prefixes, o.Name), "."), typ)
 	} else {
 		fmt.Fprintf(w, "<term><varname><indexterm type=\"fields\"><primary>%s</primary><secondary>%s</secondary></indexterm>%s</varname>%s</term>\n",

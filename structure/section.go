@@ -6,9 +6,16 @@ import (
 	"strings"
 )
 
+type GVK struct {
+	Group   string
+	Version string
+	Kind    string
+}
+
 // Section at any level in the resulting document
 type Section struct {
 	Name        string
+	GVK         *GVK
 	Description *string
 	ID          *string
 	SubSections []*Section
@@ -29,6 +36,14 @@ func (o *Section) SetID(id string) {
 // SetAppendix indicates that the section is an appendix
 func (o *Section) SetAppendix() {
 	o.IsAppendix = true
+}
+
+func (o *Section) SetGVK(group, version, kind string) {
+	o.GVK = &GVK{
+		Group:   group,
+		Version: version,
+		Kind:    kind,
+	}
 }
 
 // AddSection adds a new subsection
@@ -94,11 +109,15 @@ func (o *Section) AsDocbook(w io.Writer, depths ...int) {
 			fmt.Fprintf(w, "<%s%s>%s</bridgehead>\n", tags[depth], ID, o.Name)
 		} else {
 			if depth == indexLevel {
-				fmt.Fprintf(w, "<%s%s><title><indexterm type=\"resources\"><primary>%s</primary></indexterm>%s</title>\n", tags[depth], ID, o.Name, o.Name)
+				fmt.Fprintf(w, "<%s%s><title><indexterm type=\"resources\"><primary>%s</primary><secondary>%s.%s</secondary></indexterm>%s</title>\n", tags[depth], ID, o.Name, o.GVK.Group, o.GVK.Version, o.Name)
 			} else {
 				fmt.Fprintf(w, "<%s%s><title>%s</title>\n", tags[depth], ID, o.Name)
 			}
 		}
+	}
+
+	if o.GVK != nil {
+		fmt.Fprintf(w, "<subtitle>%s.%s.%s</subtitle>", o.GVK.Group, o.GVK.Version, o.GVK.Kind)
 	}
 
 	if o.Description != nil {
