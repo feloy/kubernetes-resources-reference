@@ -571,6 +571,7 @@ resource_categories:
         - name: sessionAffinityConfig
           depth: 2
         - name: ipFamily
+        - name: topologyKeys
     - definition: ServiceStatus
       list:
       - fields:
@@ -644,7 +645,7 @@ resource_categories:
         - name: spec
         - name: status
   - name: EndpointSlice
-    version: v1alpha1
+    version: v1beta1
     group: discovery
     field_categories:
     - definition: EndpointSliceList
@@ -919,7 +920,7 @@ resource_categories:
         - name: metadata
         - name: spec
   - name: CSINode
-    version: v1beta1
+    version: v1
     group: storage
     field_categories:
     - definition: CSINodeSpec
@@ -1963,6 +1964,70 @@ resource_categories:
         - name: kind
         - name: metadata
         - name: spec
+  - name: FlowSchema
+    version: v1alpha1
+    group: flowcontrol
+    field_categories:
+    - definition: FlowSchemaSpec
+      list:
+      - fields:
+        - name: priorityLevelConfiguration
+          depth: 1
+        - name: matchingPrecedence
+        - name: distinguisherMethod
+          depth: 1
+        - name: rules
+          depth: -1
+    - definition: FlowSchemaStatus
+      list:
+      - fields:
+        - name: conditions
+          depth: 1
+    - definition: FlowSchemaList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: FlowSchema
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+  - name: PriorityLevelConfiguration
+    version: v1alpha1
+    group: flowcontrol
+    field_categories:
+    - definition: PriorityLevelConfigurationSpec
+      list:
+      - fields:
+        - name: type
+        - name: limited
+          depth: -1
+    - definition: PriorityLevelConfigurationStatus
+      list:
+      - fields:
+        - name: conditions
+          depth: 1
+    - definition: PriorityLevelConfigurationList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: PriorityLevelConfiguration
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
 - name: Common Definitions
   definitions:
   - name: JSONSchemaProps
@@ -2012,6 +2077,12 @@ resource_categories:
           - name: title
           - name: type
           - name: uniqueItems
+          - name: x-kubernetes-embedded-resource
+          - name: x-kubernetes-int-or-string
+          - name: x-kubernetes-list-map-keys
+          - name: x-kubernetes-list-type
+          - name: x-kubernetes-map-type
+          - name: x-kubernetes-preserve-unknown-fields
   - name: Affinity
     definitions:
     - name: NodeAffinity

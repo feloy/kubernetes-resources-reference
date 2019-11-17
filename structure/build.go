@@ -19,6 +19,7 @@ package structure
 import (
 	"fmt"
 	"log"
+	"os"
 	"sort"
 
 	"github.com/feloy/k8s-api/api"
@@ -185,6 +186,7 @@ func (b *Builder) insertFields(s *Section, definition *api.Definition, categorie
 		}
 	} else {
 		currentSection := s
+		addedFields := map[string]struct{}{}
 		for _, fieldCategory := range fieldCategories {
 			if fieldCategory.Name != nil {
 				currentSection = NewSection(*fieldCategory.Name, nil)
@@ -192,10 +194,17 @@ func (b *Builder) insertFields(s *Section, definition *api.Definition, categorie
 			}
 			for _, field := range fieldCategory.Fields {
 				realField := b.getDefinitionField(definition, field.Name)
+				addedFields[field.Name] = struct{}{}
 				b.insertField(currentSection, realField, definition.Name, field.Depth, categories, fieldEntry, &field)
 			}
 		}
-		// TODO add not configured
+		// Error if some not configured
+		for _, field := range definition.Fields {
+			if _, found := addedFields[field.Name]; !found {
+				fmt.Fprintf(os.Stderr, "Field %s in %s not configured\n", field.Name, s.Name)
+			}
+
+		}
 	}
 }
 
