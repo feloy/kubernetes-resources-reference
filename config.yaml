@@ -14,7 +14,7 @@
 # limitations under the License.
 
 resource_categories:
-- name: Workloads APIs
+- name: Workloads Resources
   resources:
   - name: Pod
     version: v1
@@ -546,7 +546,7 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
-- name: Service APIs
+- name: Service Resources
   resources:
   - name: Service
     version: v1
@@ -669,7 +669,7 @@ resource_categories:
           depth: 2
         - name: ports
           depth: 1
-- name: Config and Storage APIs
+- name: Config and Storage Resources
   resources:
   - name: ConfigMap
     version: v1
@@ -942,7 +942,7 @@ resource_categories:
         - name: kind
         - name: metadata
         - name: spec
-- name: Metadata APIs
+- name: Metadata Resources
   resources:
   - name: ControllerRevision
     version: v1
@@ -1308,7 +1308,7 @@ resource_categories:
         - name: kind
         - name: metadata
         - name: spec
-- name: Cluster APIs
+- name: Cluster Resources
   resources:
   - name: Node
     version: v1
