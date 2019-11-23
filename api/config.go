@@ -47,7 +47,7 @@ type ResourceCategory struct {
 	Name string `yaml:",omitempty"`
 	// Resources are the collection of Resources in this group
 	Resources  Resources  `yaml:",omitempty"`
-	Appendixes Appendixes `yaml:",omitempty"`
+	Appendixes Appendixes `yaml:"definitions,omitempty"`
 }
 
 type Resources []*Resource

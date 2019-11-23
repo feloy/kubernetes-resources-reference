@@ -100,7 +100,7 @@ func (o *Section) AsDocbook(w io.Writer, depths ...int) {
 	indexLevel := 3
 
 	normalTags := []string{"", "part", "chapter", "sect1 renderas=\"sect2\"", "bridgehead renderas=\"sect4\""}
-	appendixTags := []string{"", "", "appendix"}
+	appendixTags := []string{"", "", "chapter"}
 
 	tags := normalTags
 	if o.IsAppendix {

@@ -1963,8 +1963,8 @@ resource_categories:
         - name: kind
         - name: metadata
         - name: spec
-- name: Appendixes
-  appendixes:
+- name: Common Definitions
+  definitions:
   - name: JSONSchemaProps
     definitions:
     - name: JSONSchemaProps
