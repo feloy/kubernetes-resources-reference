@@ -19,5 +19,13 @@ pdf: build/k8s-api.xml
 	fop -pdf k8s-api-$(FORMAT).pdf -fo k8s-api-$(FORMAT).fo && \
 	rm  k8s-api-$(FORMAT).fo)
 
+pdf-6x9in: build/k8s-api.xml
+	(cd build && \
+	mkdir -p pdf && \
+	cd pdf && \
+	xsltproc --stringparam fop1.extensions 1 -o k8s-api.fo ../../xsl/api-6x9in.xsl ../k8s-api.xml && \
+	fop -pdf k8s-api.pdf -fo k8s-api.fo && \
+	rm  k8s-api.fo)
+
 test:
 	@echo $(FORMAT)
