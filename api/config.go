@@ -1,5 +1,6 @@
 /*
 Copyright 2016 The Kubernetes Authors.
+Copyright 2019 Philippe Martin
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -46,7 +47,7 @@ type ResourceCategory struct {
 	Name string `yaml:",omitempty"`
 	// Resources are the collection of Resources in this group
 	Resources  Resources  `yaml:",omitempty"`
-	Appendixes Appendixes `yaml:",omitempty"`
+	Appendixes Appendixes `yaml:"definitions,omitempty"`
 }
 
 type Resources []*Resource
