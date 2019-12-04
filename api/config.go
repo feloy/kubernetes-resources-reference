@@ -25,6 +25,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 
 	"gopkg.in/yaml.v2"
 )
@@ -147,10 +148,26 @@ func LoadConfigFromYAML() *Config {
 // characters with HTML entities: <, >, &, ', and ".
 func (c *Config) escapeDescriptions() {
 	for _, d := range c.Definitions.All {
-		d.DescriptionWithEntities = html.EscapeString(d.Description())
+		paras := strings.Split(d.Description(), "\n\n")
+		var sb strings.Builder
+		for _, para := range paras {
+			sb.WriteString("<para>")
+			sb.WriteString(html.EscapeString(EscapeAsterisks(para)))
+			sb.WriteString("</para>")
+		}
+		d.DescriptionWithEntities = sb.String()
+
+		//		d.DescriptionWithEntities = html.EscapeString(d.Description())
 
 		for _, f := range d.Fields {
-			f.DescriptionWithEntities = html.EscapeString(f.Description)
+			paras := strings.Split(f.Description, "\n\n")
+			var sb strings.Builder
+			for _, para := range paras {
+				sb.WriteString("<para>")
+				sb.WriteString(html.EscapeString(EscapeAsterisks(para)))
+				sb.WriteString("</para>")
+			}
+			f.DescriptionWithEntities = sb.String()
 		}
 	}
 }

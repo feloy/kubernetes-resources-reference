@@ -144,11 +144,10 @@ func (s *Definitions) GetForSchema(schema spec.Schema) (*Definition, bool) {
 // Initializes the fields for a definition
 func (s *Definitions) InitializeFields(d *Definition) {
 	for fieldName, property := range d.schema.Properties {
-		des := strings.Replace(property.Description, "\n", " ", -1)
 		f := &Field{
 			Name:        fieldName,
 			Type:        GetTypeName(property),
-			Description: EscapeAsterisks(des),
+			Description: EscapeAsterisks(property.Description),
 		}
 		if len(property.Extensions) > 0 {
 			if ps, ok := property.Extensions.GetString(patchStrategyKey); ok {

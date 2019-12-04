@@ -104,7 +104,7 @@ func (o *FieldEntry) AsDocbook(w io.Writer, prefixes ...string) {
 	}
 	fmt.Fprintf(w, "<listitem>")
 	if o.Description != nil {
-		fmt.Fprintf(w, "<para>%s</para>", *o.Description)
+		fmt.Fprintf(w, "%s", *o.Description)
 	}
 
 	if inline {
