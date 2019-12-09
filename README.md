@@ -16,3 +16,7 @@ $ make pdf
 # Create a PDF file, in A4 format
 $ make pdf FORMAT=A4
 ```
+
+Get the companion documentation about kubectl: https://github.com/feloy/kubectl-reference
+
+Get a printed copy at https://www.amazon.com/Kubernetes-Resources-Reference-OpenAPI-specification/dp/1709123451
