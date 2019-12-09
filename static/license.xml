@@ -95,7 +95,7 @@
     </sect1>
 
 
-   <bridgehead>APPENDIX: How to apply the Apache License to your work.</bridgehead>
+   <sect1 label="Appendix"><title>How to apply the Apache License to your work.</title>
 
    <para>To apply the Apache License to your work, attach the following
    boilerplate notice, with the fields enclosed by brackets "[]"
@@ -121,5 +121,5 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
    </programlisting>
-
+   </sect1>
 </appendix>
