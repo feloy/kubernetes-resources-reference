@@ -34,7 +34,7 @@ func Generate(w io.Writer, config *api.Config, document *structure.Section) {
 	fmt.Fprintf(w, "<title>%s Resources</title><subtitle>%s</subtitle>\n", config.SpecTitle, config.SpecVersion)
 	fmt.Fprintf(w, "<releaseinfo>By the Kubernetes Authors</releaseinfo>")
 	fmt.Fprintf(w, "<releaseinfo>Edited and published by Philippe Martin</releaseinfo>")
-	fmt.Fprintf(w, "<copyright><year>2019</year><holder>The Kubernetes Authors</holder></copyright>")
+	fmt.Fprintf(w, "<copyright><year>2020</year><holder>The Kubernetes Authors</holder></copyright>")
 	fmt.Fprintf(w, "<legalnotice><para>Permission is granted to copy, distribute and/or modify this document under the terms of the Apache License version 2. A copy of the license is included in <xref linkend=\"license\"></xref>.</para></legalnotice>")
 	fmt.Fprintf(w, "<legalnotice><para>The tool used to generate this document is available at https://github.com/feloy/kubernetes-resources-reference</para></legalnotice>")
 	fmt.Fprintf(w, "<legalnotice><para>The OpenAPI spec file used to generate this document is available at https://github.com/kubernetes/kubernetes</para></legalnotice>")
