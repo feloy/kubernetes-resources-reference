@@ -388,6 +388,84 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
+  - name: DaemonSet
+    version: v1
+    group: apps
+    field_categories:
+    - definition: DaemonSetSpec
+      list:
+      - fields:
+        - name: selector
+        - name: template
+        - name: minReadySeconds
+        - name: updateStrategy
+          depth: 2
+        - name: revisionHistoryLimit
+    - definition: DaemonSetStatus
+      list:
+      - fields:
+        - name: numberReady
+        - name: numberAvailable
+        - name: numberUnavailable
+        - name: numberMisscheduled
+        - name: desiredNumberScheduled
+        - name: currentNumberScheduled
+        - name: updatedNumberScheduled
+        - name: collisionCount
+        - name: conditions
+          depth: 1
+        - name: observedGeneration
+    - definition: DaemonSetList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: DaemonSet
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+  - name: ReplicationController
+    version: v1
+    group: core
+    field_categories:
+    - definition: ReplicationControllerSpec
+      list:
+      - fields:
+        - name: replicas
+        - name: selector
+        - name: template
+        - name: minReadySeconds
+    - definition: ReplicationControllerStatus
+      list:
+      - fields:
+        - name: replicas
+        - name: availableReplicas
+        - name: readyReplicas
+        - name: fullyLabeledReplicas
+        - name: conditions
+          depth: 1
+        - name: observedGeneration
+    - definition: ReplicationControllerList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: ReplicationController
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
   - name: Job
     version: v1
     group: batch
@@ -468,84 +546,6 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
-  - name: DaemonSet
-    version: v1
-    group: apps
-    field_categories:
-    - definition: DaemonSetSpec
-      list:
-      - fields:
-        - name: selector
-        - name: template
-        - name: minReadySeconds
-        - name: updateStrategy
-          depth: 2
-        - name: revisionHistoryLimit
-    - definition: DaemonSetStatus
-      list:
-      - fields:
-        - name: numberReady
-        - name: numberAvailable
-        - name: numberUnavailable
-        - name: numberMisscheduled
-        - name: desiredNumberScheduled
-        - name: currentNumberScheduled
-        - name: updatedNumberScheduled
-        - name: collisionCount
-        - name: conditions
-          depth: 1
-        - name: observedGeneration
-    - definition: DaemonSetList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: DaemonSet
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
-  - name: ReplicationController
-    version: v1
-    group: core
-    field_categories:
-    - definition: ReplicationControllerSpec
-      list:
-      - fields:
-        - name: replicas
-        - name: selector
-        - name: template
-        - name: minReadySeconds
-    - definition: ReplicationControllerStatus
-      list:
-      - fields:
-        - name: replicas
-        - name: availableReplicas
-        - name: readyReplicas
-        - name: fullyLabeledReplicas
-        - name: conditions
-          depth: 1
-        - name: observedGeneration
-    - definition: ReplicationControllerList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: ReplicationController
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
 - name: Service Resources
   resources:
   - name: Service
@@ -611,39 +611,6 @@ resource_categories:
         - name: metadata
         - name: subsets
           depth: 2
-  - name: Ingress
-    version: v1beta1
-    group: networking
-    field_categories:
-    - definition: IngressSpec
-      list:
-      - fields:
-        - name: backend
-          depth: 1
-        - name: rules
-          depth: 4
-        - name: tls
-          depth: 1
-    - definition: IngressStatus
-      list:
-      - fields:
-        - name: loadBalancer
-          depth: 2
-    - definition: IngressList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: Ingress
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
   - name: EndpointSlice
     version: v1beta1
     group: discovery
@@ -669,6 +636,63 @@ resource_categories:
           depth: 2
         - name: ports
           depth: 1
+  - name: Ingress
+    version: v1beta1
+    group: networking
+    field_categories:
+    - definition: IngressSpec
+      list:
+      - fields:
+        - name: backend
+          depth: 1
+        - name: rules
+          depth: 4
+        - name: tls
+          depth: 1
+        - name: ingressClassName
+    - definition: IngressStatus
+      list:
+      - fields:
+        - name: loadBalancer
+          depth: 2
+    - definition: IngressList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: Ingress
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+  - name: IngressClass
+    version: v1beta1
+    group: networking
+    field_categories:
+    - definition: IngressClass
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+    - definition: IngressClassSpec
+      list:
+      - fields:
+        - name: controller
+        - name: parameters
+    - definition: IngressClassList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
 - name: Config and Storage Resources
   resources:
   - name: ConfigMap
@@ -686,6 +710,9 @@ resource_categories:
         fields:
         - name: data
         - name: binaryData
+      - name: Attributes
+        fields:
+        - name: immutable
     - definition: ConfigMapList
       list:
       - fields:
@@ -704,11 +731,14 @@ resource_categories:
         - name: apiVersion
         - name: kind
         - name: metadata
-        - name: type
       - name: Data
         fields:
         - name: data
         - name: stringData
+      - name: Attributes
+        fields:
+        - name: type
+        - name: immutable
     - definition: SecretList
       list:
       - fields:
@@ -896,7 +926,7 @@ resource_categories:
         - name: spec
         - name: status
   - name: CSIDriver
-    version: v1beta1
+    version: v1
     group: storage
     field_categories:
     - definition: CSIDriverSpec
@@ -1166,6 +1196,30 @@ resource_categories:
         - name: kind
         - name: metadata
         - name: template
+  - name: PriorityClass
+    version: v1
+    group: scheduling
+    field_categories:
+    - definition: PriorityClassList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: PriorityClass
+      list:
+      - name: Resource metadata
+        fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+      - name: Specs
+        fields:
+        - name: value
+        - name: description
+        - name: preemptionPolicy
+        - name: globalDefault
   - name: PodDisruptionBudget
     version: v1beta1
     group: policy
@@ -1200,59 +1254,6 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
-  - name: PriorityClass
-    version: v1
-    group: scheduling
-    field_categories:
-    - definition: PriorityClassList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: PriorityClass
-      list:
-      - name: Resource metadata
-        fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-      - name: Specs
-        fields:
-        - name: value
-        - name: description
-        - name: preemptionPolicy
-        - name: globalDefault
-  - name: PodPreset
-    version: v1alpha1
-    group: settings
-    field_categories:
-    - definition: PodPresetSpec
-      list:
-      - fields:
-        - name: env
-          depth: -1
-        - name: envFrom
-          depth: -1
-        - name: selector
-        - name: volumeMounts
-          depth: 1
-        - name: volumes
-    - definition: PodPresetList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: PodPreset
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
   - name: PodSecurityPolicy
     version: v1beta1
     group: policy
@@ -1302,6 +1303,35 @@ resource_categories:
         - name: metadata
         - name: items
     - definition: PodSecurityPolicy
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+  - name: PodPreset
+    version: v1alpha1
+    group: settings
+    field_categories:
+    - definition: PodPresetSpec
+      list:
+      - fields:
+        - name: env
+          depth: -1
+        - name: envFrom
+          depth: -1
+        - name: selector
+        - name: volumeMounts
+          depth: 1
+        - name: volumes
+    - definition: PodPresetList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: PodPreset
       list:
       - fields:
         - name: apiVersion
@@ -1625,31 +1655,6 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
-  - name: RuntimeClass
-    version: v1beta1
-    group: node
-    field_categories:
-    - definition: RuntimeClassList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: RuntimeClass
-      list:
-      - name: Resource metadata
-        fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-      - name: Specs
-        fields:
-        - name: handler
-        - name: overhead
-          depth: 1
-        - name: scheduling
-          depth: 2
   - name: NetworkPolicy
     version: v1
     group: networking
@@ -1846,76 +1851,6 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
-  - name: AuditSink
-    version: v1alpha1
-    group: auditregistration
-    field_categories:
-    - definition: AuditSinkSpec
-      list:
-      - fields:
-        - name: policy
-          depth: 1
-        - name: webhook
-          depth: -1
-    - definition: AuditSinkList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: AuditSink
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-  - name: Binding
-    version: v1
-    group: core
-    field_categories:
-    - definition: Binding
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: target
-  - name: CertificateSigningRequest
-    version: v1beta1
-    group: certificates
-    field_categories:
-    - definition: CertificateSigningRequestSpec
-      list:
-      - fields:
-        - name: extra
-        - name: groups
-        - name: request
-        - name: uid
-        - name: usages
-        - name: username
-    - definition: CertificateSigningRequestStatus
-      list:
-      - fields:
-        - name: certificate
-        - name: conditions
-          depth: 1
-    - definition: CertificateSigningRequestList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: CertificateSigningRequest
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
   - name: ComponentStatus
     version: v1
     group: core
@@ -1958,6 +1893,91 @@ resource_categories:
         - name: metadata
         - name: items
     - definition: Lease
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+  - name: RuntimeClass
+    version: v1beta1
+    group: node
+    field_categories:
+    - definition: RuntimeClassList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: RuntimeClass
+      list:
+      - name: Resource metadata
+        fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+      - name: Specs
+        fields:
+        - name: handler
+        - name: overhead
+          depth: 1
+        - name: scheduling
+          depth: 2
+  - name: CertificateSigningRequest
+    version: v1beta1
+    group: certificates
+    field_categories:
+    - definition: CertificateSigningRequestSpec
+      list:
+      - fields:
+        - name: extra
+        - name: groups
+        - name: request
+        - name: signerName
+        - name: uid
+        - name: usages
+        - name: username
+    - definition: CertificateSigningRequestStatus
+      list:
+      - fields:
+        - name: certificate
+        - name: conditions
+          depth: 1
+    - definition: CertificateSigningRequestList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: CertificateSigningRequest
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+  - name: AuditSink
+    version: v1alpha1
+    group: auditregistration
+    field_categories:
+    - definition: AuditSinkSpec
+      list:
+      - fields:
+        - name: policy
+          depth: 1
+        - name: webhook
+          depth: -1
+    - definition: AuditSinkList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: AuditSink
       list:
       - fields:
         - name: apiVersion
@@ -2028,6 +2048,17 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
+  - name: Binding
+    version: v1
+    group: core
+    field_categories:
+    - definition: Binding
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: target
 - name: Common Definitions
   definitions:
   - name: JSONSchemaProps
@@ -2242,6 +2273,16 @@ resource_categories:
           - name: namespace
           - name: resourceVersion
           - name: uid
+    - name: TypedLocalObjectReference
+      version: v1
+      group: core
+      field_categories:
+      - definition: TypedLocalObjectReference
+        list:
+        - fields:
+          - name: apiGroup
+          - name: kind
+          - name: name
     - name: ServiceReference
       version: v1
       group: apiextensions

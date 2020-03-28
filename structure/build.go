@@ -76,6 +76,11 @@ func Build(config *api.Config) (result *Section) {
 			"Scale":                            struct{}{},
 			"ScaleSpec":                        struct{}{},
 			"ScaleStatus":                      struct{}{},
+
+			// For next alpha/beta version only
+			"HPAScalingPolicy":                struct{}{},
+			"HPAScalingRules":                 struct{}{},
+			"HorizontalPodAutoscalerBehavior": struct{}{},
 		},
 		config: config,
 	}
@@ -85,7 +90,7 @@ func Build(config *api.Config) (result *Section) {
 		result.AddSection(sect1)
 		for _, resource := range rescats.Resources {
 			definition := resource.Definition
-			sect2 := NewSection(resource.Name, nil)
+			sect2 := NewSection(fmt.Sprintf("%s (%s)", resource.Name, resource.Version), nil)
 			sect1.AddSection(sect2)
 			var sect3 *Section
 			if debug {

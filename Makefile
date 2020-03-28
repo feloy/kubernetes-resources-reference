@@ -41,5 +41,13 @@ pdf-6x9in: build/k8s-api.xml
 	fop -pdf k8s-api.pdf -fo k8s-api.fo && \
 	rm  k8s-api.fo)
 
+epub: build/k8s-api.xml
+	(cd build && \
+	 rm -rf epub && mkdir -p epub && \
+	 cd epub && \
+	 xsltproc -o k8s.epub /usr/share/xml/docbook/stylesheet/docbook-xsl/epub3/chunk.xsl ../k8s-api.xml && \
+	 zip -r k8s.epub META-INF mimetype OEBPS && \
+	 rm -rf META-INF mimetype OEBPS)
+
 test:
 	@echo $(FORMAT)
