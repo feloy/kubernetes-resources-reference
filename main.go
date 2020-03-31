@@ -21,6 +21,7 @@ import (
 
 	"github.com/feloy/k8s-api/api"
 	"github.com/feloy/k8s-api/docbook"
+	"github.com/feloy/k8s-api/markdown"
 	"github.com/feloy/k8s-api/structure"
 )
 
@@ -28,10 +29,17 @@ func main() {
 	*api.ConfigDir = "."
 	config := api.NewConfig()
 
-	//	fmt.Printf("%+v\n", config.ConfigDefinitions)
-	//	os.Exit(0)
-	structure := structure.Build(config)
-	//	structure.AsMarkdown(os.Stdout)
+	if len(os.Args) < 2 {
+		os.Exit(1)
+	}
 
-	docbook.Generate(os.Stdout, config, structure)
+	structure := structure.Build(config)
+
+	switch os.Args[1] {
+	case "docbook":
+		docbook.Generate(os.Stdout, config, structure)
+	case "md":
+		markdown.Generate("md", config, structure)
+	}
+
 }

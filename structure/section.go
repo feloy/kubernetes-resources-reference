@@ -17,8 +17,12 @@ limitations under the License.
 package structure
 
 import (
+	"bufio"
 	"fmt"
 	"io"
+	"log"
+	"os"
+	"path"
 	"strings"
 )
 
@@ -73,24 +77,57 @@ func (o *Section) AddFieldEntry(f *FieldEntry) {
 }
 
 // AsMarkdown dumps the section as markdown
-func (o *Section) AsMarkdown(w io.Writer, depths ...int) {
+func (o *Section) AsMarkdown(dir string, weight int, w *bufio.Writer, depths ...int) {
 	depth := 0
 	if len(depths) > 0 {
 		depth = depths[0]
 	}
-	if depth > 0 {
+
+	if depth == 1 {
+		dir = path.Join(dir, fmt.Sprintf("part%d", weight+1))
+		os.MkdirAll(dir, 0755)
+		filename := path.Join(dir, "_index.md")
+		f, err := os.Create(filename)
+		if err != nil {
+			log.Fatalf("Unable to create file %s: %s", filename, err)
+		}
+		defer f.Close()
+		f.WriteString(fmt.Sprintf("---\ntitle: \"%s\"\ndraft: false\ncollapsible: true\nweight: %d\n---\n", o.Name, weight+1))
+	}
+
+	if depth == 2 {
+		filename := path.Join(dir, o.Name+".md")
+		f, err := os.Create(filename)
+		if err != nil {
+			log.Fatalf("Unable to create file %s: %s", filename, err)
+		}
+		defer f.Close()
+		w = bufio.NewWriter(f)
+		defer w.Flush()
+	}
+
+	if depth >= 2 {
+		if depth == 2 {
+			fmt.Fprintf(w, "---\ntitle: \"%s\"\ndraft: false\ncollapsible: false\nweight: %d\n---\n", o.Name, weight+1)
+		}
 		for i := 0; i < depth; i++ {
 			fmt.Fprintf(w, "#")
 		}
 		fmt.Fprintf(w, " %s\n", o.Name)
 	}
 
-	for _, field := range o.FieldList {
-		field.AsMarkdown(w)
+	if depth > 2 {
+		for _, field := range o.FieldList {
+			field.AsMarkdown(w)
+		}
 	}
 
-	for _, section := range o.SubSections {
-		section.AsMarkdown(w, depth+1)
+	for i, section := range o.SubSections {
+		if depth == 0 {
+			section.AsMarkdown(dir, i, w, depth+1)
+		} else {
+			section.AsMarkdown(dir, i, w, depth+1)
+		}
 	}
 }
 

@@ -22,7 +22,7 @@ docbook: clean build/k8s-api.xml
 
 build/k8s-api.xml: $(wildcard *.go **/*.go) config.yaml
 	mkdir -p build
-	go run main.go > build/k8s-api.xml
+	go run main.go docbook > build/k8s-api.xml
 
 FORMAT ?= USletter
 pdf: build/k8s-api.xml

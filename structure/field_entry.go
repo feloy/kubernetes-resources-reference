@@ -17,6 +17,7 @@ limitations under the License.
 package structure
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"strings"
@@ -54,12 +55,15 @@ func (o *FieldEntry) AddFieldEntry(f *FieldEntry) {
 }
 
 // AsMarkdown dumps the field entry as Markdown
-func (o *FieldEntry) AsMarkdown(w io.Writer, prefixes ...string) {
+func (o *FieldEntry) AsMarkdown(w *bufio.Writer, prefixes ...string) {
 	depth := len(prefixes)
 	if depth > 0 {
-		fmt.Fprintf(w, "  ")
+		w.WriteString("  ")
 	}
-	fmt.Fprintf(w, "- %s {%s}\n", strings.Join(append(prefixes, o.Name), "."), o.Type)
+	w.WriteString(fmt.Sprintf("- **%s** (%s)\n", strings.Join(append(prefixes, o.Name), "."), o.Type))
+
+	w.WriteString(*o.Description)
+	w.WriteString("\n\n")
 
 	for _, subfield := range o.SubFieldList {
 		subfield.AsMarkdown(w, append(prefixes, o.Name)...)
