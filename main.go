@@ -37,8 +37,10 @@ func main() {
 
 	switch os.Args[1] {
 	case "docbook":
+		config.EscapeDescriptionsDocbook()
 		docbook.Generate(os.Stdout, config, structure)
 	case "md":
+		config.EscapeDescriptionsMarkdown()
 		markdown.Generate("md", config, structure)
 	}
 
