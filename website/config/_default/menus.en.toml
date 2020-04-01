@@ -4,8 +4,8 @@
   url = "docs"
   weight = 1
 
-[[main]]
-  identifier = "kubectl"
-  name = "kubectl"
-  url = "kubectl"
-  weight = 2
+#[[main]]
+#  identifier = "kubectl"
+#  name = "kubectl"
+#  url = "kubectl"
+#  weight = 2
