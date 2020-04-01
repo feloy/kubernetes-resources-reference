@@ -51,7 +51,8 @@ epub: build/k8s-api.xml
 	 rm -rf META-INF mimetype OEBPS)
 
 clean-website:
-	rm -rf website/content/en/docs/*
+	rm -rf website/content/en/docs/* website/public
 
 website: clean-website
 	go run main.go md website/content/en/docs
+	(cd website && hugo)
