@@ -1,0 +1,10 @@
+grid_max_width = "769"
+grid_max_unit = "px" #  "px", "\"%\""  Using% is limited to using full width.
+grid_main_main_width = "5"
+grid_main_main_unit = "fr" # "fr", "px"
+grid_main_side_width = "2"
+grid_main_side_unit = "fr" # "fr", "px"
+grid_column_gap_width = "32"
+grid_column_gap_unit = "px" # "px"
+grid_navbar_height = "50px" # "px"
+grid_row_gap = "0"

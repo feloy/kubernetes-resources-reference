@@ -1,0 +1,6 @@
+[en]
+  title = "Kubernetes Reference"
+  languageName = "English"
+  weight = 1
+  languagedir = "ltr"
+  contentdir = "content/en"
