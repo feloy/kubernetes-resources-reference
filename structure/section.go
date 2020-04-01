@@ -117,6 +117,14 @@ func (o *Section) AsMarkdown(dir string, weight int, w *bufio.Writer, depths ...
 	}
 
 	if depth > 2 {
+		if o.GVK != nil {
+			fmt.Fprintf(w, "\n`%s.%s.%s`\n\n", o.GVK.Group, o.GVK.Version, o.GVK.Kind)
+		}
+
+		if o.Description != nil {
+			fmt.Fprintf(w, "%s\n\n", *o.Description)
+		}
+
 		for _, field := range o.FieldList {
 			field.AsMarkdown(w)
 		}
