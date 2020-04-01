@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "default_locale": "en",
   "description": "Kubernetes Reference: Resources, kubectl",
-  "start_url": "https://www.k8sref.io/",
+  "start_url": "https://k8sref.io/",
   "icons": [
     {
       "src": "favicon/android-icon-36x36.png",

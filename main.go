@@ -17,6 +17,7 @@ limitations under the License.
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/feloy/k8s-api/api"
@@ -25,11 +26,21 @@ import (
 	"github.com/feloy/k8s-api/structure"
 )
 
+func usage() {
+	fmt.Printf("Usage: %s md output-path\n", os.Args[0])
+}
+
 func main() {
 	*api.ConfigDir = "."
 	config := api.NewConfig()
 
 	if len(os.Args) < 2 {
+		usage()
+		os.Exit(1)
+	}
+
+	if os.Args[1] == "md" && len(os.Args) < 3 {
+		usage()
 		os.Exit(1)
 	}
 
@@ -41,7 +52,9 @@ func main() {
 		docbook.Generate(os.Stdout, config, structure)
 	case "md":
 		config.EscapeDescriptionsMarkdown()
-		markdown.Generate("md", config, structure)
+		markdown.Generate("website/content/en/docs", config, structure)
+	default:
+		usage()
 	}
 
 }
