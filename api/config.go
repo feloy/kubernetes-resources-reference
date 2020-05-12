@@ -104,9 +104,6 @@ func NewConfig() *Config {
 	// Initialization of resources
 	config.visitResources()
 
-	// replace unicode escape sequences with HTML entities.
-	config.escapeDescriptions()
-
 	config.CleanUp()
 
 	config.FindConfigDefinitions()
@@ -141,12 +138,12 @@ func LoadConfigFromYAML() *Config {
 	return config
 }
 
-// The OpenAPI spec has escape sequences like \u003c. When the spec is unmarshaled,
+// EscapeDescriptions The OpenAPI spec has escape sequences like \u003c. When the spec is unmarshaled,
 // the escape sequences get converted to ordinary characters. For example,
 // \u003c gets converted to a regular < character. But we can't use  regular <
 // and > characters in our HTML document. This function replaces these regular
 // characters with HTML entities: <, >, &, ', and ".
-func (c *Config) escapeDescriptions() {
+func (c *Config) EscapeDescriptionsDocbook() {
 	for _, d := range c.Definitions.All {
 		paras := strings.Split(d.Description(), "\n\n")
 		var sb strings.Builder
@@ -168,6 +165,16 @@ func (c *Config) escapeDescriptions() {
 				sb.WriteString("</para>")
 			}
 			f.DescriptionWithEntities = sb.String()
+		}
+	}
+}
+
+func (c *Config) EscapeDescriptionsMarkdown() {
+	for _, d := range c.Definitions.All {
+		d.DescriptionWithEntities = html.EscapeString(d.Description())
+
+		for _, f := range d.Fields {
+			f.DescriptionWithEntities = html.EscapeString(f.Description)
 		}
 	}
 }

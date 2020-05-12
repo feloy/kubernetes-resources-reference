@@ -17,6 +17,7 @@ limitations under the License.
 package structure
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"strings"
@@ -53,13 +54,25 @@ func (o *FieldEntry) AddFieldEntry(f *FieldEntry) {
 	o.SubFieldList = append(o.SubFieldList, f)
 }
 
+func indentString(w *bufio.Writer, s string, indent int) {
+	w.WriteString(strings.Repeat(" ", indent))
+	w.WriteString(strings.ReplaceAll(s, "\n", "\n"+strings.Repeat(" ", indent)))
+}
+
 // AsMarkdown dumps the field entry as Markdown
-func (o *FieldEntry) AsMarkdown(w io.Writer, prefixes ...string) {
+func (o *FieldEntry) AsMarkdown(w *bufio.Writer, prefixes ...string) {
 	depth := len(prefixes)
 	if depth > 0 {
-		fmt.Fprintf(w, "  ")
+		w.WriteString("  ")
 	}
-	fmt.Fprintf(w, "- %s {%s}\n", strings.Join(append(prefixes, o.Name), "."), o.Type)
+	w.WriteString(fmt.Sprintf("- **%s** (%s)\n", strings.Join(append(prefixes, o.Name), "."), o.Type))
+
+	indent := 2
+	if depth > 0 {
+		indent += 2
+	}
+	indentString(w, *o.Description, indent)
+	w.WriteString("\n\n")
 
 	for _, subfield := range o.SubFieldList {
 		subfield.AsMarkdown(w, append(prefixes, o.Name)...)

@@ -22,7 +22,8 @@ docbook: clean build/k8s-api.xml
 
 build/k8s-api.xml: $(wildcard *.go **/*.go) config.yaml
 	mkdir -p build
-	go run main.go > build/k8s-api.xml
+	go run main.go docbook > build/k8s-api.xml
+
 
 FORMAT ?= USletter
 pdf: build/k8s-api.xml
@@ -49,5 +50,9 @@ epub: build/k8s-api.xml
 	 zip -r k8s.epub META-INF mimetype OEBPS && \
 	 rm -rf META-INF mimetype OEBPS)
 
-test:
-	@echo $(FORMAT)
+clean-website:
+	rm -rf website/content/en/docs/* website/public
+
+website: clean-website
+	go run main.go md website/content/en/docs
+	(cd website && hugo)
