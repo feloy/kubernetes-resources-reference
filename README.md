@@ -6,6 +6,10 @@ The documentation includes the definition of the current resources of the API.
 
 All efforts are done to include as much as possible the definitions of the fields of a resource in a recursive way.
 
+Get the companion documentation about kubectl: https://github.com/feloy/kubectl-reference
+
+## PDF Output
+
 ```
 # Create the Docbook file
 $ make docbook
@@ -17,6 +21,14 @@ $ make pdf
 $ make pdf FORMAT=A4
 ```
 
-Get the companion documentation about kubectl: https://github.com/feloy/kubectl-reference
+Get a printed copy at https://kdp.amazon.com/amazon-dp-action/us/dualbookshelf.marketplacelink/B086G11WY1
 
-Get a printed copy at https://www.amazon.com/Kubernetes-Resources-Reference-OpenAPI-specification/dp/1709123451
+## Website Output
+
+You will need to install [hugo](https://gohugo.io/) and the [go language tools](https://golang.org/).
+
+```
+make website
+```
+
+Visit the website at https://www.k8sref.io
