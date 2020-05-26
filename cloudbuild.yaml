@@ -1,0 +1,29 @@
+steps:
+
+- id: build-image
+  name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'eu.gcr.io/$PROJECT_ID/build:$BUILD_ID', '.' ]
+
+- id: build
+  waitFor:
+  - build-image
+  name: 'eu.gcr.io/$PROJECT_ID/build:$BUILD_ID'
+  entrypoint: "/bin/bash"
+  args:
+  - -c
+  - |
+    mkdir build
+    k8sref docbook > build/k8s-api.xml
+    make pdf
+    make pdf FORMAT=A4
+
+images:
+- 'eu.gcr.io/$PROJECT_ID/build:$BUILD_ID'
+
+artifacts:
+  objects:
+    location: 'gs://$PROJECT_ID/${BRANCH_NAME}${TAG_NAME}/'
+    paths:
+    - "build/k8s-api.xml"
+    - "build/pdf-USletter/k8s-api-USletter.pdf"
+    - "build/pdf-A4/k8s-api-A4.pdf"
