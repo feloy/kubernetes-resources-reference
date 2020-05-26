@@ -78,9 +78,8 @@ func Build(config *api.Config) (result *Section) {
 			"ScaleStatus":                      struct{}{},
 
 			// For next alpha/beta version only
-			"HPAScalingPolicy":                struct{}{},
-			"HPAScalingRules":                 struct{}{},
-			"HorizontalPodAutoscalerBehavior": struct{}{},
+			"HPAScalingPolicy": struct{}{},
+			"HPAScalingRules":  struct{}{},
 		},
 		config: config,
 	}

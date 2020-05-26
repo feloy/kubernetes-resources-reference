@@ -1129,6 +1129,47 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
+  - name: HorizontalPodAutoscaler
+    version: v2beta2
+    group: autoscaling
+    field_categories:
+    - definition: HorizontalPodAutoscalerSpec
+      list:
+      - fields:
+        - name: minReplicas
+        - name: maxReplicas
+        - name: scaleTargetRef
+          depth: 1
+        - name: behavior
+          depth: -1
+        - name: metrics
+          depth: -1
+    - definition: HorizontalPodAutoscalerStatus
+      list:
+      - fields:
+        - name: desiredReplicas
+        - name: currentReplicas
+        - name: lastScaleTime
+        - name: observedGeneration
+        - name: conditions
+          depth: -1
+        - name: currentMetrics
+          depth: -1
+    - definition: HorizontalPodAutoscalerList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: HorizontalPodAutoscaler
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
   - name: MutatingWebhookConfiguration
     version: v1
     group: admissionregistration
