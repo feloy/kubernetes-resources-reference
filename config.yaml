@@ -546,6 +546,41 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
+  - name: CronJob
+    version: v2alpha1
+    group: batch
+    field_categories:
+    - definition: CronJobSpec
+      list:
+      - fields:
+        - name: jobTemplate
+          depth: 1
+        - name: schedule
+        - name: concurrencyPolicy
+        - name: startingDeadlineSeconds
+        - name: suspend
+        - name: successfulJobsHistoryLimit
+        - name: failedJobsHistoryLimit
+    - definition: CronJobStatus
+      list:
+      - fields:
+        - name: active
+        - name: lastScheduleTime
+    - definition: CronJobList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: CronJob
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
 - name: Service Resources
   resources:
   - name: Service
