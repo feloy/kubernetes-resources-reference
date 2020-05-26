@@ -1,4 +1,4 @@
-baseURL = "https://www.k8sref.io"
+baseURL = "http://localhost"
 title = "Kubernetes Reference"
 theme = "zzodoc"
 

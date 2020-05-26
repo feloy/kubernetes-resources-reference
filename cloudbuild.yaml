@@ -28,7 +28,7 @@ steps:
   - -c
   - |
     cd website
-    hugo
+    hugo --environment ${_HOSTING}
     tar zcf public.tgz public
 
 - id: deploy
