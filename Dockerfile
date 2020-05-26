@@ -17,16 +17,8 @@ COPY docbook/ docbook/
 # Build
 RUN GOOS=linux GOARCH=amd64 GO111MODULE=on go build -o k8sref main.go
 
-FROM ubuntu:18.04
+FROM eu.gcr.io/k8sref-io/docbook
 
 WORKDIR /root
 
 COPY --from=gobuilder /workspace/k8sref /usr/local/bin/
-
-RUN apt-get update && \
-    apt-get install -y \
-        make \
-        xsltproc \
-        docbook-xsl \
-        fop
-

@@ -14,12 +14,10 @@ steps:
   - |
     mkdir build
     k8sref docbook > build/k8s-api.xml
+    mkdir -p website/content/en/docs
     k8sref md website/content/en/docs
     make pdf
     make pdf FORMAT=A4
-  volumes:
-  - name: 'docs'
-    path: /root/website/content/en/docs
 
 - id: hugo
   waitFor:
@@ -31,12 +29,18 @@ steps:
   - |
     cd website
     hugo
-  volumes:
-  - name: 'docs'
-    path: /src/website/content/en/docs
+    tar zcf public.tgz public
 
-images:
-- 'eu.gcr.io/$PROJECT_ID/build:$BUILD_ID'
+- id: deploy
+  waitFor: ['hugo']
+  name: 'eu.gcr.io/$PROJECT_ID/firebase'
+  args: 
+  - 'deploy'
+  - '-P'
+  - '$PROJECT_ID'
+  - '--only'
+  - 'hosting:${_HOSTING}'
+  dir: website
 
 artifacts:
   objects:
@@ -45,3 +49,4 @@ artifacts:
     - "build/k8s-api.xml"
     - "build/pdf-USletter/k8s-api-USletter.pdf"
     - "build/pdf-A4/k8s-api-A4.pdf"
+    - "website/public.tgz"

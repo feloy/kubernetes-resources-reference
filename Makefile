@@ -54,5 +54,6 @@ clean-website:
 	rm -rf website/content/en/docs/* website/public
 
 website: clean-website
+	mkdir -p website/content/en/docs
 	go run main.go md website/content/en/docs
 	(cd website && hugo)
