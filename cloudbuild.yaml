@@ -14,8 +14,26 @@ steps:
   - |
     mkdir build
     k8sref docbook > build/k8s-api.xml
+    k8sref md website/content/en/docs
     make pdf
     make pdf FORMAT=A4
+  volumes:
+  - name: 'docs'
+    path: /root/website/content/en/docs
+
+- id: hugo
+  waitFor:
+  - build
+  name: 'klakegg/hugo'
+  entrypoint: "/bin/sh"
+  args:
+  - -c
+  - |
+    cd website
+    hugo
+  volumes:
+  - name: 'docs'
+    path: /src/website/content/en/docs
 
 images:
 - 'eu.gcr.io/$PROJECT_ID/build:$BUILD_ID'
