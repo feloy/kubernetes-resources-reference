@@ -10,7 +10,7 @@ landing:
     title:
       - Resources
     text:
-      - From the OpenAPI specification v1.18.0
+      - From the OpenAPI specification v1.19.0
     titleColor:
     textColor:
     spaceBetweenTitleText: 25
