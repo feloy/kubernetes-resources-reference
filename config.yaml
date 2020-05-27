@@ -1,5 +1,5 @@
 # Copyright 2016 The Kubernetes Authors.
-# Copyright 2019 Philippe Martin
+# Copyright 2020 Philippe Martin
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -75,13 +75,15 @@ resource_categories:
         fields:
         - name: securityContext
           depth: 2
+      - name: Beta level
+        fields:
+        - name: topologySpreadConstraints
+          depth: 1
       - name: Alpha level
         fields:
         - name: ephemeralContainers
         - name: overhead
         - name: preemptionPolicy
-        - name: topologySpreadConstraints
-          depth: 1
       - name: Deprecated
         fields:
         - name: serviceAccount
@@ -175,7 +177,7 @@ resource_categories:
         - name: stdin
         - name: stdinOnce
         - name: tty
-      - name: Alpha level
+      - name: Beta level
         fields:
         - name: startupProbe
     - definition: ContainerStatus
@@ -209,10 +211,6 @@ resource_categories:
         - name: command
         - name: args
         - name: workingDir
-      - name: Ports
-        fields:
-        - name: ports
-          depth: 1
       - name: Environment variables
         fields:
         - name: env
@@ -228,32 +226,25 @@ resource_categories:
       - name: Name
         fields:
         - name: name
-      - name: Resources
-        fields:
-        - name: resources
-          depth: 1
       - name: Lifecycle
         fields:
-        - name: lifecycle
-          depth: -1
         - name: terminationMessagePath
         - name: terminationMessagePolicy
-        - name: livenessProbe
-        - name: readinessProbe
-          depth: -1
           linkend: true
-      - name: Security Context
-        fields:
-        - name: securityContext
-          depth: 2
       - name: Debugging
         fields:
         - name: stdin
         - name: stdinOnce
         - name: tty
-      - name: Alpha level
+      - name: Not allowed
         fields:
+        - name: ports
+        - name: resources
+        - name: lifecycle
+        - name: livenessProbe
+        - name: readinessProbe
         - name: startupProbe
+        - name: securityContext
   - name: ReplicaSet
     version: v1
     group: apps
