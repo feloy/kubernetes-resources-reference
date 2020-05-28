@@ -50,6 +50,8 @@ type Definition struct {
 
 	FullName string
 	Resource string
+
+	Required []string
 }
 
 // Definitions indexes open-api definitions
@@ -144,10 +146,20 @@ func (s *Definitions) GetForSchema(schema spec.Schema) (*Definition, bool) {
 // Initializes the fields for a definition
 func (s *Definitions) InitializeFields(d *Definition) {
 	for fieldName, property := range d.schema.Properties {
+
+		required := false
+		for _, req := range d.Required {
+			if req == fieldName {
+				required = true
+				break
+			}
+		}
+
 		f := &Field{
 			Name:        fieldName,
 			Type:        GetTypeName(property),
 			Description: EscapeAsterisks(property.Description),
+			Required:    required,
 		}
 		if len(property.Extensions) > 0 {
 			if ps, ok := property.Extensions.GetString(patchStrategyKey); ok {

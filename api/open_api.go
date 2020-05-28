@@ -138,6 +138,7 @@ func LoadDefinitions(specs []*loads.Document, s *Definitions) {
 				Group:         ApiGroup(group),
 				GroupFullName: full_group,
 				Resource:      resource,
+				Required:      spec.Required,
 			}
 
 			s.All[d.Key()] = d

@@ -27,6 +27,8 @@ type Field struct {
 
 	PatchStrategy string
 	PatchMergeKey string
+
+	Required bool
 }
 
 type Fields []*Field

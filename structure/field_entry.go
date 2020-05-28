@@ -32,11 +32,18 @@ type FieldEntry struct {
 	Description  *string
 	Linkend      bool
 	SubFieldList []*FieldEntry
+	Required     bool
 }
 
 // NewFieldEntry creates a new field entry for a list of fields
-func NewFieldEntry(name string, sectionName string, typ string, description *string) *FieldEntry {
-	return &FieldEntry{Name: name, SectionName: sectionName, Type: typ, Description: description}
+func NewFieldEntry(name string, sectionName string, typ string, description *string, required bool) *FieldEntry {
+	return &FieldEntry{
+		Name:        name,
+		SectionName: sectionName,
+		Type:        typ,
+		Description: description,
+		Required:    required,
+	}
 }
 
 // SetTypeID sets the ID of the type for linking
@@ -65,7 +72,15 @@ func (o *FieldEntry) AsMarkdown(w *bufio.Writer, prefixes ...string) {
 	if depth > 0 {
 		w.WriteString("  ")
 	}
-	w.WriteString(fmt.Sprintf("- **%s** (%s)\n", strings.Join(append(prefixes, o.Name), "."), o.Type))
+	required := ""
+	if o.Required {
+		required = ", required"
+	}
+	name := o.Name
+	if o.Required {
+		name = "<ins>" + name + "</ins>"
+	}
+	w.WriteString(fmt.Sprintf("- **%s** (%s)%s\n", strings.Join(append(prefixes, name), "."), o.Type, required))
 
 	indent := 2
 	if depth > 0 {
@@ -108,12 +123,19 @@ func (o *FieldEntry) AsDocbook(w io.Writer, prefixes ...string) {
 		}
 	}
 
+	required := ""
+	lastName := o.Name
+	if o.Required {
+		required = ", required"
+		lastName = "<emphasis role=\"underline\">" + lastName + "</emphasis>"
+	}
+
+	name := strings.Join(append(prefixes, lastName), ".")
 	if !isIndexable(o.Name) {
-		fmt.Fprintf(w, "<term><varname>%s</varname>%s</term>\n", strings.Join(append(prefixes, o.Name), "."), typ)
+		fmt.Fprintf(w, "<term><varname>%s</varname>%s%s</term>\n", name, typ, required)
 	} else {
-		fmt.Fprintf(w, "<term><varname><indexterm type=\"fields\"><primary>%s</primary><secondary>%s</secondary></indexterm>%s</varname>%s</term>\n",
-			o.Name, o.SectionName,
-			strings.Join(append(prefixes, o.Name), "."), typ)
+		fmt.Fprintf(w, "<term><varname><indexterm type=\"fields\"><primary>%s</primary><secondary>%s</secondary></indexterm>%s</varname>%s%s</term>\n",
+			o.Name, o.SectionName, name, typ, required)
 	}
 	fmt.Fprintf(w, "<listitem>")
 	if o.Description != nil {

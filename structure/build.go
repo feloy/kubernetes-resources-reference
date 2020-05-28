@@ -219,7 +219,7 @@ func (b *Builder) insertField(s *Section, field *api.Field, definitionName strin
 	if debug && field.Definition != nil {
 		typ = fmt.Sprintf("%s %s %s", field.Definition.Name, field.Definition.Version, field.Definition.Group)
 	}
-	newField := NewFieldEntry(field.Name, definitionName, typ, &field.DescriptionWithEntities)
+	newField := NewFieldEntry(field.Name, definitionName, typ, &field.DescriptionWithEntities, field.Required)
 	if field.Definition != nil {
 		newField.SetTypeID(field.Definition.LinkID())
 	}
