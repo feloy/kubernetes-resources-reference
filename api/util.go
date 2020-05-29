@@ -120,14 +120,32 @@ func GuessGVK(name string) (group, version, kind string) {
 		return "", "", ""
 	}
 
-	if parts[len(parts)-3] == "api" {
+	if parts[len(parts)-3] == "util" || parts[len(parts)-3] == "pkg" {
+		// e.g. io.k8s.apimachinery.pkg.util.intstr.IntOrString
+		// e.g. io.k8s.apimachinery.pkg.runtime.RawExtension
+		return "", "", ""
+	} else if len(parts) == 6 {
+		if isShort(parts[3]) {
+			group = parts[3]
+			version = parts[4]
+			kind = parts[5]
+		} else {
+			if parts[3] == "rbac" {
+				parts[3] = "rbac.authorization"
+			} else if parts[3] == "flowcontrol" {
+				parts[3] = "flowcontrol.apiserver"
+			}
+			group = parts[3] + "." + parts[1] + "." + parts[0]
+			version = parts[4]
+			kind = parts[5]
+		}
+	} else if len(parts) == 8 && (parts[len(parts)-3] == "apiextensions" || parts[len(parts)-3] == "apiregistration") {
+		group = parts[len(parts)-3] + "." + parts[1] + "." + parts[0]
+		version = parts[6]
+		kind = parts[7]
+	} else if parts[len(parts)-3] == "api" {
 		// e.g. "io.k8s.apimachinery.pkg.api.resource.Quantity"
 		group = "core"
-		version = parts[len(parts)-2]
-		kind = parts[len(parts)-1]
-	} else if parts[len(parts)-4] == "api" {
-		// e.g. "io.k8s.api.core.v1.Pod"
-		group = parts[len(parts)-3]
 		version = parts[len(parts)-2]
 		kind = parts[len(parts)-1]
 	} else if parts[len(parts)-4] == "apis" {
@@ -135,13 +153,20 @@ func GuessGVK(name string) (group, version, kind string) {
 		group = parts[len(parts)-3]
 		version = parts[len(parts)-2]
 		kind = parts[len(parts)-1]
-	} else if parts[len(parts)-3] == "util" || parts[len(parts)-3] == "pkg" {
-		// e.g. io.k8s.apimachinery.pkg.util.intstr.IntOrString
-		// e.g. io.k8s.apimachinery.pkg.runtime.RawExtension
-		return "", "", ""
 	} else {
 		// To report error
 		return "error", "", ""
 	}
 	return group, version, kind
+}
+
+func isShort(name string) bool {
+	short := map[string]bool{
+		"core":        true,
+		"apps":        true,
+		"autoscaling": true,
+		"batch":       true,
+		"policy":      true,
+	}
+	return short[name]
 }

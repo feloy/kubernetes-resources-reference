@@ -639,7 +639,7 @@ resource_categories:
           depth: 2
   - name: EndpointSlice
     version: v1beta1
-    group: discovery
+    group: discovery.k8s.io
     field_categories:
     - definition: EndpointSliceList
       list:
@@ -664,7 +664,7 @@ resource_categories:
           depth: 1
   - name: Ingress
     version: v1beta1
-    group: networking
+    group: networking.k8s.io
     field_categories:
     - definition: IngressSpec
       list:
@@ -698,7 +698,7 @@ resource_categories:
         - name: status
   - name: IngressClass
     version: v1beta1
-    group: networking
+    group: networking.k8s.io
     field_categories:
     - definition: IngressClass
       list:
@@ -890,7 +890,7 @@ resource_categories:
         - name: status
   - name: StorageClass
     version: v1
-    group: storage
+    group: storage.k8s.io
     field_categories:
     - definition: StorageClassList
       list:
@@ -918,7 +918,7 @@ resource_categories:
           depth: 2
   - name: VolumeAttachment
     version: v1
-    group: storage
+    group: storage.k8s.io
     field_categories:
     - definition: VolumeAttachmentSpec
       list:
@@ -953,7 +953,7 @@ resource_categories:
         - name: status
   - name: CSIDriver
     version: v1
-    group: storage
+    group: storage.k8s.io
     field_categories:
     - definition: CSIDriverSpec
       list:
@@ -977,7 +977,7 @@ resource_categories:
         - name: spec
   - name: CSINode
     version: v1
-    group: storage
+    group: storage.k8s.io
     field_categories:
     - definition: CSINodeSpec
       list:
@@ -1024,7 +1024,7 @@ resource_categories:
         - name: data
   - name: CustomResourceDefinition
     version: v1
-    group: apiextensions
+    group: apiextensions.k8s.io
     field_categories:
     - definition: CustomResourceDefinitionSpec
       list:
@@ -1198,7 +1198,7 @@ resource_categories:
         - name: status
   - name: MutatingWebhookConfiguration
     version: v1
-    group: admissionregistration
+    group: admissionregistration.k8s.io
     field_categories:
     - definition: MutatingWebhookConfigurationList
       list:
@@ -1220,7 +1220,7 @@ resource_categories:
           depth: -1
   - name: ValidatingWebhookConfiguration
     version: v1
-    group: admissionregistration
+    group: admissionregistration.k8s.io
     field_categories:
     - definition: ValidatingWebhookConfigurationList
       list:
@@ -1265,7 +1265,7 @@ resource_categories:
         - name: template
   - name: PriorityClass
     version: v1
-    group: scheduling
+    group: scheduling.k8s.io
     field_categories:
     - definition: PriorityClassList
       list:
@@ -1378,7 +1378,7 @@ resource_categories:
         - name: spec
   - name: PodPreset
     version: v1alpha1
-    group: settings
+    group: settings.k8s.io
     field_categories:
     - definition: PodPresetSpec
       list:
@@ -1514,7 +1514,7 @@ resource_categories:
         - name: secrets
   - name: ClusterRole
     version: v1
-    group: rbac
+    group: rbac.authorization.k8s.io
     field_categories:
     - definition: ClusterRoleList
       list:
@@ -1538,7 +1538,7 @@ resource_categories:
           depth: -1
   - name: ClusterRoleBinding
     version: v1
-    group: rbac
+    group: rbac.authorization.k8s.io
     field_categories:
     - definition: ClusterRoleBindingList
       list:
@@ -1562,7 +1562,7 @@ resource_categories:
           depth: 1
   - name: Role
     version: v1
-    group: rbac
+    group: rbac.authorization.k8s.io
     field_categories:
     - definition: RoleList
       list:
@@ -1584,7 +1584,7 @@ resource_categories:
           depth: 1
   - name: RoleBinding
     version: v1
-    group: rbac
+    group: rbac.authorization.k8s.io
     field_categories:
     - definition: RoleBindingList
       list:
@@ -1724,7 +1724,7 @@ resource_categories:
         - name: status
   - name: NetworkPolicy
     version: v1
-    group: networking
+    group: networking.k8s.io
     field_categories:
     - definition: NetworkPolicySpec
       list:
@@ -1752,7 +1752,7 @@ resource_categories:
         - name: spec
   - name: LocalSubjectAccessReview
     version: v1
-    group: authorization
+    group: authorization.k8s.io
     field_categories:
     - definition: LocalSubjectAccessReview
       list:
@@ -1764,7 +1764,7 @@ resource_categories:
         - name: status
   - name: SelfSubjectAccessReview
     version: v1
-    group: authorization
+    group: authorization.k8s.io
     field_categories:
     - definition: SelfSubjectAccessReviewSpec
       list:
@@ -1783,7 +1783,7 @@ resource_categories:
         - name: status
   - name: SelfSubjectRulesReview
     version: v1
-    group: authorization
+    group: authorization.k8s.io
     field_categories:
     - definition: SelfSubjectRulesReviewSpec
       list:
@@ -1808,7 +1808,7 @@ resource_categories:
           depth: 1
   - name: SubjectAccessReview
     version: v1
-    group: authorization
+    group: authorization.k8s.io
     field_categories:
     - definition: SubjectAccessReviewSpec
       list:
@@ -1838,7 +1838,7 @@ resource_categories:
         - name: status
   - name: TokenRequest
     version: v1
-    group: authentication
+    group: authentication.k8s.io
     field_categories:
     - definition: TokenRequestSpec
       list:
@@ -1861,7 +1861,7 @@ resource_categories:
         - name: status
   - name: TokenReview
     version: v1
-    group: authentication
+    group: authentication.k8s.io
     field_categories:
     - definition: TokenReviewSpec
       list:
@@ -1886,7 +1886,7 @@ resource_categories:
         - name: status
   - name: APIService
     version: v1
-    group: apiregistration
+    group: apiregistration.k8s.io
     field_categories:
     - definition: APIServiceSpec
       list:
@@ -1942,7 +1942,7 @@ resource_categories:
           depth: 1
   - name: Lease
     version: v1
-    group: coordination
+    group: coordination.k8s.io
     field_categories:
     - definition: LeaseSpec
       list:
@@ -1968,7 +1968,7 @@ resource_categories:
         - name: spec
   - name: RuntimeClass
     version: v1beta1
-    group: node
+    group: node.k8s.io
     field_categories:
     - definition: RuntimeClassList
       list:
@@ -1993,7 +1993,7 @@ resource_categories:
           depth: 2
   - name: CertificateSigningRequest
     version: v1beta1
-    group: certificates
+    group: certificates.k8s.io
     field_categories:
     - definition: CertificateSigningRequestSpec
       list:
@@ -2028,7 +2028,7 @@ resource_categories:
         - name: status
   - name: AuditSink
     version: v1alpha1
-    group: auditregistration
+    group: auditregistration.k8s.io
     field_categories:
     - definition: AuditSinkSpec
       list:
@@ -2053,7 +2053,7 @@ resource_categories:
         - name: spec
   - name: FlowSchema
     version: v1alpha1
-    group: flowcontrol
+    group: flowcontrol.apiserver.k8s.io
     field_categories:
     - definition: FlowSchemaSpec
       list:
@@ -2087,7 +2087,7 @@ resource_categories:
         - name: status
   - name: PriorityLevelConfiguration
     version: v1alpha1
-    group: flowcontrol
+    group: flowcontrol.apiserver.k8s.io
     field_categories:
     - definition: PriorityLevelConfigurationSpec
       list:
@@ -2132,7 +2132,7 @@ resource_categories:
     definitions:
     - name: JSONSchemaProps
       version: v1
-      group: apiextensions
+      group: apiextensions.k8s.io
       field_categories:
       - definition: JSONSchemaProps
         list:
@@ -2270,21 +2270,21 @@ resource_categories:
         - {}
     - name: JSON
       version: v1
-      group: apiextensions
+      group: apiextensions.k8s.io
       field_categories:
       - definition: JSON
         list:
         - {}
     - name: JSONSchemaPropsOrBool
       version: v1
-      group: apiextensions
+      group: apiextensions.k8s.io
       field_categories:
       - definition: JSONSchemaPropsOrBool
         list:
         - {}
     - name: JSONSchemaPropsOrArray
       version: v1
-      group: apiextensions
+      group: apiextensions.k8s.io
       field_categories:
       - definition: JSONSchemaPropsOrArray
         list:
@@ -2312,12 +2312,12 @@ resource_categories:
         - {}
     - name: CustomResourceSubresourceStatus
       version: v1
-      group: apiextensions
+      group: apiextensions.k8s.io
   - name: References and Selectors
     definitions:
     - name: BoundObjectReference
       version: v1
-      group: authentication
+      group: authentication.k8s.io
       field_categories:
       - definition: BoundObjectReference
         list:
@@ -2352,7 +2352,7 @@ resource_categories:
           - name: name
     - name: ServiceReference
       version: v1
-      group: apiextensions
+      group: apiextensions.k8s.io
       field_categories:
       - definition: ServiceReference
         list:
@@ -2363,7 +2363,7 @@ resource_categories:
           - name: port
     - name: ServiceReference
       version: v1
-      group: admissionregistration
+      group: admissionregistration.k8s.io
       field_categories:
       - definition: ServiceReference
         list:
@@ -2374,7 +2374,7 @@ resource_categories:
           - name: port
     - name: ServiceReference
       version: v1
-      group: apiregistration
+      group: apiregistration.k8s.io
       field_categories:
       - definition: ServiceReference
         list:
@@ -2384,7 +2384,7 @@ resource_categories:
           - name: port
     - name: ServiceReference
       version: v1alpha1
-      group: auditregistration
+      group: auditregistration.k8s.io
     - name: LabelSelector
       version: v1
       group: meta
