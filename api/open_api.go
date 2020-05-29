@@ -139,6 +139,7 @@ func LoadDefinitions(specs []*loads.Document, s *Definitions) {
 				GroupFullName: full_group,
 				Resource:      resource,
 				Required:      spec.Required,
+				GoImport:      GuessGoImport(name),
 			}
 
 			s.All[d.Key()] = d

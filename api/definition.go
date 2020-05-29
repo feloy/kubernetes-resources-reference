@@ -33,6 +33,8 @@ type Definition struct {
 	// Display name of the definition (e.g. Deployment)
 	Name string
 
+	GoImport string
+
 	Group   ApiGroup
 	Version ApiVersion
 	Kind    ApiKind

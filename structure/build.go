@@ -99,6 +99,7 @@ func Build(config *api.Config) (result *Section) {
 			}
 			sect3.SetID(definition.LinkID())
 			sect3.SetGVK(definition.Group.String(), definition.Version.String(), definition.Kind.String())
+			sect3.SetGoImport(definition.GoImport)
 			sect2.AddSection(sect3)
 			builder.insertFields(sect3, definition, resource.FieldCategories, 0, nil)
 			for _, inline := range definition.Inline {
@@ -110,6 +111,7 @@ func Build(config *api.Config) (result *Section) {
 				}
 				sect3i.SetID(inline.LinkID())
 				sect3i.SetGVK(inline.Group.String(), inline.Version.String(), inline.Kind.String())
+				sect3i.SetGoImport(inline.GoImport)
 				sect2.AddSection(sect3i)
 				builder.insertFields(sect3i, inline, resource.FieldCategories, 0, nil)
 			}
@@ -125,6 +127,7 @@ func Build(config *api.Config) (result *Section) {
 						sect3 := NewSection(definition.Name, &def.DescriptionWithEntities)
 						sect3.SetID(def.LinkID())
 						sect3.SetGVK(def.Group.String(), def.Version.String(), def.Kind.String())
+						sect3.SetGoImport(def.GoImport)
 						sect2.AddSection(sect3)
 						builder.insertFields(sect3, def, definition.FieldCategories, 0, nil)
 					}

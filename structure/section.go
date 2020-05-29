@@ -36,6 +36,7 @@ type GVK struct {
 type Section struct {
 	Name        string
 	GVK         *GVK
+	GoImport    *string
 	Description *string
 	ID          *string
 	SubSections []*Section
@@ -64,6 +65,10 @@ func (o *Section) SetGVK(group, version, kind string) {
 		Version: version,
 		Kind:    kind,
 	}
+}
+
+func (o *Section) SetGoImport(v string) {
+	o.GoImport = &v
 }
 
 // AddSection adds a new subsection
@@ -118,7 +123,15 @@ func (o *Section) AsMarkdown(dir string, weight int, w *bufio.Writer, depths ...
 
 	if depth > 2 {
 		if o.GVK != nil {
-			fmt.Fprintf(w, "\n`%s.%s.%s`\n\n", o.GVK.Group, o.GVK.Version, o.GVK.Kind)
+			if o.GVK.Group == "core" {
+				fmt.Fprintf(w, "\n`apiVersion: %s`\n\n", o.GVK.Version)
+			} else {
+				fmt.Fprintf(w, "\n`apiVersion: %s/%s`\n\n", o.GVK.Group, o.GVK.Version)
+			}
+		}
+
+		if o.GoImport != nil {
+			fmt.Fprintf(w, "\n`import \"%s\"`\n\n", *o.GoImport)
 		}
 
 		if o.Description != nil {
@@ -178,7 +191,14 @@ func (o *Section) AsDocbook(w io.Writer, depths ...int) {
 	}
 
 	if o.GVK != nil {
-		fmt.Fprintf(w, "<subtitle>%s.%s.%s</subtitle>", o.GVK.Group, o.GVK.Version, o.GVK.Kind)
+		if o.GVK.Group == "core" {
+			fmt.Fprintf(w, "<subtitle>apiVersion: %s</subtitle>", o.GVK.Version)
+		} else {
+			fmt.Fprintf(w, "<subtitle>apiVersion: %s/%s</subtitle>", o.GVK.Group, o.GVK.Version)
+		}
+	}
+	if o.GoImport != nil {
+		fmt.Fprintf(w, "<subtitle>import \"%s\"</subtitle>", *o.GoImport)
 	}
 
 	if o.Description != nil {

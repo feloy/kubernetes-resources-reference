@@ -21,8 +21,6 @@ import (
 	"fmt"
 	"strings"
 
-	"errors"
-
 	"github.com/go-openapi/spec"
 )
 
@@ -32,32 +30,7 @@ func GetDefinitionVersionKind(s spec.Schema) (string, string, string) {
 	if IsDefinition(s) {
 		s := fmt.Sprintf("%s", s.SchemaProps.Ref.GetPointer())
 		s = strings.Replace(s, "/definitions/", "", -1)
-		name := strings.Split(s, ".")
-
-		var group, version, kind string
-		if name[len(name)-3] == "api" {
-			// e.g. "io.k8s.apimachinery.pkg.api.resource.Quantity"
-			group = "core"
-			version = name[len(name)-2]
-			kind = name[len(name)-1]
-		} else if name[len(name)-4] == "api" {
-			// e.g. "io.k8s.api.core.v1.Pod"
-			group = name[len(name)-3]
-			version = name[len(name)-2]
-			kind = name[len(name)-1]
-		} else if name[len(name)-4] == "apis" {
-			// e.g. "io.k8s.apimachinery.pkg.apis.meta.v1.Status"
-			group = name[len(name)-3]
-			version = name[len(name)-2]
-			kind = name[len(name)-1]
-		} else if name[len(name)-3] == "util" || name[len(name)-3] == "pkg" {
-			// e.g. io.k8s.apimachinery.pkg.util.intstr.IntOrString
-			// e.g. io.k8s.apimachinery.pkg.runtime.RawExtension
-			return "", "", ""
-		} else {
-			panic(errors.New(fmt.Sprintf("Could not locate group for %s", name)))
-		}
-		return group, version, kind
+		return GuessGVK(s)
 	}
 	// Recurse if type is array
 	if IsArray(s) {
@@ -169,4 +142,12 @@ func isShort(name string) bool {
 		"policy":      true,
 	}
 	return short[name]
+}
+
+func GuessGoImport(name string) string {
+	parts := strings.Split(name, ".")
+	if len(parts) < 3 {
+		return "ERROR"
+	}
+	return parts[1] + "." + parts[0] + "/" + strings.Join(parts[2:len(parts)-1], "/")
 }
