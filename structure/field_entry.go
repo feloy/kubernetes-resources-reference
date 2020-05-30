@@ -25,14 +25,16 @@ import (
 
 // FieldEntry contains a Definition field information
 type FieldEntry struct {
-	Name         string
-	SectionName  string
-	Type         string
-	TypeID       *string
-	Description  *string
-	Linkend      bool
-	SubFieldList []*FieldEntry
-	Required     bool
+	Name               string
+	SectionName        string
+	Type               string
+	TypeID             *string
+	Description        *string
+	Linkend            bool
+	SubFieldList       []*FieldEntry
+	Required           bool
+	RetainKeysStrategy bool
+	MergeStrategyKey   *string
 }
 
 // NewFieldEntry creates a new field entry for a list of fields
@@ -54,6 +56,14 @@ func (o *FieldEntry) SetTypeID(typeID string) {
 // SetLinkend sets linkend to true for the field entry
 func (o *FieldEntry) SetLinkend() {
 	o.Linkend = true
+}
+
+func (o *FieldEntry) SetRetainKeysStrategy() {
+	o.RetainKeysStrategy = true
+}
+
+func (o *FieldEntry) SetMergeStrategyKey(key string) {
+	o.MergeStrategyKey = &key
 }
 
 // AddFieldEntry adds a field entry in the list of fields of a section
@@ -86,6 +96,18 @@ func (o *FieldEntry) AsMarkdown(w *bufio.Writer, prefixes ...string) {
 	if depth > 0 {
 		indent += 2
 	}
+
+	if o.MergeStrategyKey != nil && o.RetainKeysStrategy {
+		indentString(w, fmt.Sprintf("Patch strategies: retainKeys, merge on key `%s`", *o.MergeStrategyKey), indent)
+		w.WriteString("\n\n")
+	} else if o.MergeStrategyKey != nil {
+		indentString(w, fmt.Sprintf("Patch strategy: merge on key `%s`", *o.MergeStrategyKey), indent)
+		w.WriteString("\n\n")
+	} else if o.RetainKeysStrategy {
+		indentString(w, "Patch strategy: retainKeys", indent)
+		w.WriteString("\n\n")
+	}
+
 	indentString(w, *o.Description, indent)
 	w.WriteString("\n\n")
 
@@ -138,6 +160,15 @@ func (o *FieldEntry) AsDocbook(w io.Writer, prefixes ...string) {
 			o.Name, o.SectionName, name, typ, required)
 	}
 	fmt.Fprintf(w, "<listitem>")
+
+	if o.MergeStrategyKey != nil && o.RetainKeysStrategy {
+		fmt.Printf("<para>Patch strategies: retainKeys, merge on key <varname>%s</varname></para>", *o.MergeStrategyKey)
+	} else if o.MergeStrategyKey != nil {
+		fmt.Printf("<para>Patch strategy: merge on key <varname>%s</varname></para>", *o.MergeStrategyKey)
+	} else if o.RetainKeysStrategy {
+		fmt.Printf("<para>Patch strategy: retainKeys</para>")
+	}
+
 	if o.Description != nil {
 		fmt.Fprintf(w, "%s", *o.Description)
 	}

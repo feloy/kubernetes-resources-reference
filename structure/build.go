@@ -21,6 +21,7 @@ import (
 	"log"
 	"os"
 	"sort"
+	"strings"
 
 	"github.com/feloy/k8s-api/api"
 )
@@ -235,6 +236,15 @@ func (b *Builder) insertField(s *Section, field *api.Field, definitionName strin
 		fieldEntry.AddFieldEntry(newField)
 	} else {
 		s.AddFieldEntry(newField)
+	}
+
+	patchStrategies := strings.Split(field.PatchStrategy, ",")
+	for _, patchStrategy := range patchStrategies {
+		if patchStrategy == "merge" {
+			newField.SetMergeStrategyKey(field.PatchMergeKey)
+		} else if patchStrategy == "retainKeys" {
+			newField.SetRetainKeysStrategy()
+		}
 	}
 
 	if _, documented := b.config.ConfigDefinitions[field.Type]; !documented {
