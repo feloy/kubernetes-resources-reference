@@ -1,4 +1,4 @@
-baseURL = "http://localhost"
+baseURL = "http://localhost:8000"
 title = "Kubernetes Reference"
 theme = "zzodoc"
 

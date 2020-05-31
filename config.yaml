@@ -14,7 +14,7 @@
 # limitations under the License.
 
 resource_categories:
-- name: Workloads Resources
+- name: Workloads
   resources:
   - name: Pod
     version: v1
@@ -245,6 +245,65 @@ resource_categories:
         - name: readinessProbe
         - name: startupProbe
         - name: securityContext
+  - name: PodTemplate
+    version: v1
+    group: core
+    field_categories:
+    - definition: PodTemplateSpec
+      list:
+      - fields:
+        - name: metadata
+        - name: spec
+    - definition: PodTemplateList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: PodTemplate
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: template
+  - name: ReplicationController
+    version: v1
+    group: core
+    field_categories:
+    - definition: ReplicationControllerSpec
+      list:
+      - fields:
+        - name: replicas
+        - name: selector
+        - name: template
+        - name: minReadySeconds
+    - definition: ReplicationControllerStatus
+      list:
+      - fields:
+        - name: replicas
+        - name: availableReplicas
+        - name: readyReplicas
+        - name: fullyLabeledReplicas
+        - name: conditions
+          depth: 1
+        - name: observedGeneration
+    - definition: ReplicationControllerList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: ReplicationController
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
   - name: ReplicaSet
     version: v1
     group: apps
@@ -379,6 +438,28 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
+  - name: ControllerRevision
+    version: v1
+    group: apps
+    field_categories:
+    - definition: ControllerRevisionList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: ControllerRevision
+      list:
+      - name: Resource metadata
+        fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+      - name: Data
+        fields:
+        - name: revision
+        - name: data
   - name: DaemonSet
     version: v1
     group: apps
@@ -414,42 +495,6 @@ resource_categories:
         - name: metadata
         - name: items
     - definition: DaemonSet
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
-  - name: ReplicationController
-    version: v1
-    group: core
-    field_categories:
-    - definition: ReplicationControllerSpec
-      list:
-      - fields:
-        - name: replicas
-        - name: selector
-        - name: template
-        - name: minReadySeconds
-    - definition: ReplicationControllerStatus
-      list:
-      - fields:
-        - name: replicas
-        - name: availableReplicas
-        - name: readyReplicas
-        - name: fullyLabeledReplicas
-        - name: conditions
-          depth: 1
-        - name: observedGeneration
-    - definition: ReplicationControllerList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: ReplicationController
       list:
       - fields:
         - name: apiVersion
@@ -572,7 +617,136 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
-- name: Service Resources
+  - name: HorizontalPodAutoscaler
+    version: v1
+    group: autoscaling
+    field_categories:
+    - definition: HorizontalPodAutoscalerSpec
+      list:
+      - fields:
+        - name: minReplicas
+        - name: maxReplicas
+        - name: scaleTargetRef
+          depth: 1
+        - name: targetCPUUtilizationPercentage
+    - definition: HorizontalPodAutoscalerStatus
+      list:
+      - fields:
+        - name: desiredReplicas
+        - name: currentReplicas
+        - name: currentCPUUtilizationPercentage
+        - name: lastScaleTime
+        - name: observedGeneration
+    - definition: HorizontalPodAutoscalerList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: HorizontalPodAutoscaler
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+  - name: HorizontalPodAutoscaler
+    version: v2beta2
+    group: autoscaling
+    field_categories:
+    - definition: HorizontalPodAutoscalerSpec
+      list:
+      - fields:
+        - name: minReplicas
+        - name: maxReplicas
+        - name: scaleTargetRef
+          depth: 1
+        - name: behavior
+          depth: -1
+        - name: metrics
+          depth: -1
+    - definition: HorizontalPodAutoscalerStatus
+      list:
+      - fields:
+        - name: desiredReplicas
+        - name: currentReplicas
+        - name: lastScaleTime
+        - name: observedGeneration
+        - name: conditions
+          depth: -1
+        - name: currentMetrics
+          depth: -1
+    - definition: HorizontalPodAutoscalerList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: HorizontalPodAutoscaler
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+  - name: PriorityClass
+    version: v1
+    group: scheduling.k8s.io
+    field_categories:
+    - definition: PriorityClassList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: PriorityClass
+      list:
+      - name: Resource metadata
+        fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+      - name: Specs
+        fields:
+        - name: value
+        - name: description
+        - name: preemptionPolicy
+        - name: globalDefault
+  - name: PodPreset
+    version: v1alpha1
+    group: settings.k8s.io
+    field_categories:
+    - definition: PodPresetSpec
+      list:
+      - fields:
+        - name: env
+          depth: -1
+        - name: envFrom
+          depth: -1
+        - name: selector
+        - name: volumeMounts
+          depth: 1
+        - name: volumes
+    - definition: PodPresetList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: PodPreset
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+- name: Services
   resources:
   - name: Service
     version: v1
@@ -719,7 +893,7 @@ resource_categories:
         - name: kind
         - name: metadata
         - name: items
-- name: Config and Storage Resources
+- name: Config and Storage
   resources:
   - name: ConfigMap
     version: v1
@@ -888,6 +1062,91 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
+  - name: PersistentVolume
+    version: v1
+    group: core
+    field_categories:
+    - definition: PersistentVolumeSpec
+      list:
+      - fields:
+        - name: accessModes
+        - name: capacity
+        - name: claimRef
+        - name: mountOptions
+        - name: nodeAffinity
+          depth: 1
+        - name: persistentVolumeReclaimPolicy
+        - name: storageClassName
+        - name: volumeMode
+      - name: Local
+        fields:
+        - name: hostPath
+          depth: 1
+        - name: local
+          depth: 1
+      - name: Persistent volumes
+        fields:
+        - name: awsElasticBlockStore
+          depth: 2
+        - name: azureDisk
+          depth: 2
+        - name: azureFile
+          depth: 2
+        - name: cephfs
+          depth: 2
+        - name: cinder
+          depth: 2
+        - name: csi
+          depth: 2
+        - name: fc
+          depth: 2
+        - name: flexVolume
+          depth: 2
+        - name: flocker
+          depth: 2
+        - name: gcePersistentDisk
+          depth: 2
+        - name: glusterfs
+          depth: 2
+        - name: iscsi
+          depth: 2
+        - name: nfs
+          depth: 2
+        - name: photonPersistentDisk
+          depth: 2
+        - name: portworxVolume
+          depth: 2
+        - name: quobyte
+          depth: 2
+        - name: rbd
+          depth: 2
+        - name: scaleIO
+          depth: 2
+        - name: storageos
+          depth: 2
+        - name: vsphereVolume
+          depth: 2
+    - definition: PersistentVolumeStatus
+      list:
+      - fields:
+        - name: phase
+        - name: reason
+        - name: message
+    - definition: PersistentVolumeList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: PersistentVolume
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
   - name: StorageClass
     version: v1
     group: storage.k8s.io
@@ -998,496 +1257,8 @@ resource_categories:
         - name: kind
         - name: metadata
         - name: spec
-- name: Metadata Resources
+- name: Authentication
   resources:
-  - name: ControllerRevision
-    version: v1
-    group: apps
-    field_categories:
-    - definition: ControllerRevisionList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: ControllerRevision
-      list:
-      - name: Resource metadata
-        fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-      - name: Data
-        fields:
-        - name: revision
-        - name: data
-  - name: CustomResourceDefinition
-    version: v1
-    group: apiextensions.k8s.io
-    field_categories:
-    - definition: CustomResourceDefinitionSpec
-      list:
-      - fields:
-        - name: scope
-        - name: group
-        - name: names
-          depth: -1
-        - name: preserveUnknownFields
-        - name: versions
-          depth: -1
-        - name: conversion
-          depth: -1
-    - definition: CustomResourceDefinitionStatus
-      list:
-      - fields:
-        - name: acceptedNames
-          depth: 1
-        - name: conditions
-          depth: 1
-        - name: storedVersions
-    - definition: CustomResourceDefinitionList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: CustomResourceDefinition
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
-  - name: Event
-    version: v1
-    group: core
-    field_categories:
-    - definition: EventList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: Event
-      list:
-      - name: Resource metadata
-        fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-      - name: Specs
-        fields:
-        - name: type
-        - name: reason
-        - name: eventTime
-        - name: firstTimestamp
-        - name: lastTimestamp
-        - name: count
-        - name: action
-        - name: message
-        - name: involvedObject
-        - name: related
-        - name: reportingComponent
-        - name: reportingInstance
-        - name: series
-          depth: 1
-        - name: source
-          depth: 1
-  - name: LimitRange
-    version: v1
-    group: core
-    field_categories:
-    - definition: LimitRangeSpec
-      list:
-      - fields:
-        - name: limits
-          depth: 1
-    - definition: LimitRangeList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: LimitRange
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-  - name: HorizontalPodAutoscaler
-    version: v1
-    group: autoscaling
-    field_categories:
-    - definition: HorizontalPodAutoscalerSpec
-      list:
-      - fields:
-        - name: minReplicas
-        - name: maxReplicas
-        - name: scaleTargetRef
-          depth: 1
-        - name: targetCPUUtilizationPercentage
-    - definition: HorizontalPodAutoscalerStatus
-      list:
-      - fields:
-        - name: desiredReplicas
-        - name: currentReplicas
-        - name: currentCPUUtilizationPercentage
-        - name: lastScaleTime
-        - name: observedGeneration
-    - definition: HorizontalPodAutoscalerList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: HorizontalPodAutoscaler
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
-  - name: HorizontalPodAutoscaler
-    version: v2beta2
-    group: autoscaling
-    field_categories:
-    - definition: HorizontalPodAutoscalerSpec
-      list:
-      - fields:
-        - name: minReplicas
-        - name: maxReplicas
-        - name: scaleTargetRef
-          depth: 1
-        - name: behavior
-          depth: -1
-        - name: metrics
-          depth: -1
-    - definition: HorizontalPodAutoscalerStatus
-      list:
-      - fields:
-        - name: desiredReplicas
-        - name: currentReplicas
-        - name: lastScaleTime
-        - name: observedGeneration
-        - name: conditions
-          depth: -1
-        - name: currentMetrics
-          depth: -1
-    - definition: HorizontalPodAutoscalerList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: HorizontalPodAutoscaler
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
-  - name: MutatingWebhookConfiguration
-    version: v1
-    group: admissionregistration.k8s.io
-    field_categories:
-    - definition: MutatingWebhookConfigurationList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: MutatingWebhookConfiguration
-      list:
-      - name: Resource metadata
-        fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-      - name: Specs
-        fields:
-        - name: webhooks
-          depth: -1
-  - name: ValidatingWebhookConfiguration
-    version: v1
-    group: admissionregistration.k8s.io
-    field_categories:
-    - definition: ValidatingWebhookConfigurationList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: ValidatingWebhookConfiguration
-      list:
-      - name: Resource metadata
-        fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-      - name: Specs
-        fields:
-        - name: webhooks
-          depth: -1
-  - name: PodTemplate
-    version: v1
-    group: core
-    field_categories:
-    - definition: PodTemplateSpec
-      list:
-      - fields:
-        - name: metadata
-        - name: spec
-    - definition: PodTemplateList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: PodTemplate
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: template
-  - name: PriorityClass
-    version: v1
-    group: scheduling.k8s.io
-    field_categories:
-    - definition: PriorityClassList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: PriorityClass
-      list:
-      - name: Resource metadata
-        fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-      - name: Specs
-        fields:
-        - name: value
-        - name: description
-        - name: preemptionPolicy
-        - name: globalDefault
-  - name: PodDisruptionBudget
-    version: v1beta1
-    group: policy
-    field_categories:
-    - definition: PodDisruptionBudgetSpec
-      list:
-      - fields:
-        - name: selector
-        - name: minAvailable
-        - name: maxUnavailable
-    - definition: PodDisruptionBudgetStatus
-      list:
-      - fields:
-        - name: desiredHealthy
-        - name: currentHealthy
-        - name: expectedPods
-        - name: disruptedPods
-        - name: disruptionsAllowed
-        - name: observedGeneration
-    - definition: PodDisruptionBudgetList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: PodDisruptionBudget
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
-  - name: PodSecurityPolicy
-    version: v1beta1
-    group: policy
-    field_categories:
-    - definition: PodSecurityPolicySpec
-      list:
-      - fields:
-        - name: allowPrivilegeEscalation
-        - name: allowedCSIDrivers
-          depth: 1
-        - name: allowedCapabilities
-        - name: allowedFlexVolumes
-          depth: 1
-        - name: allowedHostPaths
-          depth: 1
-        - name: allowedProcMountTypes
-        - name: allowedUnsafeSysctls
-        - name: defaultAddCapabilities
-        - name: defaultAllowPrivilegeEscalation
-        - name: forbiddenSysctls
-        - name: fsGroup
-          depth: 2
-        - name: hostIPC
-        - name: hostNetwork
-        - name: hostPID
-        - name: hostPorts
-          depth: 1
-        - name: privileged
-        - name: readOnlyRootFilesystem
-        - name: requiredDropCapabilities
-        - name: runAsGroup
-          depth: 2
-        - name: runAsUser
-          depth: 2
-        - name: runtimeClass
-          depth: 1
-        - name: seLinux
-          depth: 2
-        - name: supplementalGroups
-          depth: 2
-        - name: volumes
-    - definition: PodSecurityPolicyList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: PodSecurityPolicy
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-  - name: PodPreset
-    version: v1alpha1
-    group: settings.k8s.io
-    field_categories:
-    - definition: PodPresetSpec
-      list:
-      - fields:
-        - name: env
-          depth: -1
-        - name: envFrom
-          depth: -1
-        - name: selector
-        - name: volumeMounts
-          depth: 1
-        - name: volumes
-    - definition: PodPresetList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: PodPreset
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-- name: Cluster Resources
-  resources:
-  - name: Node
-    version: v1
-    group: core
-    field_categories:
-    - definition: NodeSpec
-      list:
-      - fields:
-        - name: configSource
-          depth: 2
-        - name: externalID
-        - name: podCIDR
-        - name: podCIDRs
-        - name: providerID
-        - name: taints
-          depth: 1
-        - name: unschedulable
-    - definition: NodeStatus
-      list:
-      - fields:
-        - name: addresses
-          depth: 1
-        - name: allocatable
-        - name: capacity
-        - name: conditions
-          depth: 1
-        - name: config
-          depth: -1
-        - name: daemonEndpoints
-          depth: 2
-        - name: images
-          depth: 1
-        - name: nodeInfo
-          depth: 1
-        - name: phase
-        - name: volumesAttached
-          depth: 1
-        - name: volumesInUse
-    - definition: NodeList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: Node
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
-  - name: Namespace
-    version: v1
-    group: core
-    field_categories:
-    - definition: NamespaceSpec
-      list:
-      - fields:
-        - name: finalizers
-    - definition: NamespaceStatus
-      list:
-      - fields:
-        - name: conditions
-          depth: 1
-        - name: phase
-    - definition: NamespaceList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: Namespace
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
   - name: ServiceAccount
     version: v1
     group: core
@@ -1512,6 +1283,177 @@ resource_categories:
         - name: imagePullSecrets
           depth: 1
         - name: secrets
+  - name: TokenRequest
+    version: v1
+    group: authentication.k8s.io
+    field_categories:
+    - definition: TokenRequestSpec
+      list:
+      - fields:
+        - name: audiences
+        - name: boundObjectRef
+        - name: expirationSeconds
+    - definition: TokenRequestStatus
+      list:
+      - fields:
+        - name: expirationTimestamp
+        - name: token
+    - definition: TokenRequest
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+  - name: TokenReview
+    version: v1
+    group: authentication.k8s.io
+    field_categories:
+    - definition: TokenReviewSpec
+      list:
+      - fields:
+        - name: audiences
+        - name: token
+    - definition: TokenReviewStatus
+      list:
+      - fields:
+        - name: audiences
+        - name: authenticated
+        - name: error
+        - name: user
+          depth: 1
+    - definition: TokenReview
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+  - name: CertificateSigningRequest
+    version: v1beta1
+    group: certificates.k8s.io
+    field_categories:
+    - definition: CertificateSigningRequestSpec
+      list:
+      - fields:
+        - name: extra
+        - name: groups
+        - name: request
+        - name: signerName
+        - name: uid
+        - name: usages
+        - name: username
+    - definition: CertificateSigningRequestStatus
+      list:
+      - fields:
+        - name: certificate
+        - name: conditions
+          depth: 1
+    - definition: CertificateSigningRequestList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: CertificateSigningRequest
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+- name: Authorization
+  resources:
+  - name: LocalSubjectAccessReview
+    version: v1
+    group: authorization.k8s.io
+    field_categories:
+    - definition: LocalSubjectAccessReview
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+  - name: SelfSubjectAccessReview
+    version: v1
+    group: authorization.k8s.io
+    field_categories:
+    - definition: SelfSubjectAccessReviewSpec
+      list:
+      - fields:
+        - name: nonResourceAttributes
+          depth: 1
+        - name: resourceAttributes
+          depth: 1
+    - definition: SelfSubjectAccessReview
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+  - name: SelfSubjectRulesReview
+    version: v1
+    group: authorization.k8s.io
+    field_categories:
+    - definition: SelfSubjectRulesReviewSpec
+      list:
+      - fields:
+        - name: namespace
+    - definition: SelfSubjectRulesReview
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+    - definition: SubjectRulesReviewStatus
+      list:
+      - fields:
+        - name: evaluationError
+        - name: incomplete
+        - name: nonResourceRules
+          depth: 1
+        - name: resourceRules
+          depth: 1
+  - name: SubjectAccessReview
+    version: v1
+    group: authorization.k8s.io
+    field_categories:
+    - definition: SubjectAccessReviewSpec
+      list:
+      - fields:
+        - name: extra
+        - name: groups
+        - name: nonResourceAttributes
+          depth: 1
+        - name: resourceAttributes
+          depth: 1
+        - name: uid
+        - name: user
+    - definition: SubjectAccessReviewStatus
+      list:
+      - fields:
+        - name: allowed
+        - name: denied
+        - name: evaluationError
+        - name: reason
+    - definition: SubjectAccessReview
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
   - name: ClusterRole
     version: v1
     group: rbac.authorization.k8s.io
@@ -1606,91 +1548,31 @@ resource_categories:
           depth: 1
         - name: subjects
           depth: 1
-  - name: PersistentVolume
+- name: Policies
+  resources:
+  - name: LimitRange
     version: v1
     group: core
     field_categories:
-    - definition: PersistentVolumeSpec
+    - definition: LimitRangeSpec
       list:
       - fields:
-        - name: accessModes
-        - name: capacity
-        - name: claimRef
-        - name: mountOptions
-        - name: nodeAffinity
+        - name: limits
           depth: 1
-        - name: persistentVolumeReclaimPolicy
-        - name: storageClassName
-        - name: volumeMode
-      - name: Local
-        fields:
-        - name: hostPath
-          depth: 1
-        - name: local
-          depth: 1
-      - name: Persistent volumes
-        fields:
-        - name: awsElasticBlockStore
-          depth: 2
-        - name: azureDisk
-          depth: 2
-        - name: azureFile
-          depth: 2
-        - name: cephfs
-          depth: 2
-        - name: cinder
-          depth: 2
-        - name: csi
-          depth: 2
-        - name: fc
-          depth: 2
-        - name: flexVolume
-          depth: 2
-        - name: flocker
-          depth: 2
-        - name: gcePersistentDisk
-          depth: 2
-        - name: glusterfs
-          depth: 2
-        - name: iscsi
-          depth: 2
-        - name: nfs
-          depth: 2
-        - name: photonPersistentDisk
-          depth: 2
-        - name: portworxVolume
-          depth: 2
-        - name: quobyte
-          depth: 2
-        - name: rbd
-          depth: 2
-        - name: scaleIO
-          depth: 2
-        - name: storageos
-          depth: 2
-        - name: vsphereVolume
-          depth: 2
-    - definition: PersistentVolumeStatus
-      list:
-      - fields:
-        - name: phase
-        - name: reason
-        - name: message
-    - definition: PersistentVolumeList
+    - definition: LimitRangeList
       list:
       - fields:
         - name: apiVersion
         - name: kind
         - name: metadata
         - name: items
-    - definition: PersistentVolume
+    - definition: LimitRange
       list:
       - fields:
         - name: apiVersion
         - name: kind
         - name: metadata
         - name: spec
-        - name: status
   - name: ResourceQuota
     version: v1
     group: core
@@ -1750,11 +1632,33 @@ resource_categories:
         - name: kind
         - name: metadata
         - name: spec
-  - name: LocalSubjectAccessReview
-    version: v1
-    group: authorization.k8s.io
+  - name: PodDisruptionBudget
+    version: v1beta1
+    group: policy
     field_categories:
-    - definition: LocalSubjectAccessReview
+    - definition: PodDisruptionBudgetSpec
+      list:
+      - fields:
+        - name: selector
+        - name: minAvailable
+        - name: maxUnavailable
+    - definition: PodDisruptionBudgetStatus
+      list:
+      - fields:
+        - name: desiredHealthy
+        - name: currentHealthy
+        - name: expectedPods
+        - name: disruptedPods
+        - name: disruptionsAllowed
+        - name: observedGeneration
+    - definition: PodDisruptionBudgetList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: PodDisruptionBudget
       list:
       - fields:
         - name: apiVersion
@@ -1762,18 +1666,95 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
-  - name: SelfSubjectAccessReview
-    version: v1
-    group: authorization.k8s.io
+  - name: PodSecurityPolicy
+    version: v1beta1
+    group: policy
     field_categories:
-    - definition: SelfSubjectAccessReviewSpec
+    - definition: PodSecurityPolicySpec
       list:
       - fields:
-        - name: nonResourceAttributes
+        - name: allowPrivilegeEscalation
+        - name: allowedCSIDrivers
           depth: 1
-        - name: resourceAttributes
+        - name: allowedCapabilities
+        - name: allowedFlexVolumes
           depth: 1
-    - definition: SelfSubjectAccessReview
+        - name: allowedHostPaths
+          depth: 1
+        - name: allowedProcMountTypes
+        - name: allowedUnsafeSysctls
+        - name: defaultAddCapabilities
+        - name: defaultAllowPrivilegeEscalation
+        - name: forbiddenSysctls
+        - name: fsGroup
+          depth: 2
+        - name: hostIPC
+        - name: hostNetwork
+        - name: hostPID
+        - name: hostPorts
+          depth: 1
+        - name: privileged
+        - name: readOnlyRootFilesystem
+        - name: requiredDropCapabilities
+        - name: runAsGroup
+          depth: 2
+        - name: runAsUser
+          depth: 2
+        - name: runtimeClass
+          depth: 1
+        - name: seLinux
+          depth: 2
+        - name: supplementalGroups
+          depth: 2
+        - name: volumes
+    - definition: PodSecurityPolicyList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: PodSecurityPolicy
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+- name: Extend
+  resources:
+  - name: CustomResourceDefinition
+    version: v1
+    group: apiextensions.k8s.io
+    field_categories:
+    - definition: CustomResourceDefinitionSpec
+      list:
+      - fields:
+        - name: scope
+        - name: group
+        - name: names
+          depth: -1
+        - name: preserveUnknownFields
+        - name: versions
+          depth: -1
+        - name: conversion
+          depth: -1
+    - definition: CustomResourceDefinitionStatus
+      list:
+      - fields:
+        - name: acceptedNames
+          depth: 1
+        - name: conditions
+          depth: 1
+        - name: storedVersions
+    - definition: CustomResourceDefinitionList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: CustomResourceDefinition
       list:
       - fields:
         - name: apiVersion
@@ -1781,15 +1762,97 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
-  - name: SelfSubjectRulesReview
+  - name: MutatingWebhookConfiguration
     version: v1
-    group: authorization.k8s.io
+    group: admissionregistration.k8s.io
     field_categories:
-    - definition: SelfSubjectRulesReviewSpec
+    - definition: MutatingWebhookConfigurationList
       list:
       - fields:
-        - name: namespace
-    - definition: SelfSubjectRulesReview
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: MutatingWebhookConfiguration
+      list:
+      - name: Resource metadata
+        fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+      - name: Specs
+        fields:
+        - name: webhooks
+          depth: -1
+  - name: ValidatingWebhookConfiguration
+    version: v1
+    group: admissionregistration.k8s.io
+    field_categories:
+    - definition: ValidatingWebhookConfigurationList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: ValidatingWebhookConfiguration
+      list:
+      - name: Resource metadata
+        fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+      - name: Specs
+        fields:
+        - name: webhooks
+          depth: -1
+- name: Cluster
+  resources:
+  - name: Node
+    version: v1
+    group: core
+    field_categories:
+    - definition: NodeSpec
+      list:
+      - fields:
+        - name: configSource
+          depth: 2
+        - name: externalID
+        - name: podCIDR
+        - name: podCIDRs
+        - name: providerID
+        - name: taints
+          depth: 1
+        - name: unschedulable
+    - definition: NodeStatus
+      list:
+      - fields:
+        - name: addresses
+          depth: 1
+        - name: allocatable
+        - name: capacity
+        - name: conditions
+          depth: 1
+        - name: config
+          depth: -1
+        - name: daemonEndpoints
+          depth: 2
+        - name: images
+          depth: 1
+        - name: nodeInfo
+          depth: 1
+        - name: phase
+        - name: volumesAttached
+          depth: 1
+        - name: volumesInUse
+    - definition: NodeList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: Node
       list:
       - fields:
         - name: apiVersion
@@ -1797,93 +1860,93 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
-    - definition: SubjectRulesReviewStatus
-      list:
-      - fields:
-        - name: evaluationError
-        - name: incomplete
-        - name: nonResourceRules
-          depth: 1
-        - name: resourceRules
-          depth: 1
-  - name: SubjectAccessReview
+  - name: Namespace
     version: v1
-    group: authorization.k8s.io
+    group: core
     field_categories:
-    - definition: SubjectAccessReviewSpec
+    - definition: NamespaceSpec
       list:
       - fields:
-        - name: extra
-        - name: groups
-        - name: nonResourceAttributes
-          depth: 1
-        - name: resourceAttributes
-          depth: 1
-        - name: uid
-        - name: user
-    - definition: SubjectAccessReviewStatus
+        - name: finalizers
+    - definition: NamespaceStatus
       list:
       - fields:
-        - name: allowed
-        - name: denied
-        - name: evaluationError
+        - name: conditions
+          depth: 1
+        - name: phase
+    - definition: NamespaceList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: Namespace
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: spec
+        - name: status
+  - name: Event
+    version: v1
+    group: core
+    field_categories:
+    - definition: EventList
+      list:
+      - fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+        - name: items
+    - definition: Event
+      list:
+      - name: Resource metadata
+        fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+      - name: Specs
+        fields:
+        - name: type
         - name: reason
-    - definition: SubjectAccessReview
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
-  - name: TokenRequest
-    version: v1
-    group: authentication.k8s.io
-    field_categories:
-    - definition: TokenRequestSpec
-      list:
-      - fields:
-        - name: audiences
-        - name: boundObjectRef
-        - name: expirationSeconds
-    - definition: TokenRequestStatus
-      list:
-      - fields:
-        - name: expirationTimestamp
-        - name: token
-    - definition: TokenRequest
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
-  - name: TokenReview
-    version: v1
-    group: authentication.k8s.io
-    field_categories:
-    - definition: TokenReviewSpec
-      list:
-      - fields:
-        - name: audiences
-        - name: token
-    - definition: TokenReviewStatus
-      list:
-      - fields:
-        - name: audiences
-        - name: authenticated
-        - name: error
-        - name: user
+        - name: eventTime
+        - name: firstTimestamp
+        - name: lastTimestamp
+        - name: count
+        - name: action
+        - name: message
+        - name: involvedObject
+        - name: related
+        - name: reportingComponent
+        - name: reportingInstance
+        - name: series
           depth: 1
-    - definition: TokenReview
+        - name: source
+          depth: 1
+  - name: ComponentStatus
+    version: v1
+    group: core
+    field_categories:
+    - definition: ComponentStatusList
       list:
       - fields:
         - name: apiVersion
         - name: kind
         - name: metadata
-        - name: spec
-        - name: status
+        - name: items
+    - definition: ComponentStatus
+      list:
+      - name: Resource metadata
+        fields:
+        - name: apiVersion
+        - name: kind
+        - name: metadata
+      - name: Specs
+        fields:
+        - name: conditions
+          depth: 1
   - name: APIService
     version: v1
     group: apiregistration.k8s.io
@@ -1918,28 +1981,6 @@ resource_categories:
         - name: metadata
         - name: spec
         - name: status
-  - name: ComponentStatus
-    version: v1
-    group: core
-    field_categories:
-    - definition: ComponentStatusList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: ComponentStatus
-      list:
-      - name: Resource metadata
-        fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-      - name: Specs
-        fields:
-        - name: conditions
-          depth: 1
   - name: Lease
     version: v1
     group: coordination.k8s.io
@@ -1991,41 +2032,6 @@ resource_categories:
           depth: 1
         - name: scheduling
           depth: 2
-  - name: CertificateSigningRequest
-    version: v1beta1
-    group: certificates.k8s.io
-    field_categories:
-    - definition: CertificateSigningRequestSpec
-      list:
-      - fields:
-        - name: extra
-        - name: groups
-        - name: request
-        - name: signerName
-        - name: uid
-        - name: usages
-        - name: username
-    - definition: CertificateSigningRequestStatus
-      list:
-      - fields:
-        - name: certificate
-        - name: conditions
-          depth: 1
-    - definition: CertificateSigningRequestList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: CertificateSigningRequest
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
-        - name: status
   - name: AuditSink
     version: v1alpha1
     group: auditregistration.k8s.io

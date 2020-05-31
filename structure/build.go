@@ -90,7 +90,12 @@ func Build(config *api.Config) (result *Section) {
 		result.AddSection(sect1)
 		for _, resource := range rescats.Resources {
 			definition := resource.Definition
-			sect2 := NewSection(fmt.Sprintf("%s (%s)", resource.Name, resource.Version), nil)
+			var sect2 *Section
+			if resource.Version == "v1" {
+				sect2 = NewSection(fmt.Sprintf("%s", resource.Name), nil)
+			} else {
+				sect2 = NewSection(fmt.Sprintf("%s (%s)", resource.Name, resource.Version), nil)
+			}
 			sect1.AddSection(sect2)
 			var sect3 *Section
 			if debug {

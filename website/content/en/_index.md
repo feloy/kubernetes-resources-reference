@@ -25,9 +25,18 @@ landing:
         text: CONFIG & STORAGE
         color: primary
       - link: docs/part4
-        text: METADATA
+        text: AUTHN
         color: primary
       - link: docs/part5
+        text: AUTHZ
+        color: primary
+      - link: docs/part6
+        text: POLICIES
+        color: primary
+      - link: docs/part7
+        text: EXTEND
+        color: primary
+      - link: docs/part8
         text: CLUSTER
         color: primary
       - link: https://www.amazon.com/Kubernetes-Resources-Reference-OpenAPI-specification/dp/B086G11WY1
