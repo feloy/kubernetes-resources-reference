@@ -183,7 +183,10 @@ func (o *Section) AsDocbook(w io.Writer, depths ...int) {
 			fmt.Fprintf(w, "<%s%s>%s</bridgehead>\n", tags[depth], ID, o.Name)
 		} else {
 			if depth == indexLevel {
-				fmt.Fprintf(w, "<%s%s><title><indexterm type=\"resources\"><primary>%s</primary><secondary>%s.%s</secondary></indexterm>%s</title>\n", tags[depth], ID, o.Name, o.GVK.Group, o.GVK.Version, o.Name)
+				fmt.Fprintf(w, "<%s%s><title>", tags[depth], ID)
+				fmt.Fprintf(w, "<indexterm type=\"resources\"><primary>%s</primary><secondary>%s.%s</secondary></indexterm>", o.Name, o.GVK.Group, o.GVK.Version)
+				fmt.Fprintf(w, "<indexterm type=\"apiversions\"><primary>%s</primary><secondary>%s</secondary><tertiary>%s</tertiary></indexterm>", o.GVK.Group, o.GVK.Version, o.Name)
+				fmt.Fprintf(w, "%s</title>\n", o.Name)
 			} else {
 				fmt.Fprintf(w, "<%s%s><title>%s</title>\n", tags[depth], ID, o.Name)
 			}

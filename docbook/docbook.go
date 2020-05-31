@@ -42,6 +42,7 @@ func Generate(w io.Writer, config *api.Config, document *structure.Section) {
 	document.AsDocbook(w)
 	addLicense(w)
 	fmt.Fprintf(w, "<index type=\"resources\"><title>Resources Index</title></index>")
+	fmt.Fprintf(w, "<index type=\"apiversions\"><title>APIs Index</title></index>")
 	fmt.Fprintf(w, "<index type=\"fields\"><title>Fields Index</title></index>")
 	fmt.Fprintf(w, "</book>\n")
 }
