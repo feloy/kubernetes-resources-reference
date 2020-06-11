@@ -1332,7 +1332,7 @@ resource_categories:
         - name: spec
         - name: status
   - name: CertificateSigningRequest
-    version: v1beta1
+    version: v1
     group: certificates.k8s.io
     field_categories:
     - definition: CertificateSigningRequestSpec
@@ -2032,31 +2032,6 @@ resource_categories:
           depth: 1
         - name: scheduling
           depth: 2
-  - name: AuditSink
-    version: v1alpha1
-    group: auditregistration.k8s.io
-    field_categories:
-    - definition: AuditSinkSpec
-      list:
-      - fields:
-        - name: policy
-          depth: 1
-        - name: webhook
-          depth: -1
-    - definition: AuditSinkList
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: items
-    - definition: AuditSink
-      list:
-      - fields:
-        - name: apiVersion
-        - name: kind
-        - name: metadata
-        - name: spec
   - name: FlowSchema
     version: v1alpha1
     group: flowcontrol.apiserver.k8s.io
