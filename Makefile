@@ -1,4 +1,4 @@
-# Copyright 2019 Philippe Martin
+# Copyright 2020 Philippe Martin
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,16 +13,16 @@
 # limitations under the License.
 
 default:
-	@echo "commands: clean, docbook, pdf"
+	@echo "commands: clean, docbook, pdf, pdf-6x9in, epub, clean-website, website, serve"
 
 clean:
 	rm -rf build
 
 docbook: clean build/k8s-api.xml
 
-build/k8s-api.xml: $(wildcard *.go **/*.go) config.yaml
+build/k8s-api.xml: $(wildcard *.go **/*.go) $(wildcard api/v1.19/* config/v1.19/*)
 	mkdir -p build
-	go run main.go docbook > build/k8s-api.xml
+	go run cmd/main.go docbook --config-dir config/v1.19/ --file api/v1.19/swagger.json > build/k8s-api.xml
 
 
 FORMAT ?= USletter
@@ -54,5 +54,9 @@ clean-website:
 	rm -rf website/content/en/docs/* website/public
 
 website: clean-website
-	go run main.go md website/content/en/docs
+	mkdir -p website/content/en/docs
+	go run cmd/main.go hugo --config-dir config/v1.19/ --file api/v1.19/swagger.json --output-dir website/content/en/docs
 	(cd website && hugo)
+
+serve:
+	(cd website/public && python3 -m http.server)

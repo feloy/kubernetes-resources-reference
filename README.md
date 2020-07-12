@@ -1,39 +1,54 @@
-# Kubernetes Resources Reference
+# kubernetes-api-reference
 
-This tool creates a DocBook documentation from a Kubernetes API definition (as a swagger file).
+<!-- ![Bugs](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=bugs) -->
+<!-- ![Code Smalls](https://sonarcloud.io/api/project_badges/measure? project=feloy_kubernetes-api-reference&metric=code_smells) -->
+<!-- ![Duplicated lines](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=duplicated_lines_density) -->
+<!-- ![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=ncloc) -->
+<!-- ![technical debt](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=sqale_index)-->
+<!-- ![vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=vulnerabilities) -->
 
-The documentation includes the definition of the current resources of the API.
+![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=sqale_rating)
+![reliability](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=reliability_rating)
+![security](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=security_rating)
+![quality gate](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=alert_status)
 
-All efforts are done to include as much as possible the definitions of the fields of a resource in a recursive way.
+Tool to create documentation of the Kubernetes API.
 
-Get the companion documentation about kubectl: https://github.com/feloy/kubectl-reference
+## Usage
 
-## PDF Output
+### Web output
 
-You will need to install the [go language tools](https://golang.org/) and `xsltproc`, `docbook-xsl` and `fop` packages.
-
-
-```
-# Create the Docbook file
-$ make docbook
-
-# Create a PDF file, in USletter format
-$ make pdf
-
-# Create a PDF file, in A4 format
-$ make pdf FORMAT=A4
-```
-
-> If you prefer, a [Dockerfile](./Dockerfile) is available to create an image containing all the tools necessary to build the PDF outputs.
-
-Get a printed copy at https://kdp.amazon.com/amazon-dp-action/us/dualbookshelf.marketplacelink/B086G11WY1
-
-## Website Output
-
-You will need to install [hugo](https://gohugo.io/) and the [go language tools](https://golang.org/).
-
-```
+```sh
 make website
+make serve
 ```
 
-Visit the website at https://www.k8sref.io
+### PDF output
+
+```sh
+make pdf FORMAT=A4
+make pdf FORMAT=USletter
+```
+
+## OpenAPI specification
+
+The source of truth for the Kubernetes API is an OpenAPI specification. A standard OpenAPI specification describes:
+
+- a list of *Definitions*,
+- a list of *Paths*, each describing a list of *Operations*.
+
+## Kubernetes extensions
+
+https://github.com/kubernetes/kubernetes/tree/master/api/openapi-spec
+
+Kubernetes API extends OpenAPI using these extensions:
+
+- `x-kubernetes-group-version-kind`:
+  - Definitions associated with a Kubernetes *Resource* use this extension to declare the GVK to which the resource belongs.
+  - Operations use this extension to declare on which Kubernetes resource they operate.
+- `x-kubernetes-action`: OpenAPI Operations (get, post, etc) are mapped to Kubernetes API *actions* (get, list, watch, etc) with this extension.
+- `x-kubernetes-patch-strategy`: a comma-separated list of strategic merge patch strategies supported by a field of a Kubernetes resource.
+- `x-kubernetes-patch-merge-key`: when a field supports the `merge` strategy, this extension indicates the key used to identify the fields to merge.
+- `x-kubernetes-list-type`: atomic, map, set. Applicable to lists. atomic and set apply to lists with scalar elements only. map applies to lists of nested types only. If configured as atomic, the entire list is replaced during merge; a single manager manages the list as a whole at any one time. If granular, different managers can manage entries separately.
+- `x-kubernetes-list-map-keys`: Only applicable when x-kubernetes-list-type=map. A slice of strings whose values in combination must uniquely identify list entries.
+- `x-kubernetes-unions`

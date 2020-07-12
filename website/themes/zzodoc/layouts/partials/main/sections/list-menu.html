@@ -51,6 +51,7 @@
       <a href="{{ .Permalink }}"
         class="menu__title {{ if and (eq $lastUrlElement1 $lastUrlElement2) (eq $sectionName1 $sectionName2) }}active{{ end }}"
         data-depth="{{ $depth }}">{{ .Title }}</a>
+        <p>{{ .Description }}</p>
     </li>
     {{ end }}
     {{ end }}

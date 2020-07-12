@@ -1,0 +1,311 @@
+APIGroup
+	v1
+APIGroupList
+	v1
+APIResourceList
+	v1
+APIService
+	apiregistration.k8s.io/v1
+	apiregistration.k8s.io/v1beta1
+APIServiceList
+	apiregistration.k8s.io/v1
+	apiregistration.k8s.io/v1beta1
+APIVersions
+	v1
+AuditSink
+	auditregistration.k8s.io/v1alpha1
+AuditSinkList
+	auditregistration.k8s.io/v1alpha1
+Binding
+	v1
+CSIDriver
+	storage.k8s.io/v1beta1
+CSIDriverList
+	storage.k8s.io/v1beta1
+CSINode
+	storage.k8s.io/v1
+	storage.k8s.io/v1beta1
+CSINodeList
+	storage.k8s.io/v1
+	storage.k8s.io/v1beta1
+CertificateSigningRequest
+	certificates.k8s.io/v1beta1
+CertificateSigningRequestList
+	certificates.k8s.io/v1beta1
+ClusterRole
+	rbac.authorization.k8s.io/v1
+	rbac.authorization.k8s.io/v1beta1
+	rbac.authorization.k8s.io/v1alpha1
+ClusterRoleBinding
+	rbac.authorization.k8s.io/v1
+	rbac.authorization.k8s.io/v1beta1
+	rbac.authorization.k8s.io/v1alpha1
+ClusterRoleBindingList
+	rbac.authorization.k8s.io/v1
+	rbac.authorization.k8s.io/v1beta1
+	rbac.authorization.k8s.io/v1alpha1
+ClusterRoleList
+	rbac.authorization.k8s.io/v1
+	rbac.authorization.k8s.io/v1beta1
+	rbac.authorization.k8s.io/v1alpha1
+ComponentStatus
+	v1
+ComponentStatusList
+	v1
+ConfigMap
+	v1
+ConfigMapList
+	v1
+ControllerRevision
+	apps/v1
+	apps/v1beta2
+	apps/v1beta1
+ControllerRevisionList
+	apps/v1
+	apps/v1beta2
+	apps/v1beta1
+CronJob
+	batch/v2alpha1
+	batch/v1beta1
+CronJobList
+	batch/v2alpha1
+	batch/v1beta1
+CustomResourceDefinition
+	apiextensions.k8s.io/v1
+	apiextensions.k8s.io/v1beta1
+CustomResourceDefinitionList
+	apiextensions.k8s.io/v1
+	apiextensions.k8s.io/v1beta1
+DaemonSet
+	apps/v1
+	apps/v1beta2
+	extensions/v1beta1
+DaemonSetList
+	apps/v1
+	apps/v1beta2
+	extensions/v1beta1
+Deployment
+	apps/v1
+	apps/v1beta2
+	apps/v1beta1
+	extensions/v1beta1
+DeploymentList
+	apps/v1
+	apps/v1beta2
+	apps/v1beta1
+	extensions/v1beta1
+DeploymentRollback
+	apps/v1beta1
+	extensions/v1beta1
+EndpointSlice
+	discovery.k8s.io/v1beta1
+EndpointSliceList
+	discovery.k8s.io/v1beta1
+Endpoints
+	v1
+EndpointsList
+	v1
+Event
+	events.k8s.io/v1beta1
+	v1
+EventList
+	events.k8s.io/v1beta1
+	v1
+Eviction
+	policy/v1beta1
+FlowSchema
+	flowcontrol.apiserver.k8s.io/v1alpha1
+FlowSchemaList
+	flowcontrol.apiserver.k8s.io/v1alpha1
+HorizontalPodAutoscaler
+	autoscaling/v2beta2
+	autoscaling/v2beta1
+	autoscaling/v1
+HorizontalPodAutoscalerList
+	autoscaling/v2beta2
+	autoscaling/v2beta1
+	autoscaling/v1
+Ingress
+	networking.k8s.io/v1beta1
+	extensions/v1beta1
+IngressList
+	networking.k8s.io/v1beta1
+	extensions/v1beta1
+Job
+	batch/v1
+JobList
+	batch/v1
+Lease
+	coordination.k8s.io/v1
+	coordination.k8s.io/v1beta1
+LeaseList
+	coordination.k8s.io/v1
+	coordination.k8s.io/v1beta1
+LimitRange
+	v1
+LimitRangeList
+	v1
+LocalSubjectAccessReview
+	authorization.k8s.io/v1
+	authorization.k8s.io/v1beta1
+MutatingWebhookConfiguration
+	admissionregistration.k8s.io/v1
+	admissionregistration.k8s.io/v1beta1
+MutatingWebhookConfigurationList
+	admissionregistration.k8s.io/v1
+	admissionregistration.k8s.io/v1beta1
+Namespace
+	v1
+NamespaceList
+	v1
+NetworkPolicy
+	networking.k8s.io/v1
+	extensions/v1beta1
+NetworkPolicyList
+	networking.k8s.io/v1
+	extensions/v1beta1
+Node
+	v1
+NodeList
+	v1
+PersistentVolume
+	v1
+PersistentVolumeClaim
+	v1
+PersistentVolumeClaimList
+	v1
+PersistentVolumeList
+	v1
+Pod
+	v1
+PodDisruptionBudget
+	policy/v1beta1
+PodDisruptionBudgetList
+	policy/v1beta1
+PodList
+	v1
+PodPreset
+	settings.k8s.io/v1alpha1
+PodPresetList
+	settings.k8s.io/v1alpha1
+PodSecurityPolicy
+	policy/v1beta1
+	extensions/v1beta1
+PodSecurityPolicyList
+	policy/v1beta1
+	extensions/v1beta1
+PodTemplate
+	v1
+PodTemplateList
+	v1
+PriorityClass
+	scheduling.k8s.io/v1
+	scheduling.k8s.io/v1beta1
+	scheduling.k8s.io/v1alpha1
+PriorityClassList
+	scheduling.k8s.io/v1
+	scheduling.k8s.io/v1beta1
+	scheduling.k8s.io/v1alpha1
+PriorityLevelConfiguration
+	flowcontrol.apiserver.k8s.io/v1alpha1
+PriorityLevelConfigurationList
+	flowcontrol.apiserver.k8s.io/v1alpha1
+ReplicaSet
+	apps/v1
+	apps/v1beta2
+	extensions/v1beta1
+ReplicaSetList
+	apps/v1
+	apps/v1beta2
+	extensions/v1beta1
+ReplicationController
+	v1
+ReplicationControllerList
+	v1
+ResourceQuota
+	v1
+ResourceQuotaList
+	v1
+Role
+	rbac.authorization.k8s.io/v1
+	rbac.authorization.k8s.io/v1beta1
+	rbac.authorization.k8s.io/v1alpha1
+RoleBinding
+	rbac.authorization.k8s.io/v1
+	rbac.authorization.k8s.io/v1beta1
+	rbac.authorization.k8s.io/v1alpha1
+RoleBindingList
+	rbac.authorization.k8s.io/v1
+	rbac.authorization.k8s.io/v1beta1
+	rbac.authorization.k8s.io/v1alpha1
+RoleList
+	rbac.authorization.k8s.io/v1
+	rbac.authorization.k8s.io/v1beta1
+	rbac.authorization.k8s.io/v1alpha1
+RuntimeClass
+	node.k8s.io/v1beta1
+	node.k8s.io/v1alpha1
+RuntimeClassList
+	node.k8s.io/v1beta1
+	node.k8s.io/v1alpha1
+Scale
+	autoscaling/v1
+	apps/v1beta2
+	apps/v1beta1
+	extensions/v1beta1
+Secret
+	v1
+SecretList
+	v1
+SelfSubjectAccessReview
+	authorization.k8s.io/v1
+	authorization.k8s.io/v1beta1
+SelfSubjectRulesReview
+	authorization.k8s.io/v1
+	authorization.k8s.io/v1beta1
+Service
+	v1
+ServiceAccount
+	v1
+ServiceAccountList
+	v1
+ServiceList
+	v1
+StatefulSet
+	apps/v1
+	apps/v1beta2
+	apps/v1beta1
+StatefulSetList
+	apps/v1
+	apps/v1beta2
+	apps/v1beta1
+Status
+	v1
+StorageClass
+	storage.k8s.io/v1
+	storage.k8s.io/v1beta1
+StorageClassList
+	storage.k8s.io/v1
+	storage.k8s.io/v1beta1
+SubjectAccessReview
+	authorization.k8s.io/v1
+	authorization.k8s.io/v1beta1
+TokenRequest
+	authentication.k8s.io/v1
+TokenReview
+	authentication.k8s.io/v1
+	authentication.k8s.io/v1beta1
+ValidatingWebhookConfiguration
+	admissionregistration.k8s.io/v1
+	admissionregistration.k8s.io/v1beta1
+ValidatingWebhookConfigurationList
+	admissionregistration.k8s.io/v1
+	admissionregistration.k8s.io/v1beta1
+VolumeAttachment
+	storage.k8s.io/v1
+	storage.k8s.io/v1beta1
+	storage.k8s.io/v1alpha1
+VolumeAttachmentList
+	storage.k8s.io/v1
+	storage.k8s.io/v1beta1
+	storage.k8s.io/v1alpha1
