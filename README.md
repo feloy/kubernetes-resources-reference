@@ -1,16 +1,4 @@
-# kubernetes-api-reference
-
-<!-- ![Bugs](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=bugs) -->
-<!-- ![Code Smalls](https://sonarcloud.io/api/project_badges/measure? project=feloy_kubernetes-api-reference&metric=code_smells) -->
-<!-- ![Duplicated lines](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=duplicated_lines_density) -->
-<!-- ![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=ncloc) -->
-<!-- ![technical debt](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=sqale_index)-->
-<!-- ![vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=vulnerabilities) -->
-
-![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=sqale_rating)
-![reliability](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=reliability_rating)
-![security](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=security_rating)
-![quality gate](https://sonarcloud.io/api/project_badges/measure?project=feloy_kubernetes-api-reference&metric=alert_status)
+# Kubernetes Resources Reference
 
 Tool to create documentation of the Kubernetes API.
 
