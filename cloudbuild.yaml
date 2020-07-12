@@ -1,0 +1,45 @@
+steps:
+
+- id: build-image
+  name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'eu.gcr.io/$PROJECT_ID/build:$BUILD_ID', '.' ]
+
+- id: build
+  waitFor:
+  - build-image
+  name: 'eu.gcr.io/$PROJECT_ID/build:$BUILD_ID'
+  entrypoint: "/bin/bash"
+  args:
+  - -c
+  - |
+    mkdir -p website/content/en/docs
+    kubernetes-api-reference hugo --file api/v1.19/swagger.json --config-dir config/v1.19 --output-dir website/content/en/docs
+
+- id: hugo
+  waitFor:
+  - build
+  name: 'klakegg/hugo'
+  entrypoint: "/bin/sh"
+  args:
+  - -c
+  - |
+    cd website
+    hugo --environment ${_HOSTING}
+    tar zcf public.tgz public
+
+- id: deploy
+  waitFor: ['hugo']
+  name: 'eu.gcr.io/$PROJECT_ID/firebase'
+  args: 
+  - 'deploy'
+  - '-P'
+  - '$PROJECT_ID'
+  - '--only'
+  - 'hosting:${_HOSTING}'
+  dir: website
+
+artifacts:
+  objects:
+    location: 'gs://$PROJECT_ID/${BRANCH_NAME}${TAG_NAME}/'
+    paths:
+    - "website/public.tgz"

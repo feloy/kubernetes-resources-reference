@@ -10,24 +10,33 @@ landing:
     title:
       - Resources
     text:
-      - From the OpenAPI specification v1.18.0
+      - From the OpenAPI specification v1.19.0
     titleColor:
     textColor:
     spaceBetweenTitleText: 25
     buttons:
-      - link: docs/part1
+      - link: docs/workloads
         text: WORKLOADS
         color: primary
-      - link: docs/part2
+      - link: docs/services
         text: SERVICES
         color: primary
-      - link: docs/part3
+      - link: docs/config-and-storage
         text: CONFIG & STORAGE
         color: primary
-      - link: docs/part4
-        text: METADATA
+      - link: docs/authentication
+        text: AUTHN
         color: primary
-      - link: docs/part5
+      - link: docs/authorization
+        text: AUTHZ
+        color: primary
+      - link: docs/policies
+        text: POLICIES
+        color: primary
+      - link: docs/extend
+        text: EXTEND
+        color: primary
+      - link: docs/cluster
         text: CLUSTER
         color: primary
       - link: https://www.amazon.com/Kubernetes-Resources-Reference-OpenAPI-specification/dp/B086G11WY1

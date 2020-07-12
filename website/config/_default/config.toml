@@ -1,4 +1,4 @@
-baseURL = "https://www.k8sref.io"
+baseURL = "http://localhost:8000"
 title = "Kubernetes Reference"
 theme = "zzodoc"
 
@@ -12,7 +12,7 @@ enableEmoji = true
 paginate = 13
 rssLimit = 100
 
-googleAnalytics = ""
+googleAnalytics = "UA-169221756-1"
 
 disableKinds = ["taxonomyTerm"]
 
