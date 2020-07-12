@@ -246,3 +246,11 @@ parts:
     key: io.k8s.api.core.v1.TCPSocketAction
   - name: TypedLocalObjectReference
     key: io.k8s.api.core.v1.TypedLocalObjectReference
+skippedResources:
+- APIGroup
+- APIGroupList
+- APIResourceList
+- APIVersions
+- Eviction
+- Scale
+- Status

@@ -16,7 +16,8 @@ import (
 
 // TOC is the table of contents of the documentation
 type TOC struct {
-	Parts                 []*Part `yaml:"parts"`
+	Parts                 []*Part              `yaml:"parts"`
+	SkippedResources      []kubernetes.APIKind `yaml:"skippedResources"`
 	Definitions           *spec.Definitions
 	LinkEnds              LinkEnds
 	DocumentedDefinitions map[kubernetes.Key][]string
@@ -88,9 +89,9 @@ func (o *TOC) AddOtherResources(spec *kubernetes.Spec) {
 	part.Name = "Other Resources"
 	part.Chapters = []*Chapter{}
 
-	for _, resource := range *spec.Resources {
+	for k, resource := range *spec.Resources {
 		for _, v := range resource {
-			if v.ReplacedBy == nil && !v.Documented {
+			if v.ReplacedBy == nil && !v.Documented && !o.skippedResource(k) {
 				part.Chapters = append(part.Chapters, &Chapter{
 					Name:    v.Kind.String(),
 					Group:   &v.Group,
@@ -177,4 +178,14 @@ func (o *TOC) OutputDocumentedDefinitions() {
 			fmt.Printf("%s\n", k)
 		}
 	}
+}
+
+func (o *TOC) skippedResource(k kubernetes.APIKind) bool {
+	fmt.Printf("%s\n", k)
+	for _, skip := range o.SkippedResources {
+		if skip == k {
+			return true
+		}
+	}
+	return false
 }
