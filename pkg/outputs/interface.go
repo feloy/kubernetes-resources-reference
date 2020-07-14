@@ -31,4 +31,5 @@ type Section interface {
 	AddProperty(name string, property *kubernetes.Property, linkend []string, indent bool) error
 	EndProperty() error
 	EndPropertyList() error
+	AddOperation(operation *kubernetes.ActionInfo) error
 }

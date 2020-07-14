@@ -102,3 +102,22 @@ func (o Section) EndProperty() error {
 func (o Section) EndPropertyList() error {
 	return nil
 }
+
+// AddOperation adds an operation
+func (o Section) AddOperation(operation *kubernetes.ActionInfo) error {
+	sentences := strings.Split(operation.Operation.Description, ".")
+
+	description := fmt.Sprintf("%s %s", operation.HTTPMethod, operation.Path.String())
+	if len(sentences) > 1 {
+		description = strings.Join(sentences[1:], ".") + "\n" + description
+	}
+	err := o.hugo.addListEntry(o.part.name, o.chapter.name, fmt.Sprintf("**%s** (`%s`)", sentences[0], operation.Action.Verb()), description, 0)
+	if err != nil {
+		return err
+	}
+
+	/*	for _, pathParam := range operation.Operation.Parameters {
+		fmt.Printf("IN: %s (%s)\n", pathParam.Name, pathParam.In)
+	}*/
+	return nil
+}

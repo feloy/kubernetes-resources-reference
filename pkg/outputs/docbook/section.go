@@ -137,3 +137,32 @@ func (o DocbookSection) EndProperty() error {
 func (o DocbookSection) EndPropertyList() error {
 	return o.w.EndElem("variablelist")
 }
+
+// AddOperation adds an operation
+func (o DocbookSection) AddOperation(operation *kubernetes.ActionInfo) error {
+	sentences := strings.Split(operation.Operation.Description, ".")
+
+	description := operation.HTTPMethod + " " + operation.Path.String()
+
+	o.w.StartElem(x.Elem{Name: "varlistentry"})
+	content := []x.Writable{
+		x.Text(sentences[0] + " ("),
+		dbxml.ElemWithText("varname", operation.Action.Verb()),
+		x.Text(")"),
+	}
+	o.w.StartElem(dbxml.ElemWithContent("term", content))
+	o.w.EndElem("term")
+	o.w.StartElem(x.Elem{Name: "listitem"})
+
+	if len(sentences) > 1 {
+		o.w.StartElem(dbxml.ElemWithText("para", strings.Join(sentences[1:], ".")))
+		o.w.EndElem("para")
+	}
+	o.w.StartElem(x.Elem{Name: "para"})
+	o.w.StartElem(dbxml.ElemWithText("varname", description))
+	o.w.EndElem("varname")
+	o.w.EndElem("para")
+	o.w.EndElem("listitem")
+	o.w.EndElem("varlistentry")
+	return nil
+}

@@ -32,11 +32,11 @@ func NewHardCodedValueProperty(name string, value string) *Property {
 // NewProperty returns a new Property from its swagger definition
 func NewProperty(name string, details spec.Schema, required []string) (*Property, error) {
 	typ, key := getTypeNameAndKey(details)
-	strategy, err := GetPatchStrategyExtension(details)
+	strategy, err := GetPatchStrategyExtension(details.Extensions)
 	if err != nil {
 		return nil, err
 	}
-	mergeKey, err := GetPatchMergeKeyExtension(details)
+	mergeKey, err := GetPatchMergeKeyExtension(details.Extensions)
 	if err != nil {
 		return nil, err
 	}

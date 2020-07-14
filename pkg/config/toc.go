@@ -21,6 +21,7 @@ type TOC struct {
 	Definitions           *spec.Definitions
 	LinkEnds              LinkEnds
 	DocumentedDefinitions map[kubernetes.Key][]string
+	Actions               kubernetes.Actions
 }
 
 // Part contains chapters
@@ -181,7 +182,6 @@ func (o *TOC) OutputDocumentedDefinitions() {
 }
 
 func (o *TOC) skippedResource(k kubernetes.APIKind) bool {
-	fmt.Printf("%s\n", k)
 	for _, skip := range o.SkippedResources {
 		if skip == k {
 			return true
