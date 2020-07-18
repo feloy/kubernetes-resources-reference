@@ -59,10 +59,8 @@ func (o *ResourceMap) Add(resource *Resource) {
 		for _, otherResource := range list {
 			if resource.Replaces(otherResource) {
 				otherResource.ReplacedBy = &resource.Key
-				break
 			} else if otherResource.Replaces(resource) {
 				resource.ReplacedBy = &otherResource.Key
-				break
 			}
 		}
 		list = append(list, resource)
