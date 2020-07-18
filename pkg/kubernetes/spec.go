@@ -18,6 +18,9 @@ type Spec struct {
 	// populated by calling getResources
 	Resources *ResourceMap
 
+	// Actions is the list of endpoints defined in the API
+	Actions Actions
+
 	// GVToKey maps beetween Kubernetes Group/Version and Swagger definition key
 	GVToKey GVToKeyMap
 }
@@ -60,6 +63,12 @@ func NewSpec(filename string) (*Spec, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	err = spec.getActions()
+	if err != nil {
+		return nil, err
+	}
+
 	return spec, nil
 }
 
@@ -77,7 +86,7 @@ func (o *Spec) getResources() error {
 	o.GVToKey = GVToKeyMap{}
 
 	for key, definition := range o.Swagger.Definitions {
-		gvk, found, err := getGVKExtension(definition)
+		gvk, found, err := getGVKExtension(definition.Extensions)
 		if err != nil {
 			return fmt.Errorf("%s: %f", key, err)
 		}
@@ -115,5 +124,37 @@ func (o *Spec) GetDefinition(key Key) *spec.Schema {
 	if s, found := o.Swagger.Definitions[key.String()]; found {
 		return &s
 	}
+	return nil
+}
+
+func (o *Spec) getActions() error {
+	o.Actions = make(Actions)
+
+	paths := o.Swagger.Paths.Paths
+	for key, path := range paths {
+		if path.Get != nil {
+			o.Actions.Add(key, path.Get, "GET", path.Parameters)
+		}
+		if path.Put != nil {
+			o.Actions.Add(key, path.Put, "PUT", path.Parameters)
+		}
+		if path.Post != nil {
+			o.Actions.Add(key, path.Post, "POST", path.Parameters)
+		}
+		if path.Delete != nil {
+			o.Actions.Add(key, path.Delete, "DELETE", path.Parameters)
+		}
+		if path.Options != nil {
+			o.Actions.Add(key, path.Options, "OPTIONS", path.Parameters)
+		}
+		if path.Head != nil {
+			o.Actions.Add(key, path.Head, "HEAD", path.Parameters)
+		}
+		if path.Patch != nil {
+			o.Actions.Add(key, path.Patch, "PATCH", path.Parameters)
+		}
+	}
+
+	o.Actions.findCommonParameters()
 	return nil
 }

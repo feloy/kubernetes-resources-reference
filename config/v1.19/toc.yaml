@@ -212,6 +212,8 @@ parts:
     version: v1
 - name: Common Definitions
   chapters:
+  - name: DeleteOptions
+    key: io.k8s.apimachinery.pkg.apis.meta.v1.DeleteOptions
   - name: ExecAction
     key: io.k8s.api.core.v1.ExecAction
   - name: HTTPGetAction
@@ -234,6 +236,8 @@ parts:
     key: io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta
   - name: ObjectReference
     key: io.k8s.api.core.v1.ObjectReference
+  - name: Patch
+    key: io.k8s.apimachinery.pkg.apis.meta.v1.Patch
   - name: PodAffinity
     key: io.k8s.api.core.v1.PodAffinity
   - name: PodAntiAffinity
@@ -242,6 +246,8 @@ parts:
     key: "io.k8s.apimachinery.pkg.api.resource.Quantity"
   - name: ResourceFieldSelector
     key: io.k8s.api.core.v1.ResourceFieldSelector
+  - name: Status
+    key: io.k8s.apimachinery.pkg.apis.meta.v1.Status
   - name: TCPSocketAction
     key: io.k8s.api.core.v1.TCPSocketAction
   - name: TypedLocalObjectReference

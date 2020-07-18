@@ -26,6 +26,8 @@ func prepareTOC(cmd *cobra.Command) (*config.TOC, error) {
 
 	toc.AddOtherResources(spec)
 	toc.Definitions = &spec.Swagger.Definitions
+	toc.Actions = spec.Actions
+	toc.Actions.Sort()
 
 	return toc, nil
 }

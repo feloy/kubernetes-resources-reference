@@ -20,7 +20,7 @@ func TestGetGVKExtension(t *testing.T) {
 			},
 		},
 	}
-	extension, found, err := getGVKExtension(definition)
+	extension, found, err := getGVKExtension(definition.Extensions)
 	if !found {
 		t.Errorf("Extension should be found")
 	}

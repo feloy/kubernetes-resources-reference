@@ -23,6 +23,8 @@ func (o *TOC) OutputDocument(output outputs.Output) error {
 		}
 	}
 
+	o.OutputCommonParameters(len(o.Parts), output)
+
 	err = output.Terminate()
 	if err != nil {
 		return err
@@ -72,6 +74,14 @@ func (o *TOC) OutputChapter(i int, chapter *Chapter, outputPart outputs.Part) er
 		err = o.OutputSection(s, tocSection, outputChapter)
 		if err != nil {
 			return err
+		}
+	}
+
+	if chapter.Group != nil && chapter.Version != nil {
+		gvkString := chapter.Group.String() + "." + chapter.Version.String() + "." + chapter.Name
+		actions := o.Actions.Get(gvkString)
+		if actions != nil {
+			o.OutputOperations(len(chapter.Sections), outputChapter, &actions)
 		}
 	}
 	return nil
@@ -172,6 +182,54 @@ func (o *TOC) setDocumentedDefinition(key *kubernetes.Key, from string) {
 	} else {
 		o.DocumentedDefinitions[*key] = []string{from}
 	}
+}
+
+// OutputOperations outputs the Operations chapter
+func (o *TOC) OutputOperations(i int, outputChapter outputs.Chapter, operations *kubernetes.ActionInfoList) error {
+	operationsSection, err := outputChapter.AddSection(i, "Operations")
+	if err != nil {
+		return err
+	}
+	for i, operation := range *operations {
+		o.OutputOperation(i, operationsSection, &operation)
+		_ = operation
+	}
+	return nil
+}
+
+// OutputOperation outputs details of an Operation
+func (o *TOC) OutputOperation(i int, outputSection outputs.Section, operation *kubernetes.ActionInfo) error {
+	outputSection.AddOperation(operation, o.LinkEnds)
+	return nil
+}
+
+// OutputCommonParameters outputs the parameters in common
+func (o *TOC) OutputCommonParameters(i int, output outputs.Output) error {
+	outputPart, err := output.AddPart(i, "Common Parameters")
+	if err != nil {
+		return err
+	}
+
+	outputChapter, err := outputPart.AddChapter(0, "Common Parameters", nil, "")
+
+	params := make([]string, len(kubernetes.ParametersAnnex))
+	j := 0
+	for k := range kubernetes.ParametersAnnex {
+		params[j] = k
+		j++
+	}
+	sort.Strings(params)
+	for i, param := range params {
+		if len(kubernetes.ResourcesDescriptions[param][0].Description) == 0 {
+			continue
+		}
+		outputSection, err := outputChapter.AddSection(i, param)
+		if err != nil {
+			return err
+		}
+		err = outputSection.AddContent(kubernetes.ResourcesDescriptions[param][0].Description)
+	}
+	return nil
 }
 
 // orderedPropertyKeys returns the keys of m alphabetically ordered

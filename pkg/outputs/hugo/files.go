@@ -70,6 +70,18 @@ func (o *Hugo) addSection(partname string, chaptername string, name string) erro
 	return nil
 }
 
+// addSection adds a section to the chapter
+func (o *Hugo) addSubsection(partname string, chaptername string, name string) error {
+	f, err := o.getChapterFile(partname, chaptername)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	fmt.Fprintf(f, markdown.Subsection(name))
+	return nil
+}
+
 // addContent adds content to the chapter in part
 func (o *Hugo) addContent(partname string, chaptername string, content string) error {
 	f, err := o.getChapterFile(partname, chaptername)
