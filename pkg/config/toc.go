@@ -19,7 +19,7 @@ type TOC struct {
 	Parts                 []*Part              `yaml:"parts"`
 	SkippedResources      []kubernetes.APIKind `yaml:"skippedResources"`
 	Definitions           *spec.Definitions
-	LinkEnds              LinkEnds
+	LinkEnds              kubernetes.LinkEnds
 	DocumentedDefinitions map[kubernetes.Key][]string
 	Actions               kubernetes.Actions
 }
@@ -71,7 +71,7 @@ func LoadTOC(filename string) (*TOC, error) {
 
 // PopulateAssociates adds sections to the chapters found in the spec
 func (o *TOC) PopulateAssociates(thespec *kubernetes.Spec) error {
-	o.LinkEnds = make(LinkEnds)
+	o.LinkEnds = make(kubernetes.LinkEnds)
 
 	for _, part := range o.Parts {
 		for _, chapter := range part.Chapters {

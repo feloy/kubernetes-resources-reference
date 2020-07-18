@@ -25,6 +25,11 @@ func Section(name string) string {
 	return fmt.Sprintf("### %s\n", name)
 }
 
+// Subsection returns a Level 4 mark
+func Subsection(name string) string {
+	return fmt.Sprintf("#### %s\n", name)
+}
+
 // ListEntry returns a list entry
 func ListEntry(title string, content string, indentLevel int) string {
 	titleIndent := strings.Repeat("  ", indentLevel) + "- "

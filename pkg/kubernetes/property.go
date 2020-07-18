@@ -31,7 +31,7 @@ func NewHardCodedValueProperty(name string, value string) *Property {
 
 // NewProperty returns a new Property from its swagger definition
 func NewProperty(name string, details spec.Schema, required []string) (*Property, error) {
-	typ, key := getTypeNameAndKey(details)
+	typ, key := GetTypeNameAndKey(details)
 	strategy, err := GetPatchStrategyExtension(details.Extensions)
 	if err != nil {
 		return nil, err
@@ -91,12 +91,12 @@ func isRequired(name string, required []string) bool {
 	return false
 }
 
-// getTypeNameAndKey returns the display name of a Schema.
+// GetTypeNameAndKey returns the display name of a Schema.
 // This is the api kind for definitions and the type for
 // primitive types.
-func getTypeNameAndKey(s spec.Schema) (string, *Key) {
+func GetTypeNameAndKey(s spec.Schema) (string, *Key) {
 	if isMap(s) {
-		typ, key := getTypeNameAndKey(*s.AdditionalProperties.Schema)
+		typ, key := GetTypeNameAndKey(*s.AdditionalProperties.Schema)
 		return fmt.Sprintf("map[string]%s", typ), key
 	}
 
@@ -108,7 +108,7 @@ func getTypeNameAndKey(s spec.Schema) (string, *Key) {
 
 	// Recurse if type is array
 	if isArray(s) {
-		typ, key := getTypeNameAndKey(*s.Items.Schema)
+		typ, key := GetTypeNameAndKey(*s.Items.Schema)
 		return fmt.Sprintf("[]%s", typ), key
 	}
 

@@ -35,10 +35,12 @@ func (o FakeSection) AddTypeDefinition(s string) error { return nil }
 func (o FakeSection) AddProperty(name string, property *kubernetes.Property, linkend []string, indent bool) error {
 	return nil
 }
-func (o FakeSection) EndProperty() error                                  { return nil }
-func (o FakeSection) StartPropertyList() error                            { return nil }
-func (o FakeSection) EndPropertyList() error                              { return nil }
-func (o FakeSection) AddOperation(operation *kubernetes.ActionInfo) error { return nil }
+func (o FakeSection) EndProperty() error       { return nil }
+func (o FakeSection) StartPropertyList() error { return nil }
+func (o FakeSection) EndPropertyList() error   { return nil }
+func (o FakeSection) AddOperation(operation *kubernetes.ActionInfo, linkends kubernetes.LinkEnds) error {
+	return nil
+}
 
 func TestOutputDocumentV116(t *testing.T) {
 	outputDocumentVersion(t, "v1.16")

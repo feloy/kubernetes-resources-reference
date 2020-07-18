@@ -84,7 +84,7 @@ func TestGetTypeNameAndKey(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		resultName, resultKey := getTypeNameAndKey(test.Definition)
+		resultName, resultKey := GetTypeNameAndKey(test.Definition)
 		if resultName != test.ExpectedName {
 			t.Errorf("Name should be %s but is %s", test.ExpectedName, resultName)
 		}

@@ -133,26 +133,28 @@ func (o *Spec) getActions() error {
 	paths := o.Swagger.Paths.Paths
 	for key, path := range paths {
 		if path.Get != nil {
-			o.Actions.Add(key, path.Get, "GET")
+			o.Actions.Add(key, path.Get, "GET", path.Parameters)
 		}
 		if path.Put != nil {
-			o.Actions.Add(key, path.Put, "PUT")
+			o.Actions.Add(key, path.Put, "PUT", path.Parameters)
 		}
 		if path.Post != nil {
-			o.Actions.Add(key, path.Post, "POST")
+			o.Actions.Add(key, path.Post, "POST", path.Parameters)
 		}
 		if path.Delete != nil {
-			o.Actions.Add(key, path.Delete, "DELETE")
+			o.Actions.Add(key, path.Delete, "DELETE", path.Parameters)
 		}
 		if path.Options != nil {
-			o.Actions.Add(key, path.Options, "OPTIONS")
+			o.Actions.Add(key, path.Options, "OPTIONS", path.Parameters)
 		}
 		if path.Head != nil {
-			o.Actions.Add(key, path.Head, "HEAD")
+			o.Actions.Add(key, path.Head, "HEAD", path.Parameters)
 		}
 		if path.Patch != nil {
-			o.Actions.Add(key, path.Patch, "PATCH")
+			o.Actions.Add(key, path.Patch, "PATCH", path.Parameters)
 		}
 	}
+
+	o.Actions.findCommonParameters()
 	return nil
 }

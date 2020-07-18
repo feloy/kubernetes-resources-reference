@@ -121,6 +121,8 @@ type ActionInfo struct {
 	Operation *spec.Operation
 	// HTTP Method
 	HTTPMethod string
+	// Parameters of the actions at path level plus operation level
+	Parameters ParametersList
 }
 
 // ActionInfoList represents a list of actions info
@@ -142,7 +144,13 @@ func (a ActionInfoList) Less(i, j int) bool {
 type Actions map[string]ActionInfoList
 
 // Add an action to the collection of actions
-func (o Actions) Add(key string, operation *spec.Operation, httpMethod string) {
+func (o Actions) Add(key string, operation *spec.Operation, httpMethod string, pathParameters []spec.Parameter) {
+
+	desc := operation.Description
+	if strings.Contains(strings.ToLower(desc), "deprecated") {
+		return
+	}
+
 	action, err := getActionExtension(operation.Extensions)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error getting extension")
@@ -157,22 +165,27 @@ func (o Actions) Add(key string, operation *spec.Operation, httpMethod string) {
 			//fmt.Fprintf(os.Stderr, "GVK extension not found for %s|%s\n", key, httpMethod)
 		} else {
 			gvkString := gvk.Group.String() + "." + gvk.Version.String() + "." + gvk.Kind.String()
+
+			list := new(ParametersList)
+			for _, pathParam := range pathParameters {
+				list.Add(pathParam)
+			}
+			for _, opParam := range operation.Parameters {
+				list.Add(opParam)
+			}
+			sort.Sort(list)
+
+			newActionInfo := ActionInfo{
+				Path:       ActionPath(key),
+				Action:     *action,
+				Operation:  operation,
+				HTTPMethod: httpMethod,
+				Parameters: *list,
+			}
 			if o[gvkString] != nil {
-				o[gvkString] = append(o[gvkString], ActionInfo{
-					Path:       ActionPath(key),
-					Action:     *action,
-					Operation:  operation,
-					HTTPMethod: httpMethod,
-				})
+				o[gvkString] = append(o[gvkString], newActionInfo)
 			} else {
-				o[gvkString] = []ActionInfo{
-					{
-						Path:       ActionPath(key),
-						Action:     *action,
-						Operation:  operation,
-						HTTPMethod: httpMethod,
-					},
-				}
+				o[gvkString] = []ActionInfo{newActionInfo}
 			}
 		}
 	} else {
@@ -189,5 +202,25 @@ func (o Actions) Get(gvk string) ActionInfoList {
 func (o Actions) Sort() {
 	for k := range o {
 		sort.Sort(o[k])
+	}
+}
+
+func (o Actions) findCommonParameters() {
+	for _, actionList := range o {
+		for _, action := range actionList {
+			ResourcesDescriptions.addActionParameters(&action.Parameters)
+		}
+	}
+	for k, list := range ResourcesDescriptions {
+		if len(list) == 1 && list[0].count > 10 {
+			ParametersAnnex[k] = struct{}{}
+		} else if len(list) == 2 && k == "fieldManager" {
+			ParametersAnnex[k] = struct{}{}
+			if len(list[0].Description) > len(list[1].Description) {
+				list = []descriptionInfo{list[0]}
+			} else {
+				list = []descriptionInfo{list[1]}
+			}
+		}
 	}
 }

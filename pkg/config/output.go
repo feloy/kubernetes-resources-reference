@@ -23,6 +23,8 @@ func (o *TOC) OutputDocument(output outputs.Output) error {
 		}
 	}
 
+	o.OutputCommonParameters(len(o.Parts), output)
+
 	err = output.Terminate()
 	if err != nil {
 		return err
@@ -188,19 +190,45 @@ func (o *TOC) OutputOperations(i int, outputChapter outputs.Chapter, operations 
 	if err != nil {
 		return err
 	}
-	_ = operationsSection
-	operationsSection.StartPropertyList()
 	for i, operation := range *operations {
 		o.OutputOperation(i, operationsSection, &operation)
 		_ = operation
 	}
-	operationsSection.EndPropertyList()
 	return nil
 }
 
 // OutputOperation outputs details of an Operation
 func (o *TOC) OutputOperation(i int, outputSection outputs.Section, operation *kubernetes.ActionInfo) error {
-	outputSection.AddOperation(operation)
+	outputSection.AddOperation(operation, o.LinkEnds)
+	return nil
+}
+
+// OutputCommonParameters outputs the parameters in common
+func (o *TOC) OutputCommonParameters(i int, output outputs.Output) error {
+	outputPart, err := output.AddPart(i, "Common Parameters")
+	if err != nil {
+		return err
+	}
+
+	outputChapter, err := outputPart.AddChapter(0, "Common Parameters", nil, "")
+
+	params := make([]string, len(kubernetes.ParametersAnnex))
+	j := 0
+	for k := range kubernetes.ParametersAnnex {
+		params[j] = k
+		j++
+	}
+	sort.Strings(params)
+	for i, param := range params {
+		if len(kubernetes.ResourcesDescriptions[param][0].Description) == 0 {
+			continue
+		}
+		outputSection, err := outputChapter.AddSection(i, param)
+		if err != nil {
+			return err
+		}
+		err = outputSection.AddContent(kubernetes.ResourcesDescriptions[param][0].Description)
+	}
 	return nil
 }
 
