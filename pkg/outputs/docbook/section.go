@@ -40,7 +40,7 @@ func (o DocbookSection) StartPropertyList() error {
 }
 
 // AddProperty adds a property to the list of properties
-func (o DocbookSection) AddProperty(name string, property *kubernetes.Property, linkend []string, indent bool) error {
+func (o DocbookSection) AddProperty(name string, property *kubernetes.Property, linkend []string, indent bool, defname string, shortName string) error {
 	if property.HardCodedValue != nil {
 		o.w.StartElem(x.Elem{Name: "varlistentry"})
 		o.w.StartElem(x.Elem{Name: "term"})
@@ -52,6 +52,9 @@ func (o DocbookSection) AddProperty(name string, property *kubernetes.Property, 
 		o.w.EndElem("varlistentry")
 		return nil
 	}
+
+	o.w.StartElem(dbxml.IndexTerm("fields", shortName, defname))
+	o.w.EndElem("indexterm")
 
 	o.w.StartElem(x.Elem{Name: "varlistentry"})
 	o.w.StartElem(x.Elem{Name: "term"})

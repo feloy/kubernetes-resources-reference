@@ -24,7 +24,7 @@ type FakeChapter struct{}
 
 func (o FakeChapter) SetAPIVersion(s string) error { return nil }
 func (o FakeChapter) SetGoImport(s string) error   { return nil }
-func (o FakeChapter) AddSection(i int, name string) (outputs.Section, error) {
+func (o FakeChapter) AddSection(i int, name string, apiVersion *string) (outputs.Section, error) {
 	return FakeSection{}, nil
 }
 
@@ -32,7 +32,7 @@ type FakeSection struct{}
 
 func (o FakeSection) AddContent(s string) error        { return nil }
 func (o FakeSection) AddTypeDefinition(s string) error { return nil }
-func (o FakeSection) AddProperty(name string, property *kubernetes.Property, linkend []string, indent bool) error {
+func (o FakeSection) AddProperty(name string, property *kubernetes.Property, linkend []string, indent bool, defname string, shortName string) error {
 	return nil
 }
 func (o FakeSection) EndProperty() error       { return nil }

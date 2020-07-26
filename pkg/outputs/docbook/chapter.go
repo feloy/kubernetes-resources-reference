@@ -14,20 +14,24 @@ type DocbookChapter struct {
 
 // SetAPIVersion writes the APIVersion for a chapter
 func (o DocbookChapter) SetAPIVersion(s string) error {
-	o.w.StartElem(dbxml.ElemWithText("subtitle", "apiVersion: "+s))
-	o.w.EndElem("subtitle")
+	o.w.StartElem(x.Elem{Name: "para"})
+	o.w.StartElem(dbxml.ElemWithText("varname", "apiVersion: "+s))
+	o.w.EndElem("varname")
+	o.w.EndElem("para")
 	return nil
 }
 
 // SetGoImport writes the Go import for a chapter
 func (o DocbookChapter) SetGoImport(s string) error {
-	o.w.StartElem(dbxml.ElemWithText("subtitle", "import \""+s+"\""))
-	o.w.EndElem("subtitle")
+	o.w.StartElem(x.Elem{Name: "para"})
+	o.w.StartElem(dbxml.ElemWithText("varname", "import \""+s+"\""))
+	o.w.EndElem("varname")
+	o.w.EndElem("para")
 	return nil
 }
 
 // AddSection adds a section to the Docbook chapter
-func (o DocbookChapter) AddSection(i int, name string) (outputs.Section, error) {
+func (o DocbookChapter) AddSection(i int, name string, apiVersion *string) (outputs.Section, error) {
 	if i > 0 {
 		o.w.EndToDepth(sectionDepth, x.ElemNode, "sect1")
 	}
@@ -44,6 +48,10 @@ func (o DocbookChapter) AddSection(i int, name string) (outputs.Section, error) 
 		Name:  "renderas",
 		Value: "sect2",
 	})
+	if apiVersion != nil {
+		o.w.StartElem(dbxml.IndexTerm("resources", name, *apiVersion))
+		o.w.EndElem("indexterm")
+	}
 	if err != nil {
 		return DocbookSection{}, err
 	}

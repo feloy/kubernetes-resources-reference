@@ -77,7 +77,33 @@ func ElemWithContent(nodename string, content []x.Writable) x.Elem {
 
 func elemWithAttributes(nodename string, attrs []x.Attr) x.Writable {
 	return x.Elem{
-		Name:  "xref",
+		Name:  nodename,
 		Attrs: attrs,
+	}
+}
+
+func IndexTerm(index string, primary string, secondary string) x.Elem {
+	return x.Elem{
+		Name: "indexterm",
+		Attrs: []x.Attr{
+			{
+				Name:  "type",
+				Value: index,
+			},
+		},
+		Content: []x.Writable{
+			x.Elem{
+				Name: "primary",
+				Content: []x.Writable{
+					x.Text(primary),
+				},
+			},
+			x.Elem{
+				Name: "secondary",
+				Content: []x.Writable{
+					x.Text(secondary),
+				},
+			},
+		},
 	}
 }
