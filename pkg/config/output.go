@@ -89,7 +89,7 @@ func (o *TOC) OutputChapter(i int, chapter *Chapter, outputPart outputs.Part) er
 
 // OutputSection outputs a section of the chapter
 func (o *TOC) OutputSection(i int, section *Section, outputChapter outputs.Chapter) error {
-	outputSection, err := outputChapter.AddSection(i, section.Name)
+	outputSection, err := outputChapter.AddSection(i, section.Name, section.APIVersion)
 	if err != nil {
 		return err
 	}
@@ -122,7 +122,7 @@ func (o *TOC) OutputProperties(defname string, definition spec.Schema, outputSec
 			} else if name == "kind" {
 				property = kubernetes.NewHardCodedValueProperty(name, defname)
 			}
-			err := outputSection.AddProperty(name, property, []string{}, false)
+			err := outputSection.AddProperty(name, property, []string{}, false, defname, name)
 			if err != nil {
 				return err
 			}
@@ -140,7 +140,7 @@ func (o *TOC) OutputProperties(defname string, definition spec.Schema, outputSec
 		}
 		completeName := prefix
 		completeName = append(completeName, name)
-		err = outputSection.AddProperty(strings.Join(completeName, "."), property, linkend, len(prefix) > 0)
+		err = outputSection.AddProperty(strings.Join(completeName, "."), property, linkend, len(prefix) > 0, defname, name)
 		if err != nil {
 			return err
 		}
@@ -186,7 +186,7 @@ func (o *TOC) setDocumentedDefinition(key *kubernetes.Key, from string) {
 
 // OutputOperations outputs the Operations chapter
 func (o *TOC) OutputOperations(i int, outputChapter outputs.Chapter, operations *kubernetes.ActionInfoList) error {
-	operationsSection, err := outputChapter.AddSection(i, "Operations")
+	operationsSection, err := outputChapter.AddSection(i, "Operations", nil)
 	if err != nil {
 		return err
 	}
@@ -223,7 +223,7 @@ func (o *TOC) OutputCommonParameters(i int, output outputs.Output) error {
 		if len(kubernetes.ResourcesDescriptions[param][0].Description) == 0 {
 			continue
 		}
-		outputSection, err := outputChapter.AddSection(i, param)
+		outputSection, err := outputChapter.AddSection(i, param, nil)
 		if err != nil {
 			return err
 		}

@@ -75,6 +75,8 @@ func (o *Docbook) Terminate() error {
 	ec.Do(
 		o.w.EndToDepth(partDepth, x.ElemNode, "part"),
 		insertLicense(o.w),
+		insertIndex(o.w, "resources", "Resources Index"),
+		insertIndex(o.w, "fields", "Fields Index"),
 		o.w.EndAllFlush(),
 	)
 	fmt.Println(o.buffer.String())
@@ -96,6 +98,18 @@ func insertLicense(w *x.Writer) error {
 		w.WriteRaw("\n")
 	}
 
+	return nil
+}
+
+func insertIndex(w *x.Writer, name string, title string) error {
+	ec := &x.ErrCollector{}
+	defer ec.Panic()
+	index1 := dbxml.Section("index", title)
+	ec.Do(
+		w.StartElem(index1),
+		w.WriteAttr(x.Attr{Name: "type", Value: name}),
+		w.EndElem("index"),
+	)
 	return nil
 }
 

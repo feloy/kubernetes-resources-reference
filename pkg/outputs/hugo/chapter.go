@@ -34,7 +34,7 @@ func (o Chapter) SetGoImport(s string) error {
 }
 
 // AddSection adds a section to the chapter
-func (o Chapter) AddSection(i int, name string) (outputs.Section, error) {
+func (o Chapter) AddSection(i int, name string, apiVersion *string) (outputs.Section, error) {
 	err := o.hugo.addSection(o.part.name, o.name, name)
 	if err != nil {
 		return Section{}, err

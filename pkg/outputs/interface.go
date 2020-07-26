@@ -20,7 +20,7 @@ type Part interface {
 type Chapter interface {
 	SetAPIVersion(s string) error
 	SetGoImport(s string) error
-	AddSection(i int, name string) (Section, error)
+	AddSection(i int, name string, apiVersion *string) (Section, error)
 }
 
 // Section is an interface to a section of an output
@@ -28,7 +28,7 @@ type Section interface {
 	AddContent(s string) error
 	AddTypeDefinition(s string) error
 	StartPropertyList() error
-	AddProperty(name string, property *kubernetes.Property, linkend []string, indent bool) error
+	AddProperty(name string, property *kubernetes.Property, linkend []string, indent bool, defname string, shortName string) error
 	EndProperty() error
 	EndPropertyList() error
 	AddOperation(operation *kubernetes.ActionInfo, linkends kubernetes.LinkEnds) error
