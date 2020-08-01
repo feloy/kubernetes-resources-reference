@@ -17,6 +17,9 @@ type DocbookSection struct {
 // AddContent adds content to the output
 func (o DocbookSection) AddContent(s string) error {
 	for _, part := range strings.Split(s, "\n") {
+		if part == "" {
+			continue
+		}
 		o.w.StartElem(dbxml.ElemWithText("para", part))
 		o.w.EndElem("para")
 	}
@@ -326,6 +329,12 @@ func (o DocbookSection) AddOperation(operation *kubernetes.ActionInfo, linkends 
 	o.w.EndElem("variablelist")
 
 	o.w.EndElem("sect2")
+	return nil
+}
+
+func (o DocbookSection) AddDefinitionIndexEntry(d string) error {
+	o.w.StartElem(dbxml.IndexTermPrimary("definitions", d))
+	o.w.EndElem("indexterm")
 	return nil
 }
 
