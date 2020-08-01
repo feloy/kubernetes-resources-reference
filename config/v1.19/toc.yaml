@@ -214,12 +214,16 @@ parts:
   chapters:
   - name: DeleteOptions
     key: io.k8s.apimachinery.pkg.apis.meta.v1.DeleteOptions
+  - name: DownwardAPIVolumeFile
+    key: io.k8s.api.core.v1.DownwardAPIVolumeFile
   - name: ExecAction
     key: io.k8s.api.core.v1.ExecAction
   - name: HTTPGetAction
     key: io.k8s.api.core.v1.HTTPGetAction
   - name: JSONSchemaProps
     key: io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1.JSONSchemaProps
+  - name: KeyToPath
+    key: io.k8s.api.core.v1.KeyToPath
   - name: LabelSelector
     key: io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector
   - name: ListMeta
