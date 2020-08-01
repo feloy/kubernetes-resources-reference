@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"sort"
 	"strings"
 
@@ -89,7 +90,12 @@ func (o *TOC) OutputChapter(i int, chapter *Chapter, outputPart outputs.Part) er
 
 // OutputSection outputs a section of the chapter
 func (o *TOC) OutputSection(i int, section *Section, outputChapter outputs.Chapter) error {
-	outputSection, err := outputChapter.AddSection(i, section.Name, section.APIVersion)
+	var apiVersion *string
+	if section.Group != nil && section.Version != nil {
+		a := GetGV(*section.Group, *section.Version)
+		apiVersion = &a
+	}
+	outputSection, err := outputChapter.AddSection(i, section.Name, apiVersion)
 	if err != nil {
 		return err
 	}
@@ -98,79 +104,118 @@ func (o *TOC) OutputSection(i int, section *Section, outputChapter outputs.Chapt
 		return err
 	}
 
-	outputSection.StartPropertyList()
-
-	err = o.OutputProperties(section.Name, section.Definition, outputSection, []string{}, section.APIVersion)
+	err = o.OutputProperties(section.Name, section.Definition, outputSection, []string{}, section.Group, section.Version, section.Key)
 	if err != nil {
 		return err
 	}
-
-	return outputSection.EndPropertyList()
+	return nil
 }
 
 // OutputProperties outputs the properties of a definition
-func (o *TOC) OutputProperties(defname string, definition spec.Schema, outputSection outputs.Section, prefix []string, apiVersion *string) error {
+func (o *TOC) OutputProperties(defname string, definition spec.Schema, outputSection outputs.Section, prefix []string, group *kubernetes.APIGroup, version *kubernetes.APIVersion, key *kubernetes.Key) error {
 	requiredProperties := definition.Required
-	ordered := orderedPropertyKeys(requiredProperties, definition.Properties, apiVersion != nil)
 
-	for _, name := range ordered {
+	var apiVersion *string
+	if group != nil && version != nil {
+		a := GetGV(*group, *version)
+		apiVersion = &a
+	}
 
-		if apiVersion != nil && (name == "apiVersion" || name == "kind") {
-			var property *kubernetes.Property
-			if name == "apiVersion" {
-				property = kubernetes.NewHardCodedValueProperty(name, *apiVersion)
-			} else if name == "kind" {
-				property = kubernetes.NewHardCodedValueProperty(name, defname)
+	// Search configured categories
+	var fieldCategories []FieldCategory
+	if key != nil {
+		fieldCategories = o.Categories.Find(*key)
+
+		if fieldCategories != nil {
+			if err := checkAllFieldsPresent(fieldCategories, definition.Properties); err != nil {
+				return fmt.Errorf("error on fields configuration: %s", err)
 			}
-			err := outputSection.AddProperty(name, property, []string{}, false, defname, name)
-			if err != nil {
-				return err
+		}
+	}
+
+	if fieldCategories == nil {
+		// Categories config not found, create a default one
+		ordered := orderedPropertyKeys(requiredProperties, definition.Properties, apiVersion != nil)
+		fieldCategories = []FieldCategory{
+			{
+				Name:   "",
+				Fields: ordered,
+			},
+		}
+	}
+
+	for _, fieldCategory := range fieldCategories {
+
+		if len(prefix) == 0 {
+			// NOTE: category names are not displayed for sub-fields (that would be a hell of a mess...)
+			if fieldCategory.Name != "" {
+				outputSection.AddFieldCategory(fieldCategory.Name)
 			}
-			continue
+
+			outputSection.StartPropertyList()
 		}
 
-		details := definition.Properties[name]
-		property, err := kubernetes.NewProperty(name, details, requiredProperties)
-		if err != nil {
-			return err
-		}
-		var linkend []string
-		if property.TypeKey != nil {
-			linkend = o.LinkEnds[*property.TypeKey]
-		}
-		completeName := prefix
-		completeName = append(completeName, name)
-		err = outputSection.AddProperty(strings.Join(completeName, "."), property, linkend, len(prefix) > 0, defname, name)
-		if err != nil {
-			return err
-		}
-		if property.TypeKey != nil && len(linkend) == 0 {
-			// The type is documented inline
-			if target, found := (*o.Definitions)[property.TypeKey.String()]; found {
-				o.setDocumentedDefinition(property.TypeKey, defname+"/"+strings.Join(completeName, "."))
-
-				err = outputSection.AddTypeDefinition(target.Description)
+		for _, name := range fieldCategory.Fields {
+			if apiVersion != nil && (name == "apiVersion" || name == "kind") {
+				var property *kubernetes.Property
+				if name == "apiVersion" {
+					property = kubernetes.NewHardCodedValueProperty(name, *apiVersion)
+				} else if name == "kind" {
+					property = kubernetes.NewHardCodedValueProperty(name, defname)
+				}
+				err := outputSection.AddProperty(name, property, []string{}, false, defname, name)
 				if err != nil {
 					return err
 				}
+				continue
+			}
 
-				sublist := false
-				if len(prefix) == 0 {
-					sublist = true
-					outputSection.StartPropertyList()
-				} else {
-					err = outputSection.EndProperty()
-				}
+			details := definition.Properties[name]
+			property, err := kubernetes.NewProperty(name, details, requiredProperties)
+			if err != nil {
+				return err
+			}
+			var linkend []string
+			if property.TypeKey != nil {
+				linkend = o.LinkEnds[*property.TypeKey]
+			}
+			completeName := prefix
+			completeName = append(completeName, name)
+			err = outputSection.AddProperty(strings.Join(completeName, "."), property, linkend, len(prefix) > 0, defname, name)
+			if err != nil {
+				return err
+			}
+			if property.TypeKey != nil && len(linkend) == 0 {
+				// The type is documented inline
+				if target, found := (*o.Definitions)[property.TypeKey.String()]; found {
+					o.setDocumentedDefinition(property.TypeKey, defname+"/"+strings.Join(completeName, "."))
 
-				o.OutputProperties(defname, target, outputSection, append(prefix, name), nil)
-				if sublist {
-					outputSection.EndPropertyList()
+					err = outputSection.AddTypeDefinition(target.Description)
+					if err != nil {
+						return err
+					}
+
+					sublist := false
+					if len(prefix) == 0 {
+						sublist = true
+						outputSection.StartPropertyList()
+					} else {
+						err = outputSection.EndProperty()
+					}
+
+					o.OutputProperties(defname, target, outputSection, append(prefix, name), nil, nil, property.TypeKey)
+					if sublist {
+						outputSection.EndPropertyList()
+					}
 				}
 			}
+			err = outputSection.EndProperty()
+			if err != nil {
+				return err
+			}
 		}
-		err = outputSection.EndProperty()
-		if err != nil {
-			return err
+		if len(prefix) == 0 {
+			outputSection.EndPropertyList()
 		}
 	}
 	return nil
@@ -271,4 +316,32 @@ func isRequired(k string, required []string) bool {
 		}
 	}
 	return false
+}
+
+func checkAllFieldsPresent(configuredFields []FieldCategory, definedFields map[string]spec.Schema) error {
+	already := map[string]struct{}{}
+
+	count := 0
+	for _, category := range configuredFields {
+		for _, field := range category.Fields {
+			if _, found := already[field]; found {
+				return fmt.Errorf("field %s found twice", field)
+			}
+			already[field] = struct{}{}
+			if _, found := definedFields[field]; !found {
+				return fmt.Errorf("field %s not defined in Spec", field)
+			}
+			count++
+		}
+	}
+	if len(definedFields) != count {
+		forgotten := []string{}
+		for defined := range definedFields {
+			if _, found := already[defined]; !found {
+				forgotten = append(forgotten, defined)
+			}
+		}
+		return fmt.Errorf("%d fields configured but %d fields in Spec, missing %v", count, len(definedFields), forgotten)
+	}
+	return nil
 }

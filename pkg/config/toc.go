@@ -22,6 +22,7 @@ type TOC struct {
 	LinkEnds              kubernetes.LinkEnds
 	DocumentedDefinitions map[kubernetes.Key][]string
 	Actions               kubernetes.Actions
+	Categories            Categories
 }
 
 // Part contains chapters
@@ -33,15 +34,27 @@ type Part struct {
 // Section contains a definition of a Kind for a given Group/Version
 type Section struct {
 	Name       string
-	APIVersion *string
+	Group      *kubernetes.APIGroup
+	Version    *kubernetes.APIVersion
 	Definition spec.Schema
+	Key        *kubernetes.Key
 }
 
 // NewSection returns a Section
-func NewSection(name string, definition *spec.Schema, apiVersion *string) *Section {
+func NewSection(name string, definition *spec.Schema, group *kubernetes.APIGroup, version *kubernetes.APIVersion) *Section {
 	return &Section{
 		Name:       name,
-		APIVersion: apiVersion,
+		Group:      group,
+		Version:    version,
+		Definition: *definition,
+	}
+}
+
+// NewSectionForDefinition returns a Section for a definition
+func NewSectionForDefinition(name string, definition *spec.Schema, key kubernetes.Key) *Section {
+	return &Section{
+		Name:       name,
+		Key:        &key,
 		Definition: *definition,
 	}
 }
@@ -144,15 +157,13 @@ func (o *TOC) ToHugo(dir string) error {
 
 	hugo := hugo.NewHugo(dir)
 
-	o.OutputDocument(hugo)
-	return nil
+	return o.OutputDocument(hugo)
 }
 
 // ToDocbook outputs documentation in Docbook format
 func (o *TOC) ToDocbook(w io.Writer) error {
 	docbook := docbook.NewDocbook()
-	o.OutputDocument(docbook)
-	return nil
+	return o.OutputDocument(docbook)
 }
 
 // OutputDocumentedDefinitions outputs the list of definitions

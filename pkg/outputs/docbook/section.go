@@ -26,6 +26,9 @@ func (o DocbookSection) AddContent(s string) error {
 // AddTypeDefinition adds the definition of a type to the output
 func (o DocbookSection) AddTypeDefinition(s string) error {
 	for _, part := range strings.Split(s, "\n") {
+		if part == "" {
+			continue
+		}
 		o.w.StartElem(x.Elem{Name: "para"})
 		o.w.StartElem(dbxml.ElemWithText("emphasis", part))
 		o.w.EndElem("emphasis")
@@ -37,6 +40,20 @@ func (o DocbookSection) AddTypeDefinition(s string) error {
 // StartPropertyList starts the list of properties
 func (o DocbookSection) StartPropertyList() error {
 	return o.w.StartElem(x.Elem{Name: "variablelist"})
+}
+
+func (o DocbookSection) AddFieldCategory(name string) error {
+	category := dbxml.ElemWithText("bridgehead", name)
+	err := o.w.StartElem(category)
+	if err != nil {
+		return err
+	}
+	o.w.WriteAttr(x.Attr{
+		Name:  "renderas",
+		Value: "sect4",
+	})
+	o.w.EndElem("bridgehead")
+	return nil
 }
 
 // AddProperty adds a property to the list of properties
@@ -125,6 +142,9 @@ func (o DocbookSection) AddProperty(name string, property *kubernetes.Property, 
 
 	parts := strings.Split(property.Description, "\n")
 	for _, part := range parts {
+		if part == "" {
+			continue
+		}
 		o.w.StartElem(dbxml.ElemWithText("para", part))
 		o.w.EndElem("para")
 	}

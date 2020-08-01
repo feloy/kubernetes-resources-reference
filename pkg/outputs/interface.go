@@ -28,6 +28,7 @@ type Section interface {
 	AddContent(s string) error
 	AddTypeDefinition(s string) error
 	StartPropertyList() error
+	AddFieldCategory(name string) error
 	AddProperty(name string, property *kubernetes.Property, linkend []string, indent bool, defname string, shortName string) error
 	EndProperty() error
 	EndPropertyList() error

@@ -24,12 +24,26 @@ func (o Section) AddContent(s string) error {
 
 // AddTypeDefinition adds the definition of a type to a section
 func (o Section) AddTypeDefinition(s string) error {
-	return o.hugo.addContent(o.part.name, o.chapter.name, markdown.Italic(s))
+	parts := strings.Split(s, "\n")
+	for _, part := range parts {
+		if part == "" {
+			continue
+		}
+		err := o.hugo.addContent(o.part.name, o.chapter.name, markdown.Italic(part))
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // StartPropertyList starts the list of properties
 func (o Section) StartPropertyList() error {
 	return nil
+}
+
+func (o Section) AddFieldCategory(name string) error {
+	return o.hugo.addContent(o.part.name, o.chapter.name, markdown.Subsection(name))
 }
 
 // AddProperty adds a property to the section

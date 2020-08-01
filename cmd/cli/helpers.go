@@ -29,5 +29,12 @@ func prepareTOC(cmd *cobra.Command) (*config.TOC, error) {
 	toc.Actions = spec.Actions
 	toc.Actions.Sort()
 
+	// TODO browse directory
+	categories, err := config.LoadCategories([]string{path.Join(configDir, "fields.yaml")})
+	if err != nil {
+		return nil, err
+	}
+	toc.Categories = categories
+
 	return toc, nil
 }
