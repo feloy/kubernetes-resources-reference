@@ -193,6 +193,10 @@ func (o Section) AddOperation(operation *kubernetes.ActionInfo, linkends kuberne
 	return nil
 }
 
+func (o Section) AddDefinitionIndexEntry(d string) error {
+	return nil
+}
+
 func paramName(s string, in string) string {
 	switch in {
 	case "path":

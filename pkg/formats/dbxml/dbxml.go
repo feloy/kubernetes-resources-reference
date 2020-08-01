@@ -107,3 +107,23 @@ func IndexTerm(index string, primary string, secondary string) x.Elem {
 		},
 	}
 }
+
+func IndexTermPrimary(index string, primary string) x.Elem {
+	return x.Elem{
+		Name: "indexterm",
+		Attrs: []x.Attr{
+			{
+				Name:  "type",
+				Value: index,
+			},
+		},
+		Content: []x.Writable{
+			x.Elem{
+				Name: "primary",
+				Content: []x.Writable{
+					x.Text(primary),
+				},
+			},
+		},
+	}
+}

@@ -76,6 +76,7 @@ func (o *Docbook) Terminate() error {
 		o.w.EndToDepth(partDepth, x.ElemNode, "part"),
 		insertLicense(o.w),
 		insertIndex(o.w, "resources", "Resources Index"),
+		insertIndex(o.w, "definitions", "Definitions Index"),
 		insertIndex(o.w, "fields", "Fields Index"),
 		o.w.EndAllFlush(),
 	)

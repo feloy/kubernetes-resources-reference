@@ -33,4 +33,5 @@ type Section interface {
 	EndProperty() error
 	EndPropertyList() error
 	AddOperation(operation *kubernetes.ActionInfo, linkends kubernetes.LinkEnds) error
+	AddDefinitionIndexEntry(d string) error
 }

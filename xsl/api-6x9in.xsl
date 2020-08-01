@@ -36,6 +36,7 @@ limitations under the License.
     book      toc,title
     part      title
   </xsl:param>
+  <xsl:param name="toc.section.depth">1</xsl:param>
   <xsl:attribute-set name="monospace.verbatim.properties">
     <xsl:attribute name="wrap-option">wrap</xsl:attribute>
   </xsl:attribute-set>
@@ -123,7 +124,7 @@ limitations under the License.
       </xsl:call-template>
     </fo:block>
   </xsl:template>
-    
+
   <xsl:attribute-set name="part.label.properties">
     <xsl:attribute name="font-size">12pt</xsl:attribute>
     <xsl:attribute name="text-align">right</xsl:attribute>
@@ -132,4 +133,72 @@ limitations under the License.
     <xsl:attribute name="text-align">right</xsl:attribute>
   </xsl:attribute-set>
 
+  <!-- change header content -->
+
+  <xsl:template name="header.content">
+    <xsl:param name="pageclass" select="''"/>
+    <xsl:param name="sequence" select="''"/>
+    <xsl:param name="position" select="''"/>
+    <xsl:param name="gentext-key" select="''"/>
+
+    <fo:block>
+      <!-- sequence can be odd, even, first, blank -->
+      <!-- position can be left, center, right -->
+      <xsl:choose>
+        <xsl:when test="$sequence = 'blank'">
+          <!-- nothing -->
+        </xsl:when>
+  
+        <xsl:when test="$position='left'">
+          <!-- Same for odd, even, empty, and blank sequences -->
+          <xsl:call-template name="draft.text"/>
+        </xsl:when>
+  
+        <xsl:when test="($sequence='odd') and $position='center'">
+          <xsl:if test="$pageclass != 'titlepage'">
+            <xsl:choose>
+              <xsl:when test="ancestor::book and ($double.sided != 0)">
+                <fo:retrieve-marker retrieve-class-name="section.head.marker"
+                                    retrieve-position="first-including-carryover"
+                                    retrieve-boundary="page-sequence"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:apply-templates select="." mode="titleabbrev.markup"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
+        </xsl:when>
+
+        <xsl:when test="($sequence='even') and $position='center'">
+          <xsl:if test="$pageclass != 'titlepage'">
+            <xsl:choose>
+              <xsl:when test="ancestor::book and ($double.sided != 0)">
+                <xsl:apply-templates select="." mode="titleabbrev.markup"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:apply-templates select="." mode="titleabbrev.markup"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
+        </xsl:when>
+
+        <xsl:when test="$position='center'">
+          <!-- nothing for empty and blank sequences -->
+        </xsl:when>
+  
+        <xsl:when test="$position='right'">
+          <!-- Same for odd, even, empty, and blank sequences -->
+          <xsl:call-template name="draft.text"/>
+        </xsl:when>
+  
+        <xsl:when test="$sequence = 'first'">
+          <!-- nothing for first pages -->
+        </xsl:when>
+  
+        <xsl:when test="$sequence = 'blank'">
+          <!-- nothing for blank pages -->
+        </xsl:when>
+      </xsl:choose>
+    </fo:block>
+  </xsl:template>
 </xsl:stylesheet>

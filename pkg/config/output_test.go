@@ -43,6 +43,7 @@ func (o FakeSection) EndPropertyList() error   { return nil }
 func (o FakeSection) AddOperation(operation *kubernetes.ActionInfo, linkends kubernetes.LinkEnds) error {
 	return nil
 }
+func (o FakeSection) AddDefinitionIndexEntry(d string) error { return nil }
 
 func TestOutputDocumentV116(t *testing.T) {
 	outputDocumentVersion(t, "v1.16")

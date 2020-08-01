@@ -99,6 +99,10 @@ func (o *TOC) OutputSection(i int, section *Section, outputChapter outputs.Chapt
 	if err != nil {
 		return err
 	}
+	err = outputSection.AddDefinitionIndexEntry(section.Name)
+	if err != nil {
+		return err
+	}
 	err = outputSection.AddContent(section.Definition.Description)
 	if err != nil {
 		return err
@@ -189,6 +193,18 @@ func (o *TOC) OutputProperties(defname string, definition spec.Schema, outputSec
 				// The type is documented inline
 				if target, found := (*o.Definitions)[property.TypeKey.String()]; found {
 					o.setDocumentedDefinition(property.TypeKey, defname+"/"+strings.Join(completeName, "."))
+
+					indexedType := property.Type
+					if strings.HasPrefix(indexedType, "[]") {
+						indexedType = indexedType[2:]
+					}
+					if strings.HasPrefix(indexedType, "map[string]") {
+						indexedType = indexedType[11:]
+					}
+					err = outputSection.AddDefinitionIndexEntry(indexedType)
+					if err != nil {
+						return err
+					}
 
 					err = outputSection.AddTypeDefinition(target.Description)
 					if err != nil {
