@@ -186,9 +186,6 @@ parts:
   - name: Namespace
     group: ""
     version: v1
-  - name: ComponentStatus
-    group: ""
-    version: v1
   - name: Event
     group: events.k8s.io
     version: v1
@@ -208,6 +205,9 @@ parts:
     group: flowcontrol.apiserver.k8s.io
     version: v1alpha1
   - name: Binding
+    group: ""
+    version: v1
+  - name: ComponentStatus
     group: ""
     version: v1
 - name: Common Definitions
