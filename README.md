@@ -2,6 +2,19 @@
 
 Tool to create documentation of the Kubernetes API.
 
+Visit the website at https://k8sref.io
+
+Get a printed book at:
+
+- US: https://www.amazon.com/dp/B086G11WY1
+- UK: https://www.amazon.co.uk/dp/B086G11WY1
+- DE: https://www.amazon.de/dp/B086G11WY1
+- FR: https://www.amazon.fr/dp/B086G11WY1
+- ES: https://www.amazon.es/dp/B086G11WY1
+- IT: https://www.amazon.it/dp/B086G11WY1
+- JP: https://www.amazon.co.jp/dp/B086G11WY1
+- CA: https://www.amazon.ca/dp/B086G11WY1
+
 ## Usage
 
 ### Web output
