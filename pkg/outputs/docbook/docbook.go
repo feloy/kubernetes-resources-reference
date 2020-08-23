@@ -37,8 +37,8 @@ func (o *Docbook) Prepare() error {
 
 	book := dbxml.NewBook()
 	bookinfo := dbxml.Bookinfo(
-		"Kubernetes Resources",
-		"v1.19", "2020",
+		"Kubernetes API Reference",
+		"version 1.19", "2020",
 		"The Kubernetes Authors",
 		[]string{
 			"By the Kubernetes Authors",
