@@ -39,7 +39,7 @@ landing:
       - link: docs/cluster
         text: CLUSTER
         color: primary
-      - link: https://www.amazon.com/Kubernetes-Resources-Reference-OpenAPI-specification/dp/B086G11WY1
+      - link: https://buy-from-amazon.k8sref.io
         text: GET the BOOK
         color: normal
 #  - height: 350
