@@ -105,7 +105,7 @@ func (o *Hugo) addListEntry(partname string, chaptername string, title string, c
 	}
 	defer f.Close()
 
-	_, err = fmt.Fprintf(f, markdown.ListEntry(title, content, indentLevel))
+	_, err = fmt.Fprintf(f, markdown.ListEntry(title, content, indentLevel, false))
 	if err != nil {
 		fmt.Print("error printing in file")
 	}

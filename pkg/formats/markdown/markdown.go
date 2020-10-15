@@ -31,7 +31,7 @@ func Subsection(name string) string {
 }
 
 // ListEntry returns a list entry
-func ListEntry(title string, content string, indentLevel int) string {
+func ListEntry(title string, content string, indentLevel int, nl bool) string {
 	titleIndent := strings.Repeat("  ", indentLevel) + "- "
 	descIndent := strings.Repeat("  ", indentLevel) + "  "
 
@@ -40,5 +40,10 @@ func ListEntry(title string, content string, indentLevel int) string {
 	for i := range parts {
 		parts[i] = descIndent + parts[i]
 	}
-	return fmt.Sprintf("%s%s\n%s\n", titleIndent, title, strings.Join(parts, "\n"))
+
+	separator := "\n"
+	if nl {
+		separator = "\n\n"
+	}
+	return fmt.Sprintf("%s%s%s%s\n", titleIndent, title, separator, strings.Join(parts, "\n"))
 }

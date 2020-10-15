@@ -105,7 +105,7 @@ func (o *KWebsite) addListEntry(partname string, chaptername string, title strin
 	}
 	defer f.Close()
 
-	_, err = fmt.Fprintf(f, markdown.ListEntry(title, content, indentLevel))
+	_, err = fmt.Fprintf(f, markdown.ListEntry(title, content, indentLevel, true))
 	if err != nil {
 		fmt.Print("error printing in file")
 	}

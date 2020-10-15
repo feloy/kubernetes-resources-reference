@@ -17,7 +17,7 @@ type Chapter struct {
 
 // SetAPIVersion writes the APIVersion for a chapter
 func (o Chapter) SetAPIVersion(s string) error {
-	err := o.kwebsite.addContent(o.part.name, o.name, markdown.Code("apiVersion: "+s))
+	err := o.kwebsite.addContent(o.part.name, o.name, markdown.Code("apiVersion: "+s)+"\n")
 	if err != nil {
 		return fmt.Errorf("Error adding GV for chapter %s/%s: %s", o.part.name, o.name, err)
 	}
@@ -26,7 +26,7 @@ func (o Chapter) SetAPIVersion(s string) error {
 
 // SetGoImport writes the Go import for a chapter
 func (o Chapter) SetGoImport(s string) error {
-	err := o.kwebsite.addContent(o.part.name, o.name, markdown.Code("import \""+s+"\""))
+	err := o.kwebsite.addContent(o.part.name, o.name, markdown.Code("import \""+s+"\"")+"\n")
 	if err != nil {
 		return fmt.Errorf("Error adding Go Import for chapter %s/%s: %s", o.part.name, o.name, err)
 	}

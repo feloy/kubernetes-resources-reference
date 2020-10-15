@@ -29,7 +29,7 @@ func (o Section) AddTypeDefinition(s string) error {
 		if part == "" {
 			continue
 		}
-		err := o.kwebsite.addContent(o.part.name, o.chapter.name, markdown.Italic(part))
+		err := o.kwebsite.addContent(o.part.name, o.chapter.name, "\n  "+markdown.Italic(part))
 		if err != nil {
 			return err
 		}
@@ -84,7 +84,7 @@ func (o Section) AddProperty(name string, property *kubernetes.Property, linkend
 		}
 	}
 	if len(listType) > 0 {
-		description = "*" + listType + "*\n" + description
+		description = "*" + listType + "*\n\n" + description
 	}
 
 	var patches string
@@ -97,7 +97,7 @@ func (o Section) AddProperty(name string, property *kubernetes.Property, linkend
 	}
 
 	if len(patches) > 0 {
-		description = "*" + patches + "*\n" + description
+		description = "*" + patches + "*\n\n" + description
 	}
 	return o.kwebsite.addListEntry(o.part.name, o.chapter.name, title, description, indentLevel)
 }
