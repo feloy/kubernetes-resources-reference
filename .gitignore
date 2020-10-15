@@ -17,6 +17,7 @@
 .firebase
 .firebaserc
 
+/website/content/en/docs/
 /website/public
 /build/
 .vscode/launch.json
