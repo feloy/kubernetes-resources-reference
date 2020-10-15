@@ -36,7 +36,7 @@ func RootCmd() *cobra.Command {
 	cmd.MarkFlagRequired(fileOption)
 
 	subcommands := []func() *cobra.Command{
-		ResourceslistCmd, ShowTOCCmd, GVKeysMap, Hugo, Docbook,
+		ResourceslistCmd, ShowTOCCmd, GVKeysMap, Hugo, Docbook, KWebsite,
 	}
 	for _, subcommand := range subcommands {
 		cmd.AddCommand(subcommand())
