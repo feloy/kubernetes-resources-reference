@@ -15,7 +15,7 @@ type Part struct {
 }
 
 // AddChapter adds a chapter to the Part
-func (o Part) AddChapter(i int, name string, version *kubernetes.APIVersion, description string) (outputs.Chapter, error) {
+func (o Part) AddChapter(i int, name string, gv string, version *kubernetes.APIVersion, description string, importPrefix string) (outputs.Chapter, error) {
 	title := name
 	if version != nil && version.Stage != kubernetes.StageGA {
 		title += " " + version.String()

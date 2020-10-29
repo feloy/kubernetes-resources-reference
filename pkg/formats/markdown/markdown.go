@@ -17,17 +17,17 @@ func Italic(s string) string {
 
 // Chapter returns a Level 2 mark
 func Chapter(name string) string {
-	return fmt.Sprintf("## %s\n", name)
+	return fmt.Sprintf("\n## %s\n\n", name)
 }
 
 // Section returns a Level 3 mark
 func Section(name string) string {
-	return fmt.Sprintf("### %s\n", name)
+	return fmt.Sprintf("\n### %s\n\n", name)
 }
 
 // Subsection returns a Level 4 mark
 func Subsection(name string) string {
-	return fmt.Sprintf("#### %s\n", name)
+	return fmt.Sprintf("\n#### %s\n", name)
 }
 
 // ListEntry returns a list entry

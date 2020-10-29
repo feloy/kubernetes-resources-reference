@@ -20,7 +20,7 @@ func (o *KWebsite) addIndex(subdir string, metadata map[string]interface{}) erro
 	}
 	defer f.Close()
 
-	return writeMetadata(f, metadata)
+	return writeMetadata(f, metadata, 0)
 }
 
 // addPart adds a directory in the KWebsite content
@@ -43,7 +43,7 @@ func (o *KWebsite) addChapter(partname string, name string, version string, meta
 		return "", err
 	}
 	defer f.Close()
-	writeMetadata(f, metadata)
+	writeMetadata(f, metadata, 0)
 	fmt.Fprintf(f, markdown.Chapter(name))
 	return chaptername, nil
 }
@@ -113,28 +113,41 @@ func (o *KWebsite) addListEntry(partname string, chaptername string, title strin
 }
 
 // writeMetadata writes metadata at the beginning of a Markdown file
-func writeMetadata(f io.Writer, metadata map[string]interface{}) error {
-	_, err := fmt.Fprint(f, "---\n")
-	if err != nil {
-		return err
+func writeMetadata(f io.Writer, metadata map[string]interface{}, indent int) error {
+	if indent == 0 {
+		_, err := fmt.Fprint(f, "---\n")
+		if err != nil {
+			return err
+		}
 	}
 	for k, v := range metadata {
 		switch v.(type) {
 		case string:
-			_, err = fmt.Fprintf(f, "%s: \"%v\"\n", k, v)
+			_, err := fmt.Fprintf(f, "%s%s: \"%v\"\n", strings.Repeat(" ", indent*2), k, v)
+			if err != nil {
+				return err
+			}
+		case map[string]interface{}:
+			_, err := fmt.Fprintf(f, "%s:\n", k)
+			if err != nil {
+				return err
+			}
+			err = writeMetadata(f, v.(map[string]interface{}), indent+1)
 			if err != nil {
 				return err
 			}
 		default:
-			_, err = fmt.Fprintf(f, "%s: %v\n", k, v)
+			_, err := fmt.Fprintf(f, "%s%s: %v\n", strings.Repeat(" ", indent*2), k, v)
 			if err != nil {
 				return err
 			}
 		}
 	}
-	_, err = fmt.Fprint(f, "---\n")
-	if err != nil {
-		return err
+	if indent == 0 {
+		_, err := fmt.Fprint(f, "---\n")
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

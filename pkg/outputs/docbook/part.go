@@ -13,7 +13,7 @@ type DocbookPart struct {
 }
 
 // AddChapter adds a chapter to the Docbook part
-func (o DocbookPart) AddChapter(i int, name string, version *kubernetes.APIVersion, description string) (outputs.Chapter, error) {
+func (o DocbookPart) AddChapter(i int, name string, gv string, version *kubernetes.APIVersion, description string, importPrefix string) (outputs.Chapter, error) {
 	if i > 0 {
 		o.w.EndToDepth(chapterDepth, x.ElemNode, "chapter")
 	}
