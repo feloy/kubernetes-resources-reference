@@ -21,17 +21,17 @@ func (o Part) AddChapter(i int, name string, gv string, version *kubernetes.APIV
 		title += " " + version.String()
 	}
 	chaptername, err := o.kwebsite.addChapter(o.name, name, version.String(), map[string]interface{}{
-		"title":        title,
-		"description":  description,
-		"draft":        false,
-		"collapsible":  false,
-		"weight":       i + 1,
-		"content_type": "api_reference",
 		"api_metadata": map[string]interface{}{
-			"kind":       name,
 			"apiVersion": gv,
 			"import":     importPrefix,
+			"kind":       name,
 		},
+		"collapsible":  false,
+		"content_type": "api_reference",
+		"description":  description,
+		"draft":        false,
+		"title":        title,
+		"weight":       i + 1,
 	})
 	if err != nil {
 		return Chapter{}, fmt.Errorf("Error creating chapter %s/%s: %s", o.name, name, err)

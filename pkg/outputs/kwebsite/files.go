@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/feloy/kubernetes-api-reference/pkg/formats/markdown"
@@ -120,7 +121,15 @@ func writeMetadata(f io.Writer, metadata map[string]interface{}, indent int) err
 			return err
 		}
 	}
-	for k, v := range metadata {
+
+	keys := make([]string, 0, len(metadata))
+	for k := range metadata {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	for _, k := range keys {
+		v := metadata[k]
 		switch v.(type) {
 		case string:
 			_, err := fmt.Fprintf(f, "%s%s: \"%v\"\n", strings.Repeat(" ", indent*2), k, v)
