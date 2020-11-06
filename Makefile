@@ -58,5 +58,12 @@ website: clean-website
 	go run cmd/main.go hugo --config-dir config/v1.19/ --file api/v1.19/swagger.json --output-dir website/content/en/docs
 	(cd website && hugo)
 
+clean-kwebsite:
+	rm -rf kwebsite/content/en/docs/* kwebsite/public
+
+kwebsite: clean-kwebsite
+	mkdir -p kwebsite/content/en/docs
+	go run cmd/main.go kwebsite --config-dir config/v1.19/ --file api/v1.19/swagger.json --output-dir kwebsite/content/en/docs
+
 serve:
 	(cd website/public && python3 -m http.server)
