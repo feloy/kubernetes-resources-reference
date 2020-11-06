@@ -10,6 +10,7 @@ import (
 	"github.com/feloy/kubernetes-api-reference/pkg/kubernetes"
 	"github.com/feloy/kubernetes-api-reference/pkg/outputs/docbook"
 	"github.com/feloy/kubernetes-api-reference/pkg/outputs/hugo"
+	"github.com/feloy/kubernetes-api-reference/pkg/outputs/kwebsite"
 	"github.com/go-openapi/spec"
 	"gopkg.in/yaml.v2"
 )
@@ -158,6 +159,22 @@ func (o *TOC) ToHugo(dir string) error {
 	hugo := hugo.NewHugo(dir)
 
 	return o.OutputDocument(hugo)
+}
+
+// ToKWebsite outputs documentation in Markdown format for k/website in dir directory
+func (o *TOC) ToKWebsite(dir string) error {
+	// Test that dir is empty
+	fileinfos, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return fmt.Errorf("Unable to open directory %s", dir)
+	}
+	if len(fileinfos) > 0 {
+		return fmt.Errorf("Directory %s must be empty", dir)
+	}
+
+	kw := kwebsite.NewKWebsite(dir)
+
+	return o.OutputDocument(kw)
 }
 
 // ToDocbook outputs documentation in Docbook format

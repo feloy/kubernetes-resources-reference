@@ -55,7 +55,11 @@ func (o *TOC) OutputChapter(i int, chapter *Chapter, outputPart outputs.Part) er
 	if len(chapter.Sections) > 0 {
 		description = getEscapedFirstPhrase(chapter.Sections[0].Definition.Description)
 	}
-	outputChapter, err := outputPart.AddChapter(i, chapter.Name, chapter.Version, description)
+	gv := ""
+	if chapter.Group != nil && chapter.Version != nil {
+		gv = GetGV(*chapter.Group, *chapter.Version)
+	}
+	outputChapter, err := outputPart.AddChapter(i, chapter.Name, gv, chapter.Version, description, chapter.Key.GoImportPrefix())
 	if err != nil {
 		return err
 	}
@@ -271,7 +275,7 @@ func (o *TOC) OutputCommonParameters(i int, output outputs.Output) error {
 		return err
 	}
 
-	outputChapter, err := outputPart.AddChapter(0, "Common Parameters", nil, "")
+	outputChapter, err := outputPart.AddChapter(0, "Common Parameters", "", nil, "", "")
 
 	params := make([]string, len(kubernetes.ParametersAnnex))
 	j := 0

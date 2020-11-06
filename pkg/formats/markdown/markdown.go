@@ -17,21 +17,21 @@ func Italic(s string) string {
 
 // Chapter returns a Level 2 mark
 func Chapter(name string) string {
-	return fmt.Sprintf("## %s\n", name)
+	return fmt.Sprintf("\n## %s\n\n", name)
 }
 
 // Section returns a Level 3 mark
 func Section(name string) string {
-	return fmt.Sprintf("### %s\n", name)
+	return fmt.Sprintf("\n### %s\n\n", name)
 }
 
 // Subsection returns a Level 4 mark
 func Subsection(name string) string {
-	return fmt.Sprintf("#### %s\n", name)
+	return fmt.Sprintf("\n#### %s\n", name)
 }
 
 // ListEntry returns a list entry
-func ListEntry(title string, content string, indentLevel int) string {
+func ListEntry(title string, content string, indentLevel int, nl bool) string {
 	titleIndent := strings.Repeat("  ", indentLevel) + "- "
 	descIndent := strings.Repeat("  ", indentLevel) + "  "
 
@@ -40,5 +40,10 @@ func ListEntry(title string, content string, indentLevel int) string {
 	for i := range parts {
 		parts[i] = descIndent + parts[i]
 	}
-	return fmt.Sprintf("%s%s\n%s\n", titleIndent, title, strings.Join(parts, "\n"))
+
+	separator := "\n"
+	if nl {
+		separator = "\n\n"
+	}
+	return fmt.Sprintf("%s%s%s%s\n", titleIndent, title, separator, strings.Join(parts, "\n"))
 }
