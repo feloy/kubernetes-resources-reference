@@ -416,23 +416,16 @@
     - value
     - periodSeconds
 
-- definition: io.k8s.api.settings.v1alpha1.PodPresetSpec
-  field_categories:
-  - fields:
-    - selector
-    - volumes
-    - volumeMounts
-    - env
-    - envFrom
-
 - definition: io.k8s.api.core.v1.ServiceSpec
   field_categories:
   - fields:
     - selector
     - ports
     - type
-    - ipFamily
+    - ipFamilies
+    - ipFamilyPolicy
     - clusterIP
+    - clusterIPs
     - externalIPs
     - sessionAffinity
     - loadBalancerIP

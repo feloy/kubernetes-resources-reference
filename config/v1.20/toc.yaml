@@ -62,9 +62,6 @@ parts:
   - name: PriorityClass
     group: scheduling.k8s.io
     version: v1
-  - name: PodPreset
-    group: settings.k8s.io
-    version: v1alpha1
 - name: Services
   chapters:
   - name: Service
@@ -264,3 +261,4 @@ skippedResources:
 - Eviction
 - Scale
 - Status
+- StorageVersion
