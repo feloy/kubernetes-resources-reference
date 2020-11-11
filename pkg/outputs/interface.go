@@ -21,6 +21,7 @@ type Chapter interface {
 	SetAPIVersion(s string) error
 	SetGoImport(s string) error
 	AddSection(i int, name string, apiVersion *string) (Section, error)
+	Write() error
 }
 
 // Section is an interface to a section of an output

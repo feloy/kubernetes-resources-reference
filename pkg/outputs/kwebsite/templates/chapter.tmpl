@@ -1,0 +1,50 @@
+---
+api_metadata:
+  apiVersion: "{{.ApiVersion}}"
+  import: "{{.Import}}"
+  kind: "{{.Kind}}"
+collapsible: false
+content_type: "api_reference"
+description: "{{.Metadata.Description}}"
+draft: false
+title: "{{.Metadata.Title}}"
+weight: {{.Metadata.Weight}}
+---
+
+## {{.ChapterName}}
+
+`apiVersion: {{.ApiVersion}}`
+
+`import "{{.Import}}"`
+
+{{range .Sections}}
+### {{.Name}}
+
+{{.Description}}
+
+{{range .Fields}}
+{{ ""  | indent .Indent | indent .Indent}}- {{.Name}}{{if .Value}}: {{.Value}}{{end}}
+{{if .Description}}
+{{.Description | indent 2 | indent .Indent | indent .Indent}}
+{{- end}}
+{{if .TypeDefinition}}
+{{.TypeDefinition | indent 2 | indent .Indent | indent .Indent}}
+{{end}}
+{{- end}}
+
+{{range .FieldCategories}}
+#### {{.Name}}
+
+{{range .Fields}}
+{{ ""  | indent .Indent | indent .Indent}}- {{.Name}}{{if .Value}}: {{.Value}}{{end}}
+{{if .Description}}
+{{.Description | indent 2 | indent .Indent | indent .Indent}}
+{{- end}}
+{{if .TypeDefinition}}
+{{.TypeDefinition | indent 2 | indent .Indent | indent .Indent}}
+{{end}}
+{{- end}}{{/* range .Fields */}}
+
+{{- end}}{{/* range .FieldCategories */}}
+
+{{- end}}{{/* range .Sections */}}

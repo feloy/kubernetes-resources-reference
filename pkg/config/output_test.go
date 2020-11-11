@@ -27,6 +27,7 @@ func (o FakeChapter) SetGoImport(s string) error   { return nil }
 func (o FakeChapter) AddSection(i int, name string, apiVersion *string) (outputs.Section, error) {
 	return FakeSection{}, nil
 }
+func (o FakeChapter) Write() {}
 
 type FakeSection struct{}
 

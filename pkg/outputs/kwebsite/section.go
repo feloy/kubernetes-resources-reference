@@ -19,11 +19,24 @@ type Section struct {
 
 // AddContent adds content to a section
 func (o Section) AddContent(s string) error {
+	i := len(o.chapter.data.Sections)
+	o.chapter.data.Sections[i-1].Description = s
 	return o.kwebsite.addContent(o.part.name, o.chapter.name, s)
 }
 
 // AddTypeDefinition adds the definition of a type to a section
 func (o Section) AddTypeDefinition(s string) error {
+	i := len(o.chapter.data.Sections)
+	cats := o.chapter.data.Sections[i-1].FieldCategories
+	var fields *[]FieldData
+	if len(cats) == 0 {
+		fields = &o.chapter.data.Sections[i-1].Fields
+	} else {
+		fields = &cats[len(cats)-1].Fields
+	}
+	j := len(*fields)
+	(*fields)[j-1].TypeDefinition = "*" + s + "*"
+
 	parts := strings.Split(s, "\n")
 	for _, part := range parts {
 		if part == "" {
@@ -43,12 +56,29 @@ func (o Section) StartPropertyList() error {
 }
 
 func (o Section) AddFieldCategory(name string) error {
+	i := len(o.chapter.data.Sections)
+	o.chapter.data.Sections[i-1].FieldCategories = append(o.chapter.data.Sections[i-1].FieldCategories, FieldCategoryData{
+		Name: name,
+	})
 	return o.kwebsite.addContent(o.part.name, o.chapter.name, markdown.Subsection(name))
 }
 
 // AddProperty adds a property to the section
 func (o Section) AddProperty(name string, property *kubernetes.Property, linkend []string, indent bool, defname string, shortName string) error {
 	if property.HardCodedValue != nil {
+		i := len(o.chapter.data.Sections)
+		cats := o.chapter.data.Sections[i-1].FieldCategories
+		var fields *[]FieldData
+		if len(cats) == 0 {
+			fields = &o.chapter.data.Sections[i-1].Fields
+		} else {
+			fields = &cats[len(cats)-1].Fields
+		}
+		*fields = append(*fields, FieldData{
+			Name:   "**" + name + "**",
+			Value:  *property.HardCodedValue,
+			Indent: 0,
+		})
 		return o.kwebsite.addListEntry(o.part.name, o.chapter.name, "**"+name+"**: "+*property.HardCodedValue, "", 0)
 	}
 
@@ -99,6 +129,21 @@ func (o Section) AddProperty(name string, property *kubernetes.Property, linkend
 	if len(patches) > 0 {
 		description = "*" + patches + "*\n\n" + description
 	}
+
+	i := len(o.chapter.data.Sections)
+	cats := o.chapter.data.Sections[i-1].FieldCategories
+	var fields *[]FieldData
+	if len(cats) == 0 {
+		fields = &o.chapter.data.Sections[i-1].Fields
+	} else {
+		fields = &cats[len(cats)-1].Fields
+	}
+	*fields = append(*fields, FieldData{
+		Name:        title,
+		Description: description,
+		Indent:      indentLevel,
+	})
+
 	return o.kwebsite.addListEntry(o.part.name, o.chapter.name, title, description, indentLevel)
 }
 

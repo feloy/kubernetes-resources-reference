@@ -89,6 +89,8 @@ func (o *TOC) OutputChapter(i int, chapter *Chapter, outputPart outputs.Part) er
 			o.OutputOperations(len(chapter.Sections), outputChapter, &actions)
 		}
 	}
+
+	outputChapter.Write()
 	return nil
 }
 

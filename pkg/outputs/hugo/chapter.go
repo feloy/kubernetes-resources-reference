@@ -45,3 +45,7 @@ func (o Chapter) AddSection(i int, name string, apiVersion *string) (outputs.Sec
 		chapter: &o,
 	}, nil
 }
+
+func (o Chapter) Write() error {
+	return nil
+}
