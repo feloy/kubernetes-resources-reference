@@ -7,12 +7,35 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"text/template"
 
 	"github.com/feloy/kubernetes-api-reference/pkg/formats/markdown"
 )
 
-// addIndex adds an _index.md file to a KWebsite directory
-func (o *KWebsite) addIndex(subdir string, metadata map[string]interface{}) error {
+func (o *KWebsite) addMainIndex() error {
+	t := template.Must(template.ParseFiles("./pkg/outputs/kwebsite/templates/main-index.tmpl"))
+
+	filename := filepath.Join(o.Directory, "_index.md")
+	f, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	return t.Execute(f, nil)
+}
+
+type PartIndex struct {
+	Title  string
+	Weight int
+}
+
+func (o *KWebsite) addPartIndex(subdir string, name string, weight int) error {
+	t := template.Must(template.ParseFiles("./pkg/outputs/kwebsite/templates/part-index.tmpl"))
+	data := PartIndex{
+		Title:  name,
+		Weight: weight,
+	}
 
 	filename := filepath.Join(o.Directory, subdir, "_index.md")
 	f, err := os.Create(filename)
@@ -21,7 +44,7 @@ func (o *KWebsite) addIndex(subdir string, metadata map[string]interface{}) erro
 	}
 	defer f.Close()
 
-	return writeMetadata(f, metadata, 0)
+	return t.Execute(f, data)
 }
 
 // addPart adds a directory in the KWebsite content

@@ -37,9 +37,23 @@ func (o Part) AddChapter(i int, name string, gv string, version *kubernetes.APIV
 		return Chapter{}, fmt.Errorf("Error creating chapter %s/%s: %s", o.name, name, err)
 	}
 
+	data := ChapterData{
+		ApiVersion: gv,
+		Version:    version.String(),
+		Import:     importPrefix,
+		Kind:       name,
+		Metadata: ChapterMetadata{
+			Description: description,
+			Title:       title,
+			Weight:      i + 1,
+		},
+		ChapterName: name,
+	}
+
 	return Chapter{
 		kwebsite: o.kwebsite,
 		part:     &o,
 		name:     chaptername,
+		data:     &data,
 	}, nil
 }

@@ -57,3 +57,7 @@ func (o DocbookChapter) AddSection(i int, name string, apiVersion *string) (outp
 	}
 	return DocbookSection{w: o.w}, nil
 }
+
+func (o DocbookChapter) Write() error {
+	return nil
+}
