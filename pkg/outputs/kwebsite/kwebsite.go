@@ -9,12 +9,13 @@ import (
 // KWebsite output
 // implements the Output interface
 type KWebsite struct {
-	Directory string
+	Directory    string
+	TemplatesDir string
 }
 
 // NewKWebsite returns a new KWebsite
-func NewKWebsite(dir string) *KWebsite {
-	return &KWebsite{Directory: dir}
+func NewKWebsite(dir string, templatesDir string) *KWebsite {
+	return &KWebsite{Directory: dir, TemplatesDir: templatesDir}
 }
 
 // Prepare a new output
