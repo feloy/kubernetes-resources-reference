@@ -11,14 +11,12 @@ title: "{{.Metadata.Title}}"
 weight: {{.Metadata.Weight}}
 ---
 
-## {{.ChapterName}}
-
 {{if .ApiVersion}}`apiVersion: {{.ApiVersion}}`{{end}}
 
 {{if .Import}}`import "{{.Import}}"`{{end}}
 
 {{range .Sections}}
-### {{.Name}}
+## {{.Name}}
 
 {{.Description}}
 
@@ -33,7 +31,7 @@ weight: {{.Metadata.Weight}}
 {{- end}}{{/* range .Fields */}}
 
 {{range .FieldCategories}}
-#### {{.Name}}
+### {{.Name}}
 
 {{range .Fields}}
 {{ ""  | indent .Indent | indent .Indent}}- {{.Name}}{{if .Value}}: {{.Value}}{{end}}
@@ -49,13 +47,13 @@ weight: {{.Metadata.Weight}}
 
 {{range .Operations}}
 
-#### `{{.Verb}}` {{.Title}}
+### `{{.Verb}}` {{.Title}}
 
-##### HTTP Request
+#### HTTP Request
 
 {{.RequestMethod}} {{.RequestPath}}
 
-##### Parameters
+#### Parameters
 
 {{range .Parameters}}
 - {{.Title}}
@@ -64,7 +62,7 @@ weight: {{.Metadata.Weight}}
 
 {{end}}{{/* range .Parameters */}}
 
-##### Response
+#### Response
 
 {{range .Responses}}
 {{.Code}}{{if .Type}} ({{.Type}}){{end}}: {{.Description}}
