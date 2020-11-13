@@ -8,7 +8,7 @@ import (
 )
 
 func (o *KWebsite) addMainIndex() error {
-	t := template.Must(template.ParseFiles("./pkg/outputs/kwebsite/templates/main-index.tmpl"))
+	t := template.Must(template.ParseFiles(filepath.Join(o.TemplatesDir, "main-index.tmpl")))
 
 	filename := filepath.Join(o.Directory, "_index.md")
 	f, err := os.Create(filename)
@@ -32,7 +32,7 @@ func (o *KWebsite) addPartIndex(subdir string, name string, weight int) error {
 		return err
 	}
 
-	t := template.Must(template.ParseFiles("./pkg/outputs/kwebsite/templates/part-index.tmpl"))
+	t := template.Must(template.ParseFiles(filepath.Join(o.TemplatesDir, "part-index.tmpl")))
 	data := PartIndex{
 		Title:  name,
 		Weight: weight,

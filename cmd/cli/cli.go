@@ -13,6 +13,7 @@ const (
 	fileOption            = "file"
 	configDirOption       = "config-dir"
 	outputDirOption       = "output-dir"
+	templatesDirOption    = "templates"
 	showDefinitionsOption = "show-definitions"
 )
 

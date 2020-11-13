@@ -162,17 +162,17 @@ func (o *TOC) ToHugo(dir string) error {
 }
 
 // ToKWebsite outputs documentation in Markdown format for k/website in dir directory
-func (o *TOC) ToKWebsite(dir string) error {
+func (o *TOC) ToKWebsite(outputDir string, templatesDir string) error {
 	// Test that dir is empty
-	fileinfos, err := ioutil.ReadDir(dir)
+	fileinfos, err := ioutil.ReadDir(outputDir)
 	if err != nil {
-		return fmt.Errorf("Unable to open directory %s", dir)
+		return fmt.Errorf("Unable to open directory %s", outputDir)
 	}
 	if len(fileinfos) > 0 {
-		return fmt.Errorf("Directory %s must be empty", dir)
+		return fmt.Errorf("Directory %s must be empty", outputDir)
 	}
 
-	kw := kwebsite.NewKWebsite(dir)
+	kw := kwebsite.NewKWebsite(outputDir, templatesDir)
 
 	return o.OutputDocument(kw)
 }
