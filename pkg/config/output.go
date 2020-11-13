@@ -296,6 +296,7 @@ func (o *TOC) OutputCommonParameters(i int, output outputs.Output) error {
 		}
 		err = outputSection.AddContent(kubernetes.ResourcesDescriptions[param][0].Description)
 	}
+	outputChapter.Write()
 	return nil
 }
 

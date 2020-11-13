@@ -1,13 +1,11 @@
 package kwebsite
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"text/template"
 
 	"github.com/Masterminds/sprig"
-	"github.com/feloy/kubernetes-api-reference/pkg/formats/markdown"
 	"github.com/feloy/kubernetes-api-reference/pkg/outputs"
 )
 
@@ -79,19 +77,11 @@ type ResponseData struct {
 
 // SetAPIVersion writes the APIVersion for a chapter
 func (o Chapter) SetAPIVersion(s string) error {
-	err := o.kwebsite.addContent(o.part.name, o.name, markdown.Code("apiVersion: "+s)+"\n")
-	if err != nil {
-		return fmt.Errorf("Error adding GV for chapter %s/%s: %s", o.part.name, o.name, err)
-	}
 	return nil
 }
 
 // SetGoImport writes the Go import for a chapter
 func (o Chapter) SetGoImport(s string) error {
-	err := o.kwebsite.addContent(o.part.name, o.name, markdown.Code("import \""+s+"\"")+"\n")
-	if err != nil {
-		return fmt.Errorf("Error adding Go Import for chapter %s/%s: %s", o.part.name, o.name, err)
-	}
 	return nil
 }
 
@@ -101,10 +91,6 @@ func (o Chapter) AddSection(i int, name string, apiVersion *string) (outputs.Sec
 		Name: name,
 	})
 
-	err := o.kwebsite.addSection(o.part.name, o.name, name)
-	if err != nil {
-		return Section{}, err
-	}
 	return Section{
 		kwebsite: o.kwebsite,
 		part:     o.part,
@@ -114,7 +100,7 @@ func (o Chapter) AddSection(i int, name string, apiVersion *string) (outputs.Sec
 
 func (o Chapter) Write() error {
 	chaptername := escapeName(o.data.ChapterName + "-" + o.data.Version)
-	filename := filepath.Join(o.kwebsite.Directory, o.part.name, chaptername) + "-new.md"
+	filename := filepath.Join(o.kwebsite.Directory, o.part.name, chaptername) + ".md"
 	f, err := os.Create(filename)
 	if err != nil {
 		return err

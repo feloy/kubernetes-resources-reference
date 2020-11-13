@@ -13,9 +13,9 @@ weight: {{.Metadata.Weight}}
 
 ## {{.ChapterName}}
 
-`apiVersion: {{.ApiVersion}}`
+{{if .ApiVersion}}`apiVersion: {{.ApiVersion}}`{{end}}
 
-`import "{{.Import}}"`
+{{if .Import}}`import "{{.Import}}"`{{end}}
 
 {{range .Sections}}
 ### {{.Name}}
