@@ -28,11 +28,8 @@ func (o *KWebsite) Prepare() error {
 
 // AddPart adds a part to the output
 func (o *KWebsite) AddPart(i int, name string) (outputs.Part, error) {
-	partname, err := o.addPart(name)
-	if err != nil {
-		return Part{}, fmt.Errorf("Error creating part %s: %s", name, err)
-	}
-	err = o.addPartIndex(partname, name, i+1)
+	partname := escapeName(name)
+	err := o.addPartIndex(partname, name, i+1)
 	if err != nil {
 		return Part{}, fmt.Errorf("Error writing index file for part %s: %s", name, err)
 	}

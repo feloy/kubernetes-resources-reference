@@ -5,7 +5,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/feloy/kubernetes-api-reference/pkg/formats/markdown"
 	"github.com/feloy/kubernetes-api-reference/pkg/kubernetes"
 )
 
@@ -21,7 +20,7 @@ type Section struct {
 func (o Section) AddContent(s string) error {
 	i := len(o.chapter.data.Sections)
 	o.chapter.data.Sections[i-1].Description = s
-	return o.kwebsite.addContent(o.part.name, o.chapter.name, s)
+	return nil
 }
 
 // AddTypeDefinition adds the definition of a type to a section
@@ -36,17 +35,6 @@ func (o Section) AddTypeDefinition(s string) error {
 	}
 	j := len(*fields)
 	(*fields)[j-1].TypeDefinition = "*" + s + "*"
-
-	parts := strings.Split(s, "\n")
-	for _, part := range parts {
-		if part == "" {
-			continue
-		}
-		err := o.kwebsite.addContent(o.part.name, o.chapter.name, "\n  "+markdown.Italic(part))
-		if err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
@@ -60,7 +48,7 @@ func (o Section) AddFieldCategory(name string) error {
 	o.chapter.data.Sections[i-1].FieldCategories = append(o.chapter.data.Sections[i-1].FieldCategories, FieldCategoryData{
 		Name: name,
 	})
-	return o.kwebsite.addContent(o.part.name, o.chapter.name, markdown.Subsection(name))
+	return nil
 }
 
 // AddProperty adds a property to the section
@@ -79,7 +67,7 @@ func (o Section) AddProperty(name string, property *kubernetes.Property, linkend
 			Value:  *property.HardCodedValue,
 			Indent: 0,
 		})
-		return o.kwebsite.addListEntry(o.part.name, o.chapter.name, "**"+name+"**: "+*property.HardCodedValue, "", 0)
+		return nil
 	}
 
 	indentLevel := 0
@@ -143,8 +131,7 @@ func (o Section) AddProperty(name string, property *kubernetes.Property, linkend
 		Description: description,
 		Indent:      indentLevel,
 	})
-
-	return o.kwebsite.addListEntry(o.part.name, o.chapter.name, title, description, indentLevel)
+	return nil
 }
 
 // EndProperty ends a property
@@ -165,20 +152,6 @@ func (o Section) AddOperation(operation *kubernetes.ActionInfo, linkends kuberne
 		fmt.Printf("SHOULD NOT HAPPEN, sentences: %d\n", len(sentences))
 	}
 
-	httpRequest := fmt.Sprintf("%s %s", operation.HTTPMethod, operation.Path.String())
-
-	err := o.kwebsite.addSubsection(o.part.name, o.chapter.name, fmt.Sprintf("`%s` %s", operation.Action.Verb(), sentences[0]))
-	if err != nil {
-		return err
-	}
-
-	err = o.kwebsite.addContent(o.part.name, o.chapter.name, "\n##### HTTP Request")
-	err = o.kwebsite.addContent(o.part.name, o.chapter.name, httpRequest)
-	if err != nil {
-		return err
-	}
-
-	err = o.kwebsite.addContent(o.part.name, o.chapter.name, "\n##### Parameters")
 	dataParams := []ParameterData{}
 	for _, param := range operation.Parameters {
 
@@ -208,8 +181,6 @@ func (o Section) AddOperation(operation *kubernetes.ActionInfo, linkends kuberne
 			Title:       paramName(param.Name, param.In) + " (" + typ + ")" + required,
 			Description: desc,
 		})
-
-		o.kwebsite.addListEntry(o.part.name, o.chapter.name, paramName(param.Name, param.In)+" ("+typ+")"+required, desc, 1)
 	}
 
 	codes := make([]int, len(operation.Operation.Responses.StatusCodeResponses))
@@ -219,7 +190,6 @@ func (o Section) AddOperation(operation *kubernetes.ActionInfo, linkends kuberne
 		i++
 	}
 	sort.Ints(codes)
-	err = o.kwebsite.addContent(o.part.name, o.chapter.name, "\n##### Response")
 	responsesData := []ResponseData{}
 	for _, code := range codes {
 		response := operation.Operation.Responses.StatusCodeResponses[code]
@@ -245,8 +215,6 @@ func (o Section) AddOperation(operation *kubernetes.ActionInfo, linkends kuberne
 			Type:        typ,
 			Description: response.Description,
 		})
-
-		err = o.kwebsite.addContent(o.part.name, o.chapter.name, fmt.Sprintf("%d (%s): %s", code, typ, response.Description))
 	}
 
 	i = len(o.chapter.data.Sections)
