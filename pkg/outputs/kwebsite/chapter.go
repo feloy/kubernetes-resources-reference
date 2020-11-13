@@ -41,6 +41,7 @@ type SectionData struct {
 	Description     string
 	Fields          []FieldData
 	FieldCategories []FieldCategoryData
+	Operations      []OperationData
 }
 
 type FieldCategoryData struct {
@@ -54,6 +55,26 @@ type FieldData struct {
 	Description    string
 	TypeDefinition string
 	Indent         int
+}
+
+type OperationData struct {
+	Verb          string
+	Title         string
+	RequestMethod string
+	RequestPath   string
+	Parameters    []ParameterData
+	Responses     []ResponseData
+}
+
+type ParameterData struct {
+	Title       string
+	Description string
+}
+
+type ResponseData struct {
+	Code        int
+	Type        string
+	Description string
 }
 
 // SetAPIVersion writes the APIVersion for a chapter

@@ -179,6 +179,7 @@ func (o Section) AddOperation(operation *kubernetes.ActionInfo, linkends kuberne
 	}
 
 	err = o.kwebsite.addContent(o.part.name, o.chapter.name, "\n##### Parameters")
+	dataParams := []ParameterData{}
 	for _, param := range operation.Parameters {
 
 		required := ""
@@ -202,6 +203,12 @@ func (o Section) AddOperation(operation *kubernetes.ActionInfo, linkends kuberne
 		if len(desc) > 0 && kubernetes.ParameterInAnnex(param) {
 			desc = o.kwebsite.LinkEnd([]string{"common-parameters", "common-parameters-"}, param.Name)
 		}
+
+		dataParams = append(dataParams, ParameterData{
+			Title:       paramName(param.Name, param.In) + " (" + typ + ")" + required,
+			Description: desc,
+		})
+
 		o.kwebsite.addListEntry(o.part.name, o.chapter.name, paramName(param.Name, param.In)+" ("+typ+")"+required, desc, 1)
 	}
 
@@ -213,6 +220,7 @@ func (o Section) AddOperation(operation *kubernetes.ActionInfo, linkends kuberne
 	}
 	sort.Ints(codes)
 	err = o.kwebsite.addContent(o.part.name, o.chapter.name, "\n##### Response")
+	responsesData := []ResponseData{}
 	for _, code := range codes {
 		response := operation.Operation.Responses.StatusCodeResponses[code]
 
@@ -223,18 +231,35 @@ func (o Section) AddOperation(operation *kubernetes.ActionInfo, linkends kuberne
 				linkend, found := linkends[*typeKey]
 				if found {
 					typ = o.kwebsite.LinkEnd(linkend, t)
-					typ = " (" + typ + ")"
 				} else {
-					typ = " (" + t + ")"
+					typ = t
 					fmt.Printf("SHOULD NOT HAPPEN: %s\n", typeKey)
 				}
 			} else {
-				typ = " (" + t + ")"
+				typ = t
 			}
 		}
 
-		err = o.kwebsite.addContent(o.part.name, o.chapter.name, fmt.Sprintf("%d%s: %s", code, typ, response.Description))
+		responsesData = append(responsesData, ResponseData{
+			Code:        code,
+			Type:        typ,
+			Description: response.Description,
+		})
+
+		err = o.kwebsite.addContent(o.part.name, o.chapter.name, fmt.Sprintf("%d (%s): %s", code, typ, response.Description))
 	}
+
+	i = len(o.chapter.data.Sections)
+	ops := &o.chapter.data.Sections[i-1].Operations
+	*ops = append(*ops, OperationData{
+		Verb:          operation.Action.Verb(),
+		Title:         sentences[0],
+		RequestMethod: operation.HTTPMethod,
+		RequestPath:   operation.Path.String(),
+		Parameters:    dataParams,
+		Responses:     responsesData,
+	})
+
 	return nil
 }
 

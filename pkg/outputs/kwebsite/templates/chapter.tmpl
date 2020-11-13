@@ -30,7 +30,7 @@ weight: {{.Metadata.Weight}}
 {{if .TypeDefinition}}
 {{.TypeDefinition | indent 2 | indent .Indent | indent .Indent}}
 {{end}}
-{{- end}}
+{{- end}}{{/* range .Fields */}}
 
 {{range .FieldCategories}}
 #### {{.Name}}
@@ -47,4 +47,28 @@ weight: {{.Metadata.Weight}}
 
 {{- end}}{{/* range .FieldCategories */}}
 
+{{range .Operations}}
+
+#### `{{.Verb}}` {{.Title}}
+
+##### HTTP Request
+
+{{.RequestMethod}} {{.RequestPath}}
+
+##### Parameters
+
+{{range .Parameters}}
+- {{.Title}}
+
+{{.Description | indent 2}}
+
+{{end}}{{/* range .Parameters */}}
+
+##### Response
+
+{{range .Responses}}
+{{.Code}}{{if .Type}} ({{.Type}}){{end}}: {{.Description}}
+{{end}}{{/* range .Responses */}}
+
+{{- end}}{{/* range .Operations */}}
 {{- end}}{{/* range .Sections */}}
