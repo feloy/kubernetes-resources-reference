@@ -65,6 +65,9 @@ parts:
   - name: PodPreset
     group: settings.k8s.io
     version: v1alpha1
+  - name: Scale
+    group: autoscaling
+    version: v1
 - name: Services
   chapters:
   - name: Service
@@ -262,5 +265,4 @@ skippedResources:
 - APIResourceList
 - APIVersions
 - Eviction
-- Scale
 - Status
