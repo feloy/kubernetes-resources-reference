@@ -16,7 +16,7 @@ func (o FakeOutput) Terminate() error                                 { return n
 
 type FakePart struct{}
 
-func (o FakePart) AddChapter(i int, name string, version *kubernetes.APIVersion, description string) (outputs.Chapter, error) {
+func (o FakePart) AddChapter(i int, name string, gv string, version *kubernetes.APIVersion, description string, importPrefix string) (outputs.Chapter, error) {
 	return FakeChapter{}, nil
 }
 
