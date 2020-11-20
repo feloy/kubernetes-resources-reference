@@ -277,7 +277,7 @@ func (o *TOC) OutputCommonParameters(i int, output outputs.Output) error {
 		return err
 	}
 
-	outputChapter, err := outputPart.AddChapter(0, "Common Parameters", "", nil, "", "")
+	outputChapter, err := outputPart.AddChapter(i, "Common Parameters", "", nil, "", "")
 
 	params := make([]string, len(kubernetes.ParametersAnnex))
 	j := 0
