@@ -107,6 +107,10 @@ func (o Chapter) Write() error {
 	}
 	defer f.Close()
 
-	t := template.Must(template.New("chapter.tmpl").Funcs(sprig.TxtFuncMap()).ParseFiles(filepath.Join(o.kwebsite.TemplatesDir, "chapter.tmpl")))
+	templateFile := "chapter.tmpl"
+	if len(o.data.Sections) == 1 {
+		templateFile = "chapter-single-definition.tmpl"
+	}
+	t := template.Must(template.New(templateFile).Funcs(sprig.TxtFuncMap()).ParseFiles(filepath.Join(o.kwebsite.TemplatesDir, templateFile)))
 	return t.Execute(f, o.data)
 }
