@@ -16,12 +16,12 @@ weight: {{.Metadata.Weight}}
 {{range .Sections}}
 ## {{.Name}}
 
-{{.Description}}
+{{.Description | replace "<" "\\<" }}
 
 {{range .Fields}}
 {{ ""  | indent .Indent | indent .Indent}}- {{.Name}}{{if .Value}}: {{.Value}}{{end}}
 {{if .Description}}
-{{.Description | indent 2 | indent .Indent | indent .Indent}}
+{{.Description | replace "<" "\\<" | indent 2 | indent .Indent | indent .Indent}}
 {{- end}}
 {{if .TypeDefinition}}
 {{.TypeDefinition | indent 2 | indent .Indent | indent .Indent}}
@@ -34,7 +34,7 @@ weight: {{.Metadata.Weight}}
 {{range .Fields}}
 {{ ""  | indent .Indent | indent .Indent}}- {{.Name}}{{if .Value}}: {{.Value}}{{end}}
 {{if .Description}}
-{{.Description | indent 2 | indent .Indent | indent .Indent}}
+{{.Description | replace "<" "\\<" | indent 2 | indent .Indent | indent .Indent}}
 {{- end}}
 {{if .TypeDefinition}}
 {{.TypeDefinition | indent 2 | indent .Indent | indent .Indent}}
