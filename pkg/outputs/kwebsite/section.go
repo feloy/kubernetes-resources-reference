@@ -178,7 +178,7 @@ func (o Section) AddOperation(operation *kubernetes.ActionInfo, linkends kuberne
 		}
 
 		dataParams = append(dataParams, ParameterData{
-			Title:       paramName(param.Name, param.In) + " (" + typ + ")" + required,
+			Title:       paramName(param.Name, param.In) + ": " + typ + required,
 			Description: desc,
 		})
 	}
@@ -238,9 +238,9 @@ func (o Section) AddDefinitionIndexEntry(d string) error {
 func paramName(s string, in string) string {
 	switch in {
 	case "path":
-		return fmt.Sprintf("**{%s}**", s)
+		return fmt.Sprintf("**%s** (*in path*)", s)
 	case "query":
-		return fmt.Sprintf("**?%s**", s)
+		return fmt.Sprintf("**%s** (*in query*)", s)
 	default:
 		return fmt.Sprintf("**%s**", s)
 	}
