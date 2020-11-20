@@ -8,6 +8,7 @@ import (
 type Output interface {
 	Prepare() error
 	AddPart(i int, name string) (Part, error)
+	NewPart(i int, name string) (Part, error)
 	Terminate() error
 }
 

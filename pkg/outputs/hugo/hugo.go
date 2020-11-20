@@ -28,6 +28,10 @@ func (o *Hugo) Prepare() error {
 	return nil
 }
 
+func (o *Hugo) NewPart(i int, name string) (outputs.Part, error) {
+	return nil, nil
+}
+
 // AddPart adds a part to the output
 func (o *Hugo) AddPart(i int, name string) (outputs.Part, error) {
 	partname, err := o.addPart(name)

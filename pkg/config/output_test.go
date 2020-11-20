@@ -11,12 +11,13 @@ import (
 type FakeOutput struct{}
 
 func (o FakeOutput) Prepare() error                                   { return nil }
+func (o FakeOutput) NewPart(i int, name string) (outputs.Part, error) { return FakePart{}, nil }
 func (o FakeOutput) AddPart(i int, name string) (outputs.Part, error) { return FakePart{}, nil }
 func (o FakeOutput) Terminate() error                                 { return nil }
 
 type FakePart struct{}
 
-func (o FakePart) AddChapter(i int, name string, version *kubernetes.APIVersion, description string) (outputs.Chapter, error) {
+func (o FakePart) AddChapter(i int, name string, gv string, version *kubernetes.APIVersion, description string, importPrefix string) (outputs.Chapter, error) {
 	return FakeChapter{}, nil
 }
 
@@ -27,7 +28,7 @@ func (o FakeChapter) SetGoImport(s string) error   { return nil }
 func (o FakeChapter) AddSection(i int, name string, apiVersion *string) (outputs.Section, error) {
 	return FakeSection{}, nil
 }
-func (o FakeChapter) Write() {}
+func (o FakeChapter) Write() error { return nil }
 
 type FakeSection struct{}
 

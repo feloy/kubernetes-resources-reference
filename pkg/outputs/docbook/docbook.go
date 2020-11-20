@@ -114,6 +114,10 @@ func insertIndex(w *x.Writer, name string, title string) error {
 	return nil
 }
 
+func (o *Docbook) NewPart(i int, name string) (outputs.Part, error) {
+	return nil, nil
+}
+
 // AddPart adds a part to the docbook output
 func (o *Docbook) AddPart(i int, name string) (outputs.Part, error) {
 	if i > 0 {
