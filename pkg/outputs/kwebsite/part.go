@@ -18,7 +18,7 @@ func (o Part) AddChapter(i int, name string, gv string, version *kubernetes.APIV
 	if version != nil && version.Stage != kubernetes.StageGA {
 		title += " " + version.String()
 	}
-	chaptername := escapeName(name + "-" + version.String())
+	chaptername := escapeName(name, version.String())
 	data := ChapterData{
 		ApiVersion: gv,
 		Version:    version.String(),
