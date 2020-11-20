@@ -20,9 +20,9 @@ clean:
 
 docbook: clean build/k8s-api.xml
 
-build/k8s-api.xml: $(wildcard *.go **/*.go) $(wildcard api/v1.19/* config/v1.19/*)
+build/k8s-api.xml: $(wildcard *.go **/*.go) $(wildcard api/v1.20/* config/v1.20/*)
 	mkdir -p build
-	go run cmd/main.go docbook --config-dir config/v1.19/ --file api/v1.19/swagger.json > build/k8s-api.xml
+	go run cmd/main.go docbook --config-dir config/v1.20/ --file api/v1.20/swagger.json > build/k8s-api.xml
 
 
 FORMAT ?= USletter
@@ -55,7 +55,7 @@ clean-website:
 
 website: clean-website
 	mkdir -p website/content/en/docs
-	go run cmd/main.go hugo --config-dir config/v1.19/ --file api/v1.19/swagger.json --output-dir website/content/en/docs
+	go run cmd/main.go hugo --config-dir config/v1.20/ --file api/v1.20/swagger.json --output-dir website/content/en/docs
 	(cd website && hugo)
 
 clean-kwebsite:
@@ -63,7 +63,7 @@ clean-kwebsite:
 
 kwebsite: clean-kwebsite
 	mkdir -p kwebsite/content/en/docs
-	go run cmd/main.go kwebsite --config-dir config/v1.19/ --file api/v1.19/swagger.json --output-dir kwebsite/content/en/docs
+	go run cmd/main.go kwebsite --config-dir config/v1.20/ --file api/v1.20/swagger.json --output-dir kwebsite/content/en/docs
 
 serve:
 	(cd website/public && python3 -m http.server)
