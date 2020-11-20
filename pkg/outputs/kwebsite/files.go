@@ -5,6 +5,8 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/stoewer/go-strcase"
 )
 
 func (o *KWebsite) addMainIndex() error {
@@ -49,8 +51,12 @@ func (o *KWebsite) addPartIndex(subdir string, name string, weight int) error {
 }
 
 // escapeName returns a name usable as file name
-func escapeName(s string) string {
-	result := strings.ToLower(s)
-	result = strings.ReplaceAll(result, " ", "-")
-	return result
+func escapeName(parts ...string) string {
+	result := []string{}
+	for _, s := range parts {
+		if s != "" {
+			result = append(result, strcase.KebabCase(s))
+		}
+	}
+	return strings.Join(result, "-")
 }

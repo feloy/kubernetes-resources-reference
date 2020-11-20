@@ -99,7 +99,7 @@ func (o Chapter) AddSection(i int, name string, apiVersion *string) (outputs.Sec
 }
 
 func (o Chapter) Write() error {
-	chaptername := escapeName(o.data.ChapterName + "-" + o.data.Version)
+	chaptername := escapeName(o.data.ChapterName, o.data.Version)
 	filename := filepath.Join(o.kwebsite.Directory, o.part.name, chaptername) + ".md"
 	f, err := os.Create(filename)
 	if err != nil {

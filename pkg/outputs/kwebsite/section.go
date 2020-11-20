@@ -174,7 +174,7 @@ func (o Section) AddOperation(operation *kubernetes.ActionInfo, linkends kuberne
 
 		desc := param.Description
 		if len(desc) > 0 && kubernetes.ParameterInAnnex(param) {
-			desc = o.kwebsite.LinkEnd([]string{"common-parameters", "common-parameters-"}, param.Name)
+			desc = o.kwebsite.LinkEnd([]string{"common-parameters", "common-parameters"}, param.Name)
 		}
 
 		dataParams = append(dataParams, ParameterData{
