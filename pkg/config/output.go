@@ -272,7 +272,7 @@ func (o *TOC) OutputOperation(i int, outputSection outputs.Section, operation *k
 
 // OutputCommonParameters outputs the parameters in common
 func (o *TOC) OutputCommonParameters(i int, output outputs.Output) error {
-	outputPart, err := output.AddPart(i, "Common Parameters")
+	outputPart, err := output.NewPart(i, "Common Parameters")
 	if err != nil {
 		return err
 	}

@@ -2,6 +2,8 @@ package kwebsite
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/feloy/kubernetes-api-reference/pkg/outputs"
 )
@@ -25,6 +27,20 @@ func (o *KWebsite) Prepare() error {
 		return fmt.Errorf("Error writing index file in %s: %s", o.Directory, err)
 	}
 	return nil
+}
+
+// NewPart creates a new part for the output
+func (o *KWebsite) NewPart(i int, name string) (outputs.Part, error) {
+	partname := escapeName(name)
+	dirname := filepath.Join(o.Directory, partname)
+	err := os.Mkdir(dirname, 0755)
+	if err != nil {
+		return nil, err
+	}
+	return Part{
+		kwebsite: o,
+		name:     partname,
+	}, nil
 }
 
 // AddPart adds a part to the output
