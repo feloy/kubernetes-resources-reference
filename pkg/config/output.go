@@ -89,6 +89,8 @@ func (o *TOC) OutputChapter(i int, chapter *Chapter, outputPart outputs.Part) er
 			o.OutputOperations(len(chapter.Sections), outputChapter, &actions)
 		}
 	}
+
+	outputChapter.Write()
 	return nil
 }
 
@@ -270,12 +272,12 @@ func (o *TOC) OutputOperation(i int, outputSection outputs.Section, operation *k
 
 // OutputCommonParameters outputs the parameters in common
 func (o *TOC) OutputCommonParameters(i int, output outputs.Output) error {
-	outputPart, err := output.AddPart(i, "Common Parameters")
+	outputPart, err := output.NewPart(i, "Common Parameters")
 	if err != nil {
 		return err
 	}
 
-	outputChapter, err := outputPart.AddChapter(0, "Common Parameters", "", nil, "", "")
+	outputChapter, err := outputPart.AddChapter(i, "Common Parameters", "", nil, "", "")
 
 	params := make([]string, len(kubernetes.ParametersAnnex))
 	j := 0
@@ -294,6 +296,7 @@ func (o *TOC) OutputCommonParameters(i int, output outputs.Output) error {
 		}
 		err = outputSection.AddContent(kubernetes.ResourcesDescriptions[param][0].Description)
 	}
+	outputChapter.Write()
 	return nil
 }
 

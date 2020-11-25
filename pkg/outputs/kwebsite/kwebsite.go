@@ -2,6 +2,8 @@ package kwebsite
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/feloy/kubernetes-api-reference/pkg/outputs"
 )
@@ -9,37 +11,42 @@ import (
 // KWebsite output
 // implements the Output interface
 type KWebsite struct {
-	Directory string
+	Directory    string
+	TemplatesDir string
 }
 
 // NewKWebsite returns a new KWebsite
-func NewKWebsite(dir string) *KWebsite {
-	return &KWebsite{Directory: dir}
+func NewKWebsite(dir string, templatesDir string) *KWebsite {
+	return &KWebsite{Directory: dir, TemplatesDir: templatesDir}
 }
 
 // Prepare a new output
 func (o *KWebsite) Prepare() error {
-	err := o.addIndex("", map[string]interface{}{
-		"title": "Resources",
-	})
+	err := o.addMainIndex()
 	if err != nil {
 		return fmt.Errorf("Error writing index file in %s: %s", o.Directory, err)
 	}
 	return nil
 }
 
+// NewPart creates a new part for the output
+func (o *KWebsite) NewPart(i int, name string) (outputs.Part, error) {
+	partname := escapeName(name)
+	dirname := filepath.Join(o.Directory, partname)
+	err := os.Mkdir(dirname, 0755)
+	if err != nil {
+		return nil, err
+	}
+	return Part{
+		kwebsite: o,
+		name:     partname,
+	}, nil
+}
+
 // AddPart adds a part to the output
 func (o *KWebsite) AddPart(i int, name string) (outputs.Part, error) {
-	partname, err := o.addPart(name)
-	if err != nil {
-		return Part{}, fmt.Errorf("Error creating part %s: %s", name, err)
-	}
-	err = o.addIndex(partname, map[string]interface{}{
-		"title":       name,
-		"draft":       false,
-		"collapsible": true,
-		"weight":      i + 1,
-	})
+	partname := escapeName(name)
+	err := o.addPartIndex(partname, name, i+1)
 	if err != nil {
 		return Part{}, fmt.Errorf("Error writing index file for part %s: %s", name, err)
 	}

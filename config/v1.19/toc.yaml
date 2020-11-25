@@ -14,7 +14,7 @@
 # limitations under the License.
 
 parts:
-- name: Workloads
+- name: Workloads Resources
   chapters:
   - name: Pod
     group: ""
@@ -68,7 +68,7 @@ parts:
   - name: Scale
     group: autoscaling
     version: v1
-- name: Services
+- name: Services Resources
   chapters:
   - name: Service
     group: ""
@@ -85,7 +85,7 @@ parts:
   - name: IngressClass
     group: networking.k8s.io
     version: v1
-- name: Config and Storage
+- name: Config and Storage Resources
   chapters:
   - name: ConfigMap
     group: ""
@@ -113,7 +113,7 @@ parts:
   - name: CSINode
     group: storage.k8s.io
     version: v1
-- name: Authentication
+- name: Authentication Resources
   chapters:
   - name: ServiceAccount
     group: ""
@@ -127,7 +127,7 @@ parts:
   - name: CertificateSigningRequest
     group: certificates.k8s.io
     version: v1
-- name: Authorization
+- name: Authorization Resources
   chapters:
   - name: LocalSubjectAccessReview
     group: authorization.k8s.io
@@ -153,7 +153,7 @@ parts:
   - name: RoleBinding
     group: rbac.authorization.k8s.io
     version: v1
-- name: Policies
+- name: Policies Resources
   chapters:
   - name: LimitRange
     group: ""
@@ -170,7 +170,7 @@ parts:
   - name: PodSecurityPolicy
     group: policy
     version: v1beta1
-- name: Extend
+- name: Extend Resources
   chapters:
   - name: CustomResourceDefinition
     group: apiextensions.k8s.io
@@ -181,7 +181,7 @@ parts:
   - name: ValidatingWebhookConfiguration
     group: admissionregistration.k8s.io
     version: v1
-- name: Cluster
+- name: Cluster Resources
   chapters:
   - name: Node
     group: ""

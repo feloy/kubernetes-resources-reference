@@ -13,6 +13,7 @@ const (
 	fileOption            = "file"
 	configDirOption       = "config-dir"
 	outputDirOption       = "output-dir"
+	templatesDirOption    = "templates"
 	showDefinitionsOption = "show-definitions"
 )
 
@@ -36,7 +37,7 @@ func RootCmd() *cobra.Command {
 	cmd.MarkFlagRequired(fileOption)
 
 	subcommands := []func() *cobra.Command{
-		ResourceslistCmd, ShowTOCCmd, GVKeysMap, Hugo, Docbook, KWebsite,
+		ResourceslistCmd, ShowTOCCmd, GVKeysMap, KWebsite,
 	}
 	for _, subcommand := range subcommands {
 		cmd.AddCommand(subcommand())

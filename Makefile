@@ -63,7 +63,7 @@ clean-kwebsite:
 
 kwebsite: clean-kwebsite
 	mkdir -p kwebsite/content/en/docs
-	go run cmd/main.go kwebsite --config-dir config/v1.19/ --file api/v1.19/swagger.json --output-dir kwebsite/content/en/docs
+	go run cmd/main.go kwebsite --config-dir config/v1.19/ --file api/v1.19/swagger.json --output-dir kwebsite/content/en/docs --templates ./templates
 
 serve:
 	(cd website/public && python3 -m http.server)

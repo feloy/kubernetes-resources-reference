@@ -38,7 +38,11 @@ func (o *Chapter) populate(part *Part, toc *TOC, thespec *kubernetes.Spec) error
 	o.Sections = []*Section{
 		newSection,
 	}
-	toc.LinkEnds.Add(o.Key, []string{part.Name, o.Name + "-" + o.Version.String(), newSection.Name})
+	le := o.Name
+	if o.Version.String() != "" {
+		le += "-" + o.Version.String()
+	}
+	toc.LinkEnds.Add(o.Key, []string{part.Name, le, newSection.Name})
 	toc.DocumentedDefinitions[o.Key] = []string{o.Name}
 
 	if o.isResource() {
@@ -74,7 +78,11 @@ func (o *Chapter) searchResourcesFromResource(suffixes []string, part *Part, toc
 		if resource != nil {
 			newSection := NewSection(resourceName, resource, o.Group, o.Version)
 			o.Sections = append(o.Sections, newSection)
-			toc.LinkEnds.Add(key, []string{part.Name, o.Name + "-" + o.Version.String(), newSection.Name})
+			le := o.Name
+			if o.Version.String() != "" {
+				le += "-" + o.Version.String()
+			}
+			toc.LinkEnds.Add(key, []string{part.Name, le, newSection.Name})
 			toc.DocumentedDefinitions[key] = []string{resourceName}
 		}
 	}
@@ -93,7 +101,11 @@ func (o *Chapter) addDefinition(resourceName string, resourceKey kubernetes.Key,
 	if resource != nil {
 		newSection := NewSectionForDefinition(resourceName, resource, resourceKey)
 		o.Sections = append(o.Sections, newSection)
-		toc.LinkEnds.Add(resourceKey, []string{part.Name, o.Name + "-" + o.Version.String(), newSection.Name})
+		le := o.Name
+		if o.Version.String() != "" {
+			le += "-" + o.Version.String()
+		}
+		toc.LinkEnds.Add(resourceKey, []string{part.Name, le, newSection.Name})
 		toc.DocumentedDefinitions[resourceKey] = []string{resourceName}
 	}
 }

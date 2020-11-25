@@ -8,6 +8,7 @@ import (
 type Output interface {
 	Prepare() error
 	AddPart(i int, name string) (Part, error)
+	NewPart(i int, name string) (Part, error)
 	Terminate() error
 }
 
@@ -21,6 +22,7 @@ type Chapter interface {
 	SetAPIVersion(s string) error
 	SetGoImport(s string) error
 	AddSection(i int, name string, apiVersion *string) (Section, error)
+	Write() error
 }
 
 // Section is an interface to a section of an output
