@@ -60,3 +60,10 @@ func escapeName(parts ...string) string {
 	}
 	return strings.Join(result, "-")
 }
+
+// headingID returns the ID built by hugo for a given header
+func headingID(s string) string {
+	result := strings.ToLower(s)
+	result = strings.ReplaceAll(result, " ", "-")
+	return result
+}
