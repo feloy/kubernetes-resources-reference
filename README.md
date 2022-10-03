@@ -4,14 +4,14 @@ Tool to create documentation of the Kubernetes API.
 
 Get a printed book at:
 
-- US: https://www.amazon.com/dp/B086G11WY1
-- UK: https://www.amazon.co.uk/dp/B086G11WY1
-- DE: https://www.amazon.de/dp/B086G11WY1
-- FR: https://www.amazon.fr/dp/B086G11WY1
-- ES: https://www.amazon.es/dp/B086G11WY1
-- IT: https://www.amazon.it/dp/B086G11WY1
-- JP: https://www.amazon.co.jp/dp/B086G11WY1
-- CA: https://www.amazon.ca/dp/B086G11WY1
+- US: https://www.amazon.com/dp/B08GV3ZLNS
+- UK: https://www.amazon.co.uk/dp/B08GV3ZLNS
+- DE: https://www.amazon.de/dp/B08GV3ZLNS
+- FR: https://www.amazon.fr/dp/B08GV3ZLNS
+- ES: https://www.amazon.es/dp/B08GV3ZLNS
+- IT: https://www.amazon.it/dp/B08GV3ZLNS
+- JP: https://www.amazon.co.jp/dp/B08GV3ZLNS
+- CA: https://www.amazon.ca/dp/B08GV3ZLNS
 
 ## Usage
 
