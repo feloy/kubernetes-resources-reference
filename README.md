@@ -51,3 +51,33 @@ Kubernetes API extends OpenAPI using these extensions:
 - `x-kubernetes-list-type`: atomic, map, set. Applicable to lists. atomic and set apply to lists with scalar elements only. map applies to lists of nested types only. If configured as atomic, the entire list is replaced during merge; a single manager manages the list as a whole at any one time. If granular, different managers can manage entries separately.
 - `x-kubernetes-list-map-keys`: Only applicable when x-kubernetes-list-type=map. A slice of strings whose values in combination must uniquely identify list entries.
 - `x-kubernetes-unions`
+
+## Changes
+
+### v1.20
+
+- `PodPreset`: removed
+- `ServiceSpec`: `ipFamily` replaced by `ipFamilies` and `ipFamilyPolicy`
+- `ServiceSpec`: `clusterIPs` added
+- `HorizontalPodAutoscalerSpec`: `metrics.containerResource` added
+- `HorizontalPodAutoscalerStatus`: `currentMetrics.containerResource` added
+- `EndpointSlice`: `endpoints.conditions.serving`, `endpoints.conditions.terminating` added
+
+## New version
+
+To create documentation for a new version, for example v1.20:
+
+```
+$ mkdir api/v1.20
+$ wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/api/openapi-spec/swagger.json -O api/v1.20/swagger.json
+$ mkdir config/v1.20
+$ cp config/v1.19/* config/v1.20/
+```
+
+Update Makefile to replace v1.19 references with v1.20.
+
+Examine the differences between swagger definitions, and make changes on `config/v1.20/{toc,fields}.yaml` accordingly:
+
+```
+$ diff -u api/v1.19/swagger.json api/v1.20/swagger.json
+```
