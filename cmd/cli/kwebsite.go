@@ -21,7 +21,8 @@ func KWebsite() *cobra.Command {
 			}
 
 			outputDir := cmd.Flag(outputDirOption).Value.String()
-			err = toc.ToKWebsite(outputDir)
+			templatesDir := cmd.Flag(templatesDirOption).Value.String()
+			err = toc.ToKWebsite(outputDir, templatesDir)
 			if err != nil {
 				return err
 			}
@@ -40,6 +41,8 @@ func KWebsite() *cobra.Command {
 	cmd.MarkFlagRequired(configDirOption)
 	cmd.Flags().StringP(outputDirOption, "o", "", "Directory to write markdown files")
 	cmd.MarkFlagRequired(outputDirOption)
+	cmd.Flags().StringP(templatesDirOption, "t", "", "Directory containing go templates for output")
+	cmd.MarkFlagRequired(templatesDirOption)
 	cmd.Flags().Bool(showDefinitionsOption, false, "Show where definitions are defined on output")
 	return cmd
 }
